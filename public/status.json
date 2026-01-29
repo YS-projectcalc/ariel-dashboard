@@ -1,6 +1,50 @@
 {
-  "lastUpdated": "2026-01-30T11:30:00Z",
+  "lastUpdated": "2026-01-29T18:05:00Z",
   "projects": [
+    {
+      "id": "book-funnel",
+      "name": "Book + Monetization Funnel",
+      "description": "Write a book and create a monetization funnel — with detailed logging",
+      "color": "#8b5cf6",
+      "status": "planning",
+      "columns": {
+        "backlog": {
+          "title": "📋 Backlog",
+          "color": "#64748b",
+          "tasks": [
+            { "id": "bf-b1", "title": "Define book topic/niche", "description": "Research viable topics, validate demand", "created": "01/29" },
+            { "id": "bf-b2", "title": "Create content outline", "description": "Chapters, key points, unique angle", "created": "01/29" },
+            { "id": "bf-b3", "title": "Write book content", "description": "Use infoproduct-creation skill", "created": "01/29" },
+            { "id": "bf-b4", "title": "Design book cover", "description": "Use brand-assets skill", "created": "01/29" },
+            { "id": "bf-b5", "title": "Build landing page", "description": "Use funnel-builder skill", "created": "01/29" },
+            { "id": "bf-b6", "title": "Set up payment + delivery", "description": "Stripe checkout + Klaviyo email delivery", "created": "01/29" },
+            { "id": "bf-b7", "title": "Create email sequence", "description": "Welcome + value ladder upsells", "created": "01/29" }
+          ]
+        },
+        "inProgress": {
+          "title": "🔨 In Progress",
+          "color": "#3b82f6",
+          "tasks": [
+            { "id": "bf-p1", "title": "Set up project logging framework", "description": "Track decisions, iterations, speedbumps, time", "started": "01/29" }
+          ]
+        },
+        "waiting": {
+          "title": "⏳ Waiting",
+          "color": "#f59e0b",
+          "tasks": [
+            { "id": "bf-w1", "title": "Yaakov approval on logging approach", "description": "Awaiting feedback on proposed framework", "created": "01/29" }
+          ]
+        },
+        "done": {
+          "title": "✅ Done",
+          "color": "#22c55e",
+          "tasks": []
+        }
+      },
+      "activityLog": [
+        { "id": "bf-a1", "title": "Proposed logging framework", "description": "Emailed Yaakov with tracking structure: decisions, iterations, speedbumps, time, quality signals", "completed": "2026-01-29T18:05:00Z" }
+      ]
+    },
     {
       "id": "optionhype",
       "name": "OptionHype",
@@ -128,6 +172,7 @@
     { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "01/28" }
   ],
   "globalActivityLog": [
+    { "id": "g-5", "title": "Critical skill self-analysis", "description": "Analyzed delivery-platforms skill honestly — identified gaps between claims and actual capabilities", "completed": "2026-01-29T18:05:00Z" },
     { "id": "g-4", "title": "Delivery-platforms skill complete", "description": "7th skill done: Teachable, Gumroad, Skool, Stan Store, etc. — platform selection + content prep workflows", "completed": "2026-01-30T11:30:00Z" },
     { "id": "g-3", "title": "Legal-templates skill complete", "description": "6th skill done: privacy, terms, disclaimers, shipping/refund for small business sites", "completed": "2026-01-29T15:20:00Z" },
     { "id": "g-2", "title": "Dashboard is now single source of truth", "description": "Deleted MASTER-PLAN.md, added update rule to AGENTS.md", "completed": "2026-01-30T10:00:00Z" },

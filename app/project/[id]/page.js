@@ -235,7 +235,16 @@ export default function ProjectPage() {
         marginBottom: '24px',
       }}>
         <div>
-          <Link href="/" style={{ color: '#3b82f6', textDecoration: 'none', fontSize: '14px' }}>
+          <Link href="/" style={{ 
+            color: 'white', 
+            textDecoration: 'none', 
+            fontSize: '14px',
+            backgroundColor: '#334155',
+            padding: '8px 16px',
+            borderRadius: '8px',
+            display: 'inline-block',
+            marginBottom: '12px',
+          }}>
             ← Back to Overview
           </Link>
           <h1 style={{ 

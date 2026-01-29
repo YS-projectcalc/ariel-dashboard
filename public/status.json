@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T12:25:00Z",
+  "lastUpdated": "2026-01-29T13:45:00Z",
   "projects": [
     {
       "id": "optionhype",
@@ -70,9 +70,7 @@
         "inProgress": {
           "title": "🔨 In Progress",
           "color": "#3b82f6",
-          "tasks": [
-            { "id": "p1", "title": "Build infoproduct-creation skill", "description": "Generic framework for ebook + Skool", "started": "01/28" }
-          ]
+          "tasks": []
         },
         "waiting": {
           "title": "⏳ Waiting",
@@ -84,11 +82,13 @@
           "color": "#22c55e",
           "tasks": [
             { "id": "done1", "title": "Funnel-builder skill", "description": "Landing pages, emails, upsells", "completed": "01/27" },
-            { "id": "done2", "title": "Brand-assets skill", "description": "Logo, colors, typography with Gemini image gen", "completed": "01/28" }
+            { "id": "done2", "title": "Brand-assets skill", "description": "Logo, colors, typography with Gemini image gen", "completed": "01/28" },
+            { "id": "done3", "title": "Infoproduct-creation skill", "description": "Ebooks, guides, courses — research to delivery", "completed": "01/29" }
           ]
         }
       },
       "activityLog": [
+        { "id": "a0", "title": "Infoproduct-creation skill", "description": "Complete skill: research methods, voice styles, outline patterns, publishing stack, formatting tools", "completed": "2026-01-29T13:45:00Z" },
         { "id": "a1", "title": "Set up Gemini API", "description": "Tested Nano Banana Pro + Flash, both working", "completed": "2026-01-29T11:55:00Z" },
         { "id": "a2", "title": "Deep research: Nano Banana vs Ideogram", "description": "Compared image gen options", "completed": "2026-01-28T20:00:00Z" },
         { "id": "a3", "title": "Skills capability assessment", "description": "Analyzed all 4 skills honestly", "completed": "2026-01-28T19:45:00Z" }
@@ -124,6 +124,7 @@
     { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "01/28" }
   ],
   "globalActivityLog": [
+    { "id": "g0", "title": "Infoproduct-creation skill complete", "description": "5 reference files covering full ebook creation pipeline", "completed": "2026-01-29T13:45:00Z" },
     { "id": "g1", "title": "Dashboard improvements", "description": "Multi-project support, activity logs, refresh button", "completed": "2026-01-29T12:00:00Z" },
     { "id": "g2", "title": "Built Kanban dashboard", "description": "Initial version of status board", "completed": "2026-01-28T22:30:00Z" }
   ]

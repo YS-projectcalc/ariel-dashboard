@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T14:30:00Z",
+  "lastUpdated": "2026-01-30T10:00:00Z",
   "projects": [
     {
       "id": "optionhype",
@@ -58,8 +58,6 @@
           "title": "📋 Backlog",
           "color": "#64748b",
           "tasks": [
-            { "id": "b1", "title": "Build orchestrator skill", "description": "Coordinates flow, passes context between skills", "created": "01/28" },
-            { "id": "b2", "title": "Build business-naming skill", "description": "Generate and validate business names", "created": "01/28" },
             { "id": "b3", "title": "Build supplier-sourcing skill", "description": "Find suppliers for dropship products", "created": "01/28" },
             { "id": "b4", "title": "Build packaging-logistics skill", "description": "Shipping, fulfillment, packaging design", "created": "01/28" },
             { "id": "b5", "title": "Build legal-templates skill", "description": "Terms, privacy policy, disclaimers", "created": "01/28" },
@@ -83,11 +81,14 @@
           "tasks": [
             { "id": "done1", "title": "Funnel-builder skill", "description": "Landing pages, emails, upsells", "completed": "01/27" },
             { "id": "done2", "title": "Brand-assets skill", "description": "Logo, colors, typography with Gemini image gen", "completed": "01/28" },
-            { "id": "done3", "title": "Infoproduct-creation skill", "description": "Ebooks, guides, courses — research to delivery", "completed": "01/29" }
+            { "id": "done3", "title": "Infoproduct-creation skill", "description": "Ebooks, guides, courses — research to delivery", "completed": "01/29" },
+            { "id": "done4", "title": "Orchestrator skill", "description": "Coordinates flow, passes context between skills", "completed": "01/28" },
+            { "id": "done5", "title": "Business-naming skill", "description": "Generate and validate business names", "completed": "01/28" }
           ]
         }
       },
       "activityLog": [
+        { "id": "a-2", "title": "Dashboard sync fix", "description": "Moved orchestrator + business-naming to Done, single source of truth now", "completed": "2026-01-30T10:00:00Z" },
         { "id": "a-1", "title": "Expert-level skill upgrade", "description": "Added titles/descriptions, multi-LLM editing, storytelling, expanded hooks/intros/Skool", "completed": "2026-01-29T14:30:00Z" },
         { "id": "a0", "title": "Infoproduct-creation skill", "description": "Complete skill: research methods, voice styles, outline patterns, publishing stack, formatting tools", "completed": "2026-01-29T13:45:00Z" },
         { "id": "a1", "title": "Set up Gemini API", "description": "Tested Nano Banana Pro + Flash, both working", "completed": "2026-01-29T11:55:00Z" },
@@ -125,6 +126,7 @@
     { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "01/28" }
   ],
   "globalActivityLog": [
+    { "id": "g-2", "title": "Dashboard is now single source of truth", "description": "Deleted MASTER-PLAN.md, added update rule to AGENTS.md", "completed": "2026-01-30T10:00:00Z" },
     { "id": "g-1", "title": "Skill expert review complete", "description": "Added 3 new reference files, expanded Skool section, multi-LLM editing process", "completed": "2026-01-29T14:30:00Z" },
     { "id": "g0", "title": "Infoproduct-creation skill complete", "description": "5 reference files covering full ebook creation pipeline", "completed": "2026-01-29T13:45:00Z" },
     { "id": "g1", "title": "Dashboard improvements", "description": "Multi-project support, activity logs, refresh button", "completed": "2026-01-29T12:00:00Z" },

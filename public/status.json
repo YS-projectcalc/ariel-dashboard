@@ -1,0 +1,46 @@
+{
+  "lastUpdated": "2026-01-29T11:55:00Z",
+  "columns": {
+    "ideas": {
+      "title": "💡 Ideas",
+      "color": "#a855f7",
+      "tasks": [
+        { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "2026-01-28" }
+      ]
+    },
+    "backlog": {
+      "title": "📋 Backlog",
+      "color": "#64748b",
+      "tasks": [
+        { "id": "b1", "title": "Build supplier-sourcing skill", "description": "Find suppliers for dropship products", "created": "2026-01-28" },
+        { "id": "b2", "title": "Build legal-templates skill", "description": "Terms, privacy, disclaimers", "created": "2026-01-28" },
+        { "id": "b3", "title": "Build traffic-ads skill", "description": "Paid traffic and ad creative", "created": "2026-01-28" }
+      ]
+    },
+    "inProgress": {
+      "title": "🔨 In Progress",
+      "color": "#3b82f6",
+      "tasks": [
+        { "id": "p1", "title": "Build infoproduct-creation skill", "description": "Generic framework for ebook + Skool", "started": "2026-01-28T22:15:00Z" }
+      ]
+    },
+    "waiting": {
+      "title": "⏳ Waiting on Yaakov",
+      "color": "#f59e0b",
+      "tasks": []
+    },
+    "done": {
+      "title": "✅ Done Today",
+      "color": "#22c55e",
+      "tasks": []
+    }
+  },
+  "activityLog": [
+    { "id": "d5", "title": "Set up Gemini API for image generation", "description": "Tested Nano Banana Pro + Flash, both working", "completed": "2026-01-29T11:50:00Z" },
+    { "id": "d6", "title": "Dashboard improvements", "description": "Added Ideas column, Activity Log, daily reset for Done Today", "completed": "2026-01-29T11:40:00Z" },
+    { "id": "d1", "title": "Rebuilt brand-assets skill", "description": "Elite version with dropship/infoproduct split", "completed": "2026-01-28T19:30:00Z" },
+    { "id": "d2", "title": "Deep research: Nano Banana vs Ideogram", "description": "Compared image gen options", "completed": "2026-01-28T20:00:00Z" },
+    { "id": "d3", "title": "Skills capability assessment", "description": "Analyzed all 4 skills honestly", "completed": "2026-01-28T19:45:00Z" },
+    { "id": "d4", "title": "Built Kanban dashboard", "description": "Initial version of status board", "completed": "2026-01-28T22:30:00Z" }
+  ]
+}

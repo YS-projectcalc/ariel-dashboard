@@ -228,6 +228,7 @@ function ActivityLog({ activities }) {
 export default function Home() {
   const [data, setData] = useState(initialData);
   const [lastRefresh, setLastRefresh] = useState(new Date());
+  const [loading, setLoading] = useState(false);
 
   // Compute "Done Today" from activity log
   const doneToday = data.activityLog.filter(task => isToday(task.completed));
@@ -244,12 +245,23 @@ export default function Home() {
     }
   };
 
-  const refresh = () => {
+  const refresh = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/status.json?t=' + Date.now());
+      if (res.ok) {
+        const newData = await res.json();
+        setData(newData);
+      }
+    } catch (e) {
+      console.error('Failed to fetch status:', e);
+    }
     setLastRefresh(new Date());
-    // In production, this would fetch from status.json
+    setLoading(false);
   };
 
   useEffect(() => {
+    refresh(); // Load on mount
     const interval = setInterval(refresh, 60000);
     return () => clearInterval(interval);
   }, []);
@@ -273,18 +285,20 @@ export default function Home() {
         </div>
         <button
           onClick={refresh}
+          disabled={loading}
           style={{
-            backgroundColor: '#3b82f6',
+            backgroundColor: loading ? '#64748b' : '#3b82f6',
             color: 'white',
             border: 'none',
             borderRadius: '8px',
             padding: '10px 20px',
-            cursor: 'pointer',
+            cursor: loading ? 'wait' : 'pointer',
             fontWeight: 600,
             fontSize: '14px',
+            transition: 'background-color 0.2s',
           }}
         >
-          🔄 Refresh
+          {loading ? '⏳ Loading...' : '🔄 Refresh'}
         </button>
       </div>
 

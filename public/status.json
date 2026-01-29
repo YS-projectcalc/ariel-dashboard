@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T18:05:00Z",
+  "lastUpdated": "2026-01-29T18:37:00Z",
   "projects": [
     {
       "id": "book-funnel",
@@ -126,12 +126,12 @@
             { "id": "done3", "title": "Infoproduct-creation skill", "description": "Ebooks, guides, courses — research to delivery", "completed": "01/29" },
             { "id": "done4", "title": "Orchestrator skill", "description": "Coordinates flow, passes context between skills", "completed": "01/28" },
             { "id": "done5", "title": "Business-naming skill", "description": "Generate and validate business names", "completed": "01/28" },
-            { "id": "done6", "title": "Legal-templates skill", "description": "Privacy policy, terms, disclaimers, shipping/refund policies", "completed": "01/29" },
-            { "id": "done7", "title": "Delivery-platforms skill", "description": "Teachable, Gumroad, Skool, creator platforms — selection + prep", "completed": "01/30" }
+            { "id": "done6", "title": "Legal-templates skill", "description": "Privacy policy, terms, disclaimers, shipping/refund policies", "completed": "01/29" }
           ]
         }
       },
       "activityLog": [
+        { "id": "a-5", "title": "Archived delivery-platforms skill", "description": "Redundant with our Stripe+Klaviyo stack. Course platforms can go in infoproduct-creation if needed later.", "completed": "2026-01-29T18:37:00Z" },
         { "id": "a-4", "title": "Delivery-platforms skill complete", "description": "Platform selection workflow + 5 reference files: course platforms, download platforms, community (Skool), creator platforms, comparison matrix", "completed": "2026-01-30T11:30:00Z" },
         { "id": "a-3", "title": "Legal-templates skill complete", "description": "Privacy/cookie policy, terms for digital/physical, all disclaimers (earnings, health, affiliate, testimonial), shipping/refund templates", "completed": "2026-01-29T15:20:00Z" },
         { "id": "a-2", "title": "Dashboard sync fix", "description": "Moved orchestrator + business-naming to Done, single source of truth now", "completed": "2026-01-30T10:00:00Z" },
@@ -172,6 +172,7 @@
     { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "01/28" }
   ],
   "globalActivityLog": [
+    { "id": "g-6", "title": "Archived delivery-platforms skill", "description": "Redundant with Stripe+Klaviyo. Moved to skills/_archived. Course platforms can be added to infoproduct-creation later if needed.", "completed": "2026-01-29T18:37:00Z" },
     { "id": "g-5", "title": "Critical skill self-analysis", "description": "Analyzed delivery-platforms skill honestly — identified gaps between claims and actual capabilities", "completed": "2026-01-29T18:05:00Z" },
     { "id": "g-4", "title": "Delivery-platforms skill complete", "description": "7th skill done: Teachable, Gumroad, Skool, Stan Store, etc. — platform selection + content prep workflows", "completed": "2026-01-30T11:30:00Z" },
     { "id": "g-3", "title": "Legal-templates skill complete", "description": "6th skill done: privacy, terms, disclaimers, shipping/refund for small business sites", "completed": "2026-01-29T15:20:00Z" },

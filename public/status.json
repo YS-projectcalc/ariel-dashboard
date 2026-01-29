@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T13:45:00Z",
+  "lastUpdated": "2026-01-29T14:30:00Z",
   "projects": [
     {
       "id": "optionhype",
@@ -88,6 +88,7 @@
         }
       },
       "activityLog": [
+        { "id": "a-1", "title": "Expert-level skill upgrade", "description": "Added titles/descriptions, multi-LLM editing, storytelling, expanded hooks/intros/Skool", "completed": "2026-01-29T14:30:00Z" },
         { "id": "a0", "title": "Infoproduct-creation skill", "description": "Complete skill: research methods, voice styles, outline patterns, publishing stack, formatting tools", "completed": "2026-01-29T13:45:00Z" },
         { "id": "a1", "title": "Set up Gemini API", "description": "Tested Nano Banana Pro + Flash, both working", "completed": "2026-01-29T11:55:00Z" },
         { "id": "a2", "title": "Deep research: Nano Banana vs Ideogram", "description": "Compared image gen options", "completed": "2026-01-28T20:00:00Z" },
@@ -124,6 +125,7 @@
     { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "01/28" }
   ],
   "globalActivityLog": [
+    { "id": "g-1", "title": "Skill expert review complete", "description": "Added 3 new reference files, expanded Skool section, multi-LLM editing process", "completed": "2026-01-29T14:30:00Z" },
     { "id": "g0", "title": "Infoproduct-creation skill complete", "description": "5 reference files covering full ebook creation pipeline", "completed": "2026-01-29T13:45:00Z" },
     { "id": "g1", "title": "Dashboard improvements", "description": "Multi-project support, activity logs, refresh button", "completed": "2026-01-29T12:00:00Z" },
     { "id": "g2", "title": "Built Kanban dashboard", "description": "Initial version of status board", "completed": "2026-01-28T22:30:00Z" }

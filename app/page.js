@@ -14,6 +14,13 @@ function isToday(dateString) {
 const initialData = {
   lastUpdated: new Date().toISOString(),
   columns: {
+    ideas: {
+      title: "💡 Ideas",
+      color: "#a855f7",
+      tasks: [
+        { id: "i1", title: "SEO → AEO product duplication", description: "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", created: "2026-01-28" },
+      ]
+    },
     backlog: {
       title: "📋 Backlog",
       color: "#64748b",
@@ -331,6 +338,12 @@ export default function Home() {
             {displayData.columns.backlog.tasks.length}
           </div>
           <div style={{ fontSize: '12px', color: '#64748b' }}>In Backlog</div>
+        </div>
+        <div>
+          <div style={{ fontSize: '24px', fontWeight: 700, color: '#a855f7' }}>
+            {displayData.columns.ideas.tasks.length}
+          </div>
+          <div style={{ fontSize: '12px', color: '#64748b' }}>Ideas</div>
         </div>
       </div>
 

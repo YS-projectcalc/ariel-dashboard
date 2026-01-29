@@ -24,14 +24,17 @@
         "inProgress": {
           "title": "🔨 In Progress",
           "color": "#3b82f6",
-          "tasks": []
+          "tasks": [
+            { "id": "oh-p1", "title": "Deep diagnosis + launch strategy", "description": "Analyze why marketing failed, create complete relaunch plan", "started": "01/29" }
+          ]
         },
         "waiting": {
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
             { "id": "oh-w1", "title": "Twitter/X account access", "description": "Need @OptionHype credentials or OAuth", "created": "01/29" },
-            { "id": "oh-w2", "title": "Stocktwits account access", "description": "Need login for browser automation", "created": "01/29" }
+            { "id": "oh-w2", "title": "Stocktwits account access", "description": "Need login for browser automation", "created": "01/29" },
+            { "id": "oh-w3", "title": "GA4 access", "description": "Need analytics to diagnose traffic/conversion issues", "created": "01/29" }
           ]
         },
         "done": {

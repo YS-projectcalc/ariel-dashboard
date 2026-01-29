@@ -49,6 +49,31 @@
       ]
     }
   ],
+  "general": {
+    "backlog": {
+      "title": "📋 Backlog",
+      "color": "#64748b",
+      "tasks": []
+    },
+    "inProgress": {
+      "title": "🔨 In Progress",
+      "color": "#3b82f6",
+      "tasks": []
+    },
+    "waiting": {
+      "title": "⏳ Waiting",
+      "color": "#f59e0b",
+      "tasks": []
+    },
+    "done": {
+      "title": "✅ Done",
+      "color": "#22c55e",
+      "tasks": [
+        { "id": "g-done1", "title": "Set up Ariel dashboard", "description": "Multi-project Kanban with activity logs", "completed": "01/29" },
+        { "id": "g-done2", "title": "Gemini API integration", "description": "Nano Banana Pro + Flash for image generation", "completed": "01/29" }
+      ]
+    }
+  },
   "globalIdeas": [
     { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "01/28" }
   ],

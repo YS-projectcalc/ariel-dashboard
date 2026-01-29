@@ -65,6 +65,62 @@ function ProjectCard({ project }) {
   );
 }
 
+function TaskCard({ task, color }) {
+  return (
+    <div style={{
+      backgroundColor: '#0f172a',
+      borderRadius: '8px',
+      padding: '10px',
+      marginBottom: '6px',
+      borderLeft: `3px solid ${color}`,
+    }}>
+      <div style={{ fontWeight: 600, fontSize: '13px', marginBottom: '2px' }}>{task.title}</div>
+      <div style={{ fontSize: '11px', color: '#94a3b8' }}>{task.description}</div>
+    </div>
+  );
+}
+
+function MiniColumn({ title, color, tasks }) {
+  return (
+    <div style={{
+      backgroundColor: '#1e293b',
+      borderRadius: '10px',
+      padding: '12px',
+      minWidth: '200px',
+      flex: '1',
+    }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '10px',
+        paddingBottom: '8px',
+        borderBottom: `2px solid ${color}`,
+      }}>
+        <span style={{ fontWeight: 600, fontSize: '13px' }}>{title}</span>
+        <span style={{
+          backgroundColor: color,
+          color: 'white',
+          borderRadius: '10px',
+          padding: '1px 8px',
+          fontSize: '11px',
+          fontWeight: 600,
+        }}>{tasks.length}</span>
+      </div>
+      <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+        {tasks.map(task => (
+          <TaskCard key={task.id} task={task} color={color} />
+        ))}
+        {tasks.length === 0 && (
+          <div style={{ color: '#64748b', fontSize: '12px', textAlign: 'center', padding: '12px' }}>
+            Empty
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function IdeaCard({ idea }) {
   return (
     <div style={{
@@ -256,6 +312,34 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* General / Miscellaneous Board */}
+      {data.general && (
+        <div style={{ marginTop: '32px' }}>
+          <h2 style={{ margin: '0 0 16px 0', fontSize: '18px', color: '#94a3b8' }}>
+            🗂️ General / Miscellaneous
+          </h2>
+          <div style={{
+            display: 'flex',
+            gap: '12px',
+            overflowX: 'auto',
+            paddingBottom: '8px',
+          }}>
+            {['backlog', 'inProgress', 'waiting', 'done'].map(key => {
+              const column = data.general[key];
+              if (!column) return null;
+              return (
+                <MiniColumn
+                  key={key}
+                  title={column.title}
+                  color={column.color}
+                  tasks={column.tasks || []}
+                />
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

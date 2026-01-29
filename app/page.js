@@ -189,13 +189,35 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Aggregate stats
-  const totalInProgress = data.projects?.reduce((sum, p) => 
-    sum + (p.columns.inProgress?.tasks?.length || 0), 0) || 0;
-  const totalDone = data.projects?.reduce((sum, p) => 
-    sum + (p.columns.done?.tasks?.length || 0), 0) || 0;
-  const totalBacklog = data.projects?.reduce((sum, p) => 
-    sum + (p.columns.backlog?.tasks?.length || 0), 0) || 0;
+  // Aggregate stats (including general)
+  const generalInProgress = data.general?.inProgress?.tasks?.length || 0;
+  const generalWaiting = data.general?.waiting?.tasks?.length || 0;
+  const generalDone = data.general?.done?.tasks?.length || 0;
+  const generalBacklog = data.general?.backlog?.tasks?.length || 0;
+
+  const totalInProgress = (data.projects?.reduce((sum, p) => 
+    sum + (p.columns.inProgress?.tasks?.length || 0), 0) || 0) + generalInProgress;
+  const totalWaiting = (data.projects?.reduce((sum, p) => 
+    sum + (p.columns.waiting?.tasks?.length || 0), 0) || 0) + generalWaiting;
+  const totalDone = (data.projects?.reduce((sum, p) => 
+    sum + (p.columns.done?.tasks?.length || 0), 0) || 0) + generalDone;
+  const totalBacklog = (data.projects?.reduce((sum, p) => 
+    sum + (p.columns.backlog?.tasks?.length || 0), 0) || 0) + generalBacklog;
+
+  // Aggregate all in-progress and waiting tasks with their project info
+  const allInProgress = [
+    ...(data.general?.inProgress?.tasks || []).map(t => ({ ...t, projectName: 'General', projectColor: '#64748b' })),
+    ...(data.projects || []).flatMap(p => 
+      (p.columns.inProgress?.tasks || []).map(t => ({ ...t, projectName: p.name, projectColor: p.color }))
+    )
+  ];
+  
+  const allWaiting = [
+    ...(data.general?.waiting?.tasks || []).map(t => ({ ...t, projectName: 'General', projectColor: '#64748b' })),
+    ...(data.projects || []).flatMap(p => 
+      (p.columns.waiting?.tasks || []).map(t => ({ ...t, projectName: p.name, projectColor: p.color }))
+    )
+  ];
 
   return (
     <div style={{ minHeight: '100vh', padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
@@ -236,7 +258,7 @@ export default function Home() {
       <div style={{
         display: 'flex',
         gap: '24px',
-        marginBottom: '32px',
+        marginBottom: '24px',
         padding: '16px 24px',
         backgroundColor: '#1e293b',
         borderRadius: '12px',
@@ -244,6 +266,10 @@ export default function Home() {
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 700, color: '#3b82f6' }}>{totalInProgress}</div>
           <div style={{ fontSize: '12px', color: '#64748b' }}>In Progress</div>
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '28px', fontWeight: 700, color: '#f59e0b' }}>{totalWaiting}</div>
+          <div style={{ fontSize: '12px', color: '#64748b' }}>Waiting</div>
         </div>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 700, color: '#22c55e' }}>{totalDone}</div>
@@ -258,6 +284,108 @@ export default function Home() {
           <div style={{ fontSize: '12px', color: '#64748b' }}>Projects</div>
         </div>
       </div>
+
+      {/* Aggregated In Progress & Waiting */}
+      {(allInProgress.length > 0 || allWaiting.length > 0) && (
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '16px',
+          marginBottom: '32px',
+        }}>
+          {/* All In Progress */}
+          <div style={{
+            backgroundColor: '#1e293b',
+            borderRadius: '12px',
+            padding: '16px',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '12px',
+              paddingBottom: '10px',
+              borderBottom: '2px solid #3b82f6',
+            }}>
+              <span style={{ fontWeight: 600, fontSize: '15px' }}>🔨 In Progress</span>
+              <span style={{
+                backgroundColor: '#3b82f6',
+                color: 'white',
+                borderRadius: '12px',
+                padding: '2px 10px',
+                fontSize: '12px',
+                fontWeight: 600,
+              }}>{allInProgress.length}</span>
+            </div>
+            <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
+              {allInProgress.map(task => (
+                <div key={task.id} style={{
+                  backgroundColor: '#0f172a',
+                  borderRadius: '8px',
+                  padding: '10px 12px',
+                  marginBottom: '8px',
+                  borderLeft: `3px solid ${task.projectColor}`,
+                }}>
+                  <div style={{ fontWeight: 600, fontSize: '13px', marginBottom: '2px' }}>{task.title}</div>
+                  <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '4px' }}>{task.description}</div>
+                  <div style={{ fontSize: '10px', color: task.projectColor, fontWeight: 500 }}>{task.projectName}</div>
+                </div>
+              ))}
+              {allInProgress.length === 0 && (
+                <div style={{ color: '#64748b', fontSize: '13px', textAlign: 'center', padding: '16px' }}>
+                  Nothing in progress
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* All Waiting */}
+          <div style={{
+            backgroundColor: '#1e293b',
+            borderRadius: '12px',
+            padding: '16px',
+          }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '12px',
+              paddingBottom: '10px',
+              borderBottom: '2px solid #f59e0b',
+            }}>
+              <span style={{ fontWeight: 600, fontSize: '15px' }}>⏳ Waiting on Yaakov</span>
+              <span style={{
+                backgroundColor: '#f59e0b',
+                color: 'white',
+                borderRadius: '12px',
+                padding: '2px 10px',
+                fontSize: '12px',
+                fontWeight: 600,
+              }}>{allWaiting.length}</span>
+            </div>
+            <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
+              {allWaiting.map(task => (
+                <div key={task.id} style={{
+                  backgroundColor: '#0f172a',
+                  borderRadius: '8px',
+                  padding: '10px 12px',
+                  marginBottom: '8px',
+                  borderLeft: `3px solid ${task.projectColor}`,
+                }}>
+                  <div style={{ fontWeight: 600, fontSize: '13px', marginBottom: '2px' }}>{task.title}</div>
+                  <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '4px' }}>{task.description}</div>
+                  <div style={{ fontSize: '10px', color: task.projectColor, fontWeight: 500 }}>{task.projectName}</div>
+                </div>
+              ))}
+              {allWaiting.length === 0 && (
+                <div style={{ color: '#64748b', fontSize: '13px', textAlign: 'center', padding: '16px' }}>
+                  Nothing waiting
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
         {/* Left: Projects */}

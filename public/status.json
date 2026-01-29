@@ -4,7 +4,7 @@
     {
       "id": "optionhype",
       "name": "OptionHype",
-      "description": "Social media marketing & traction for the OptionHype web app",
+      "description": "Options profit calculator SaaS — social media marketing & traction",
       "color": "#22c55e",
       "status": "active",
       "columns": {
@@ -12,11 +12,13 @@
           "title": "📋 Backlog",
           "color": "#64748b",
           "tasks": [
-            { "id": "oh-b1", "title": "Set up Late.dev integration", "description": "API for multi-platform posting", "created": "01/29" },
-            { "id": "oh-b2", "title": "Create content calendar", "description": "Plan posts for first 2 weeks", "created": "01/29" },
-            { "id": "oh-b3", "title": "Set up Stocktwits browser automation", "description": "For finance community engagement", "created": "01/29" },
-            { "id": "oh-b4", "title": "Design social media graphics", "description": "Profile pics, banners, post templates", "created": "01/29" },
-            { "id": "oh-b5", "title": "Identify target hashtags & communities", "description": "Research where audience hangs out", "created": "01/29" }
+            { "id": "oh-b1", "title": "Set up Late.dev integration", "description": "API for Twitter/X, LinkedIn posting", "created": "01/29" },
+            { "id": "oh-b2", "title": "Create 2-week content calendar", "description": "Mix of educational, product demos, engagement", "created": "01/29" },
+            { "id": "oh-b3", "title": "Design social assets", "description": "Profile pic, banner, post templates with Gemini", "created": "01/29" },
+            { "id": "oh-b4", "title": "Write 10 educational threads", "description": "Options basics, Greeks explained, strategy breakdowns", "created": "01/29" },
+            { "id": "oh-b5", "title": "Research FinTwit hashtags & accounts", "description": "Find key influencers and hashtags to engage with", "created": "01/29" },
+            { "id": "oh-b6", "title": "Set up Stocktwits posting", "description": "Browser automation for $TICKER engagement", "created": "01/29" },
+            { "id": "oh-b7", "title": "Reddit strategy", "description": "Plan approach for r/options, r/thetagang, r/wallstreetbets", "created": "01/29" }
           ]
         },
         "inProgress": {
@@ -28,7 +30,8 @@
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "oh-w1", "title": "Social account credentials", "description": "Need login details for platforms to manage", "created": "01/29" }
+            { "id": "oh-w1", "title": "Twitter/X account access", "description": "Need @OptionHype credentials or OAuth", "created": "01/29" },
+            { "id": "oh-w2", "title": "Stocktwits account access", "description": "Need login for browser automation", "created": "01/29" }
           ]
         },
         "done": {
@@ -37,7 +40,9 @@
           "tasks": []
         }
       },
-      "activityLog": []
+      "activityLog": [
+        { "id": "oh-a1", "title": "Product research", "description": "Reviewed OptionHype features, tiers, tech stack", "completed": "2026-01-29T13:00:00Z" }
+      ]
     },
     {
       "id": "skill-stack",

@@ -1,49 +1,52 @@
 {
-  "lastUpdated": "2026-01-29T18:48:00Z",
+  "lastUpdated": "2026-01-29T19:45:00Z",
   "projects": [
     {
-      "id": "book-funnel",
-      "name": "Book + Monetization Funnel",
-      "description": "Write a book and create a monetization funnel — with detailed logging",
+      "id": "credit-card-debt",
+      "name": "Credit Card Debt Guide",
+      "description": "Infoproduct: Tactical guide to managing/negotiating credit card debt",
       "color": "#8b5cf6",
-      "status": "planning",
+      "status": "active",
       "columns": {
         "backlog": {
           "title": "📋 Backlog",
           "color": "#64748b",
           "tasks": [
-            { "id": "bf-b1", "title": "Define book topic/niche", "description": "Research viable topics, validate demand", "created": "01/29" },
-            { "id": "bf-b2", "title": "Create content outline", "description": "Chapters, key points, unique angle", "created": "01/29" },
-            { "id": "bf-b3", "title": "Write book content", "description": "Use infoproduct-creation skill", "created": "01/29" },
-            { "id": "bf-b4", "title": "Design book cover", "description": "Use brand-assets skill", "created": "01/29" },
-            { "id": "bf-b5", "title": "Build landing page", "description": "Use funnel-builder skill", "created": "01/29" },
-            { "id": "bf-b6", "title": "Set up payment + delivery", "description": "Stripe checkout + Klaviyo email delivery", "created": "01/29" },
-            { "id": "bf-b7", "title": "Create email sequence", "description": "Welcome + value ladder upsells", "created": "01/29" }
+            { "id": "ccd-b1", "title": "Create content outline", "description": "Based on Yaakov's expertise + research", "created": "01/29" },
+            { "id": "ccd-b2", "title": "Define voice & style", "description": "Tactical, friendly, no-BS tone", "created": "01/29" },
+            { "id": "ccd-b3", "title": "Write book content", "description": "Chapters, scripts, templates", "created": "01/29" },
+            { "id": "ccd-b4", "title": "Design book cover", "description": "Use brand-assets skill + Gemini", "created": "01/29" },
+            { "id": "ccd-b5", "title": "Build landing page", "description": "Use funnel-builder skill", "created": "01/29" },
+            { "id": "ccd-b6", "title": "Set up payment + delivery", "description": "Stripe checkout + Klaviyo email delivery", "created": "01/29" },
+            { "id": "ccd-b7", "title": "Create email sequence", "description": "Welcome + upsell to community", "created": "01/29" },
+            { "id": "ccd-b8", "title": "Skool community structure", "description": "If upsell = community coaching", "created": "01/29" }
           ]
         },
         "inProgress": {
           "title": "🔨 In Progress",
           "color": "#3b82f6",
-          "tasks": []
+          "tasks": [
+            { "id": "ccd-p1", "title": "Competitive research", "description": "Identified gap: tactical playbook vs mindset books", "started": "01/29" }
+          ]
         },
         "waiting": {
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "bf-w1", "title": "Yaakov approval on streamlined logging", "description": "Sent simplified LOG.md proposal — single file per project", "created": "01/29" }
+            { "id": "ccd-w1", "title": "Yaakov interview/answers", "description": "Sent 5 questions about his expertise, typical reader, misconceptions", "created": "01/29" }
           ]
         },
         "done": {
           "title": "✅ Done",
           "color": "#22c55e",
           "tasks": [
-            { "id": "bf-d1", "title": "Logging framework designed", "description": "Streamlined to single LOG.md per project with 4 sections: Decisions, Iterations, Speedbumps, Lessons", "completed": "01/29" }
+            { "id": "ccd-d1", "title": "Topic selected", "description": "Credit card debt management/negotiation", "completed": "01/29" },
+            { "id": "ccd-d2", "title": "Project folder created", "description": "builds/credit-card-debt/ with research.md", "completed": "01/29" }
           ]
         }
       },
       "activityLog": [
-        { "id": "bf-a2", "title": "Streamlined logging framework", "description": "Cut original proposal to single LOG.md per project — decisions, iterations, speedbumps, lessons. No automation overhead.", "completed": "2026-01-29T18:48:00Z" },
-        { "id": "bf-a1", "title": "Proposed logging framework", "description": "Emailed Yaakov with tracking structure: decisions, iterations, speedbumps, time, quality signals", "completed": "2026-01-29T18:05:00Z" }
+        { "id": "ccd-a1", "title": "Project kickoff", "description": "Yaakov emailed with idea. Did competitive research, identified gap (tactical vs mindset), emailed back with questions.", "completed": "2026-01-29T19:45:00Z" }
       ]
     },
     {
@@ -173,6 +176,7 @@
     { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "01/28" }
   ],
   "globalActivityLog": [
+    { "id": "g-8", "title": "Credit Card Debt project started", "description": "Yaakov's first business idea: infoproduct for CC debt management. Did competitive research, identified tactical gap, emailed questions.", "completed": "2026-01-29T19:45:00Z" },
     { "id": "g-7", "title": "Streamlined logging framework", "description": "Replaced over-engineered proposal with single LOG.md per project. Awaiting Yaakov's approval.", "completed": "2026-01-29T18:48:00Z" },
     { "id": "g-6", "title": "Archived delivery-platforms skill", "description": "Redundant with Stripe+Klaviyo. Moved to skills/_archived. Course platforms can be added to infoproduct-creation later if needed.", "completed": "2026-01-29T18:37:00Z" },
     { "id": "g-5", "title": "Critical skill self-analysis", "description": "Analyzed delivery-platforms skill honestly — identified gaps between claims and actual capabilities", "completed": "2026-01-29T18:05:00Z" },

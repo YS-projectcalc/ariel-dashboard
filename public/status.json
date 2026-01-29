@@ -36,8 +36,8 @@
     }
   },
   "activityLog": [
-    { "id": "d5", "title": "Set up Gemini API for image generation", "description": "Tested Nano Banana Pro + Flash, both working", "completed": "2026-01-29T11:50:00Z" },
-    { "id": "d6", "title": "Dashboard improvements", "description": "Added Ideas column, Activity Log, daily reset for Done Today", "completed": "2026-01-29T11:40:00Z" },
+    { "id": "d7", "title": "Image generation APIs", "description": "Got Gemini API key, tested Nano Banana Pro + Flash - both working perfectly", "completed": "2026-01-29T11:55:00Z" },
+    { "id": "d6", "title": "Dashboard improvements", "description": "Added Ideas column, Activity Log, daily reset, working refresh button", "completed": "2026-01-29T11:54:00Z" },
     { "id": "d1", "title": "Rebuilt brand-assets skill", "description": "Elite version with dropship/infoproduct split", "completed": "2026-01-28T19:30:00Z" },
     { "id": "d2", "title": "Deep research: Nano Banana vs Ideogram", "description": "Compared image gen options", "completed": "2026-01-28T20:00:00Z" },
     { "id": "d3", "title": "Skills capability assessment", "description": "Analyzed all 4 skills honestly", "completed": "2026-01-28T19:45:00Z" },

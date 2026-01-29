@@ -2,6 +2,44 @@
   "lastUpdated": "2026-01-29T12:25:00Z",
   "projects": [
     {
+      "id": "optionhype",
+      "name": "OptionHype",
+      "description": "Social media marketing & traction for the OptionHype web app",
+      "color": "#22c55e",
+      "status": "active",
+      "columns": {
+        "backlog": {
+          "title": "📋 Backlog",
+          "color": "#64748b",
+          "tasks": [
+            { "id": "oh-b1", "title": "Set up Late.dev integration", "description": "API for multi-platform posting", "created": "01/29" },
+            { "id": "oh-b2", "title": "Create content calendar", "description": "Plan posts for first 2 weeks", "created": "01/29" },
+            { "id": "oh-b3", "title": "Set up Stocktwits browser automation", "description": "For finance community engagement", "created": "01/29" },
+            { "id": "oh-b4", "title": "Design social media graphics", "description": "Profile pics, banners, post templates", "created": "01/29" },
+            { "id": "oh-b5", "title": "Identify target hashtags & communities", "description": "Research where audience hangs out", "created": "01/29" }
+          ]
+        },
+        "inProgress": {
+          "title": "🔨 In Progress",
+          "color": "#3b82f6",
+          "tasks": []
+        },
+        "waiting": {
+          "title": "⏳ Waiting",
+          "color": "#f59e0b",
+          "tasks": [
+            { "id": "oh-w1", "title": "Social account credentials", "description": "Need login details for platforms to manage", "created": "01/29" }
+          ]
+        },
+        "done": {
+          "title": "✅ Done",
+          "color": "#22c55e",
+          "tasks": []
+        }
+      },
+      "activityLog": []
+    },
+    {
       "id": "skill-stack",
       "name": "Build Business Builder Skills",
       "description": "Complete skill stack for infoproducts + branded dropship",

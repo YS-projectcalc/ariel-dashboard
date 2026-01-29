@@ -62,6 +62,9 @@ const initialData = {
 
 function timeAgo(dateString) {
   if (!dateString) return '';
+  // If already in MM/DD format, return as-is
+  if (/^\d{1,2}\/\d{1,2}$/.test(dateString)) return dateString;
+  
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = now - date;
@@ -73,7 +76,8 @@ function timeAgo(dateString) {
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
   if (diffDays < 7) return `${diffDays}d ago`;
-  return date.toLocaleDateString();
+  // Return MM/DD format
+  return `${date.getMonth() + 1}/${date.getDate()}`;
 }
 
 function formatDate(dateString) {

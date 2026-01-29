@@ -31,7 +31,7 @@ function isToday(dateString) {
 function ProjectCard({ project }) {
   const backlogCount = project.columns.backlog?.tasks?.length || 0;
   const inProgressCount = project.columns.inProgress?.tasks?.length || 0;
-  const doneToday = (project.activityLog || []).filter(t => isToday(t.completed)).length;
+  const doneCount = project.columns.done?.tasks?.length || 0;
   const waitingCount = project.columns.waiting?.tasks?.length || 0;
   
   return (
@@ -58,7 +58,7 @@ function ProjectCard({ project }) {
           <span style={{ color: '#64748b' }}>📋 {backlogCount}</span>
           <span style={{ color: '#3b82f6' }}>🔨 {inProgressCount}</span>
           <span style={{ color: '#f59e0b' }}>⏳ {waitingCount}</span>
-          <span style={{ color: '#22c55e' }}>✅ {doneToday} today</span>
+          <span style={{ color: '#22c55e' }}>✅ {doneCount}</span>
         </div>
       </div>
     </Link>
@@ -136,8 +136,8 @@ export default function Home() {
   // Aggregate stats
   const totalInProgress = data.projects?.reduce((sum, p) => 
     sum + (p.columns.inProgress?.tasks?.length || 0), 0) || 0;
-  const totalDoneToday = data.projects?.reduce((sum, p) => 
-    sum + (p.activityLog || []).filter(t => isToday(t.completed)).length, 0) || 0;
+  const totalDone = data.projects?.reduce((sum, p) => 
+    sum + (p.columns.done?.tasks?.length || 0), 0) || 0;
   const totalBacklog = data.projects?.reduce((sum, p) => 
     sum + (p.columns.backlog?.tasks?.length || 0), 0) || 0;
 
@@ -190,8 +190,8 @@ export default function Home() {
           <div style={{ fontSize: '12px', color: '#64748b' }}>In Progress</div>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '28px', fontWeight: 700, color: '#22c55e' }}>{totalDoneToday}</div>
-          <div style={{ fontSize: '12px', color: '#64748b' }}>Done Today</div>
+          <div style={{ fontSize: '28px', fontWeight: 700, color: '#22c55e' }}>{totalDone}</div>
+          <div style={{ fontSize: '12px', color: '#64748b' }}>Done</div>
         </div>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '28px', fontWeight: 700, color: '#64748b' }}>{totalBacklog}</div>

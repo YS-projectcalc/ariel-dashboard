@@ -210,17 +210,8 @@ export default function ProjectPage() {
     );
   }
 
-  const doneToday = (project.activityLog || []).filter(t => isToday(t.completed));
-  
-  // Build display columns with done today computed
-  const displayColumns = {
-    ...project.columns,
-    done: {
-      ...project.columns.done,
-      title: "✅ Done Today",
-      tasks: doneToday
-    }
-  };
+  // Use columns directly - Done is for major milestones, not computed from activity
+  const displayColumns = project.columns;
 
   // Column order
   const columnOrder = ['backlog', 'inProgress', 'waiting', 'done'];
@@ -314,15 +305,15 @@ export default function ProjectPage() {
         </div>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '24px', fontWeight: 700, color: '#22c55e' }}>
-            {doneToday.length}
+            {project.columns.done?.tasks?.length || 0}
           </div>
-          <div style={{ fontSize: '11px', color: '#64748b' }}>Done Today</div>
+          <div style={{ fontSize: '11px', color: '#64748b' }}>Done</div>
         </div>
         <div style={{ textAlign: 'center' }}>
           <div style={{ fontSize: '24px', fontWeight: 700, color: '#94a3b8' }}>
             {project.activityLog?.length || 0}
           </div>
-          <div style={{ fontSize: '11px', color: '#64748b' }}>Total Done</div>
+          <div style={{ fontSize: '11px', color: '#64748b' }}>Activities</div>
         </div>
       </div>
 

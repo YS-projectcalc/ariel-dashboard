@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T18:37:00Z",
+  "lastUpdated": "2026-01-29T18:48:00Z",
   "projects": [
     {
       "id": "book-funnel",
@@ -24,24 +24,25 @@
         "inProgress": {
           "title": "🔨 In Progress",
           "color": "#3b82f6",
-          "tasks": [
-            { "id": "bf-p1", "title": "Set up project logging framework", "description": "Track decisions, iterations, speedbumps, time", "started": "01/29" }
-          ]
+          "tasks": []
         },
         "waiting": {
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "bf-w1", "title": "Yaakov approval on logging approach", "description": "Awaiting feedback on proposed framework", "created": "01/29" }
+            { "id": "bf-w1", "title": "Yaakov approval on streamlined logging", "description": "Sent simplified LOG.md proposal — single file per project", "created": "01/29" }
           ]
         },
         "done": {
           "title": "✅ Done",
           "color": "#22c55e",
-          "tasks": []
+          "tasks": [
+            { "id": "bf-d1", "title": "Logging framework designed", "description": "Streamlined to single LOG.md per project with 4 sections: Decisions, Iterations, Speedbumps, Lessons", "completed": "01/29" }
+          ]
         }
       },
       "activityLog": [
+        { "id": "bf-a2", "title": "Streamlined logging framework", "description": "Cut original proposal to single LOG.md per project — decisions, iterations, speedbumps, lessons. No automation overhead.", "completed": "2026-01-29T18:48:00Z" },
         { "id": "bf-a1", "title": "Proposed logging framework", "description": "Emailed Yaakov with tracking structure: decisions, iterations, speedbumps, time, quality signals", "completed": "2026-01-29T18:05:00Z" }
       ]
     },
@@ -131,7 +132,7 @@
         }
       },
       "activityLog": [
-        { "id": "a-5", "title": "Archived delivery-platforms skill", "description": "Redundant with our Stripe+Klaviyo stack. Course platforms can go in infoproduct-creation if needed later.", "completed": "2026-01-29T18:37:00Z" },
+        { "id": "a-5", "title": "Archived delivery-platforms skill", "description": "Redundant with our Stripe+Klaviyo stack. Course platforms can go in infoproduct-creation if needed later.", "completed": "2026-01-29T18:48:00Z" },
         { "id": "a-4", "title": "Delivery-platforms skill complete", "description": "Platform selection workflow + 5 reference files: course platforms, download platforms, community (Skool), creator platforms, comparison matrix", "completed": "2026-01-30T11:30:00Z" },
         { "id": "a-3", "title": "Legal-templates skill complete", "description": "Privacy/cookie policy, terms for digital/physical, all disclaimers (earnings, health, affiliate, testimonial), shipping/refund templates", "completed": "2026-01-29T15:20:00Z" },
         { "id": "a-2", "title": "Dashboard sync fix", "description": "Moved orchestrator + business-naming to Done, single source of truth now", "completed": "2026-01-30T10:00:00Z" },
@@ -172,6 +173,7 @@
     { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "01/28" }
   ],
   "globalActivityLog": [
+    { "id": "g-7", "title": "Streamlined logging framework", "description": "Replaced over-engineered proposal with single LOG.md per project. Awaiting Yaakov's approval.", "completed": "2026-01-29T18:48:00Z" },
     { "id": "g-6", "title": "Archived delivery-platforms skill", "description": "Redundant with Stripe+Klaviyo. Moved to skills/_archived. Course platforms can be added to infoproduct-creation later if needed.", "completed": "2026-01-29T18:37:00Z" },
     { "id": "g-5", "title": "Critical skill self-analysis", "description": "Analyzed delivery-platforms skill honestly — identified gaps between claims and actual capabilities", "completed": "2026-01-29T18:05:00Z" },
     { "id": "g-4", "title": "Delivery-platforms skill complete", "description": "7th skill done: Teachable, Gumroad, Skool, Stan Store, etc. — platform selection + content prep workflows", "completed": "2026-01-30T11:30:00Z" },

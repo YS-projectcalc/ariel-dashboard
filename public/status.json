@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-30T13:27:00Z",
+  "lastUpdated": "2026-01-30T14:40:00Z",
   "projects": [
     {
       "id": "seo-aeo",
@@ -26,7 +26,7 @@
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "aeo-w1", "title": "Direction after 0/29 passed", "description": "Two cycles complete (Health/misc + Real Estate), 0 candidates passed all gates. Need decision: loosen a gate or try new niche?", "created": "01/30" }
+            { "id": "aeo-w1", "title": "AEO-First Methodology Approval", "description": "Proposed strategic shift: run AEO test FIRST (ask AI what tool it recommends), then validate other criteria. Waiting for Yaakov's go-ahead to run next cycle with new approach.", "created": "01/30" }
           ]
         },
         "done": {
@@ -43,6 +43,7 @@
         }
       },
       "activityLog": [
+        { "id": "aeo-a8", "title": "🔄 AEO-First Methodology Proposed", "description": "Strategic shift: test AEO opportunity upfront before deep analysis. Query AI for 'best [tool] for [use case]', see if top recommendations are beatable. Broader tool types (not just calculators). Emailed Yaakov, awaiting approval.", "completed": "2026-01-30T14:37:00Z" },
         { "id": "aeo-a7", "title": "📋 Project tracking set up", "description": "Created /projects/seo-aeo-discovery/PROJECT-LOG.md. Tracks: decisions, discovery cycles (candidate-by-candidate), gate failure analysis, lessons learned.", "completed": "2026-01-30T13:27:00Z" },
         { "id": "aeo-a6", "title": "⚠️ Tracking failure identified", "description": "Emailed 'Business calculators' but ran Health/misc + Real Estate instead. Project log updated with accurate history. Lesson: update tracker BEFORE changing scope.", "completed": "2026-01-30T13:01:00Z" },
         { "id": "aeo-a5", "title": "Discovery cycles complete (0/29)", "description": "Ran 2 cycles: Health/misc (11 candidates, 0 passed) and Real Estate (18 candidates, 0 passed). Main blockers: Gate 5 (AI calculates), Gate 4 (giants), Gate 10 (defensibility).", "completed": "2026-01-30T13:00:00Z" },

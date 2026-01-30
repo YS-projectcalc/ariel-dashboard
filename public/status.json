@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-30T12:55:00Z",
+  "lastUpdated": "2026-01-30T13:01:00Z",
   "projects": [
     {
       "id": "seo-aeo",
@@ -13,8 +13,7 @@
           "color": "#64748b",
           "tasks": [
             { "id": "aeo-b1", "title": "Discovery scan - Finance niche", "description": "Find calculator sites in finance vertical", "created": "01/30" },
-            { "id": "aeo-b2", "title": "Discovery scan - Health niche", "description": "Find calculator sites in health vertical", "created": "01/30" },
-            { "id": "aeo-b3", "title": "Discovery scan - Business niche", "description": "Find calculator sites in business vertical", "created": "01/30" },
+            { "id": "aeo-b3", "title": "Discovery scan - Business niche", "description": "Find calculator sites in business vertical (ORIGINALLY PLANNED but not run)", "created": "01/30" },
             { "id": "aeo-b4", "title": "Build first replicated tool", "description": "After candidate selected", "created": "01/30" }
           ]
         },
@@ -26,12 +25,16 @@
         "waiting": {
           "title": "⏳ Waiting",
           "color": "#f59e0b",
-          "tasks": []
+          "tasks": [
+            { "id": "aeo-w1", "title": "Direction after 0/29 passed", "description": "Two cycles complete (Health/misc + Real Estate), 0 candidates passed all gates. Need decision: loosen a gate or try new niche?", "created": "01/30" }
+          ]
         },
         "done": {
           "title": "✅ Done",
           "color": "#22c55e",
           "tasks": [
+            { "id": "aeo-d6", "title": "Discovery #2 - Real Estate (0/18)", "description": "Giants + data moats everywhere. Gate 4 (71%) and Gate 10 (86%) killed most.", "completed": "01/30" },
+            { "id": "aeo-d5", "title": "Discovery #1 - Health/Misc (0/11)", "description": "Gate 5 (AI can't answer) killed 7/11. Wheel spinners best but failed commercial gates.", "completed": "01/30" },
             { "id": "aeo-d4", "title": "Converted to binary gates", "description": "Per Yaakov: no scoring, just 13 pass/fail gates. All must pass or tool is killed.", "completed": "01/30" },
             { "id": "aeo-d3", "title": "Skill upgraded to 95%", "description": "Added traffic gate, maintenance score, query-level intent, defensibility test, revenue timeline test, UX wedge test, email capture test, learning loop", "completed": "01/30" },
             { "id": "aeo-d2", "title": "Three-lens critical analysis", "description": "Business (7/10), Monetization (6/10), Technical (6.5/10) review with fixes", "completed": "01/30" },
@@ -40,6 +43,8 @@
         }
       },
       "activityLog": [
+        { "id": "aeo-a6", "title": "⚠️ Tracking failure identified", "description": "Emailed 'Business calculators' but ran Health/misc + Real Estate instead. Project log updated with accurate history. Lesson: update tracker BEFORE changing scope.", "completed": "2026-01-30T13:01:00Z" },
+        { "id": "aeo-a5", "title": "Discovery cycles complete (0/29)", "description": "Ran 2 cycles: Health/misc (11 candidates, 0 passed) and Real Estate (18 candidates, 0 passed). Main blockers: Gate 5 (AI calculates), Gate 4 (giants), Gate 10 (defensibility).", "completed": "2026-01-30T13:00:00Z" },
         { "id": "aeo-a4", "title": "Converted to binary gates", "description": "Yaakov's feedback: no scoring, just pass/fail. Eliminated 7-dimension weighted scoring. Now 13 binary gates — tool must pass ALL or die. Built-in escape valve: if nothing passes, report which gate kills most and propose loosening ONE with explicit tradeoff.", "completed": "2026-01-30T12:55:00Z" },
         { "id": "aeo-a3", "title": "Skill upgraded to 95%", "description": "Per Yaakov's feedback: Added 50K traffic gate (hard requirement), maintenance burden score (0-5), query-level commercial intent, plus 5-test battery: defensibility, revenue timeline, UX wedge, email capture, replication sanity check. Added learning loop for continuous improvement.", "completed": "2026-01-30T11:58:00Z" },
         { "id": "aeo-a2", "title": "Critical analysis complete", "description": "Analyzed skill from 3 perspectives: business consultant (portfolio strategy gap), monetization (RPM variance gap), technical (UX wedge gap). Overall 6.5/10. Recommended must-have fixes before first use.", "completed": "2026-01-30T10:42:00Z" },
@@ -217,6 +222,8 @@
   },
   "globalIdeas": [],
   "globalActivityLog": [
+    { "id": "g-14", "title": "⚠️ Tracking failure fixed", "description": "Yaakov asked to check tracker — found mismatch between stated plan (Business) and actual runs (Health/misc + Real Estate). Updated PROJECT-LOG.md with accurate history. Added speedbump entry.", "completed": "2026-01-30T13:01:00Z" },
+    { "id": "g-13", "title": "Discovery cycles: 0/29 passed", "description": "Completed 2 cycles: Health/misc (0/11) and Real Estate (0/18). Key blockers: Gate 5 (AI calculates), Gate 4 (giants), Gate 10 (defensibility). Business niche still not scanned.", "completed": "2026-01-30T13:00:00Z" },
     { "id": "g-12", "title": "SEO-AEO converted to binary gates", "description": "Per Yaakov's feedback: eliminated scoring entirely. Now 13 binary pass/fail gates. All must pass or tool is killed. No averaging, no 'close enough'. If nothing passes, we report which gate killed the most and propose loosening ONE gate.", "completed": "2026-01-30T12:55:00Z" },
     { "id": "g-11", "title": "SEO-AEO skill upgraded to 95%", "description": "Implemented Yaakov's feedback: 50K traffic gate, maintenance score, query-level intent, plus 5 rigorous tests (defensibility, revenue timeline, UX wedge, email capture, replication check). Added learning loop for continuous improvement. Ready for first scan.", "completed": "2026-01-30T11:58:00Z" },
     { "id": "g-10", "title": "SEO-AEO critical analysis complete", "description": "Three-lens review: business consultant 7/10, monetization 6/10, technical 6.5/10. Identified must-have fixes (traffic gate, maintenance score, query-level intent). Awaiting Yaakov's decision.", "completed": "2026-01-30T10:42:00Z" },

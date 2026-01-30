@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-30T10:35:00Z",
+  "lastUpdated": "2026-01-30T10:45:00Z",
   "projects": [
     {
       "id": "seo-aeo",
@@ -27,18 +27,20 @@
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "aeo-w1", "title": "Yaakov direction on niche", "description": "Which vertical to start scanning first?", "created": "01/30" }
+            { "id": "aeo-w1", "title": "Yaakov feedback on skill analysis", "description": "Sent three-lens critical review (business, monetization, technical). Awaiting decision on must-have fixes.", "created": "01/30" }
           ]
         },
         "done": {
           "title": "✅ Done",
           "color": "#22c55e",
           "tasks": [
-            { "id": "aeo-d1", "title": "seo-aeo-replicator skill created", "description": "Full skill with discovery, scoring, AEO testing workflow", "completed": "01/30" }
+            { "id": "aeo-d1", "title": "seo-aeo-replicator skill created", "description": "Full skill with discovery, scoring, AEO testing workflow", "completed": "01/30" },
+            { "id": "aeo-d2", "title": "Three-lens critical analysis", "description": "Business (7/10), Monetization (6/10), Technical (6.5/10) review with fixes", "completed": "01/30" }
           ]
         }
       },
       "activityLog": [
+        { "id": "aeo-a2", "title": "Critical analysis complete", "description": "Analyzed skill from 3 perspectives: business consultant (portfolio strategy gap), monetization (RPM variance gap), technical (UX wedge gap). Overall 6.5/10. Recommended must-have fixes before first use.", "completed": "2026-01-30T10:42:00Z" },
         { "id": "aeo-a1", "title": "Skill created", "description": "Built seo-aeo-replicator skill from Yaakov's framework. Added discovery methods, operationalized scoring (0-5), AEO testing step, replicability assessment. Integrated with existing skills.", "completed": "2026-01-30T10:35:00Z" }
       ]
     },
@@ -74,7 +76,7 @@
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "ccd-w1", "title": "Yaakov interview/answers", "description": "Sent 5 questions about his expertise, typical reader, misconceptions", "created": "01/29" }
+            { "id": "ccd-w1", "title": "Yaakov expertise details", "description": "Asked: target audience, unique angle, format pref. Awaiting his debt knowledge dump.", "created": "01/30" }
           ]
         },
         "done": {
@@ -87,6 +89,7 @@
         }
       },
       "activityLog": [
+        { "id": "ccd-a2", "title": "Follow-up questions sent", "description": "Emailed Yaakov with assessment (strong niche, clear transformation) + questions: target audience precision, unique angle/tactics, format preference. Recommended eBook first.", "completed": "2026-01-30T10:45:00Z" },
         { "id": "ccd-a1", "title": "Project kickoff", "description": "Yaakov emailed with idea. Did competitive research, identified gap (tactical vs mindset), emailed back with questions.", "completed": "2026-01-29T19:45:00Z" }
       ]
     },
@@ -180,14 +183,7 @@
       "activityLog": [
         { "id": "a-6", "title": "seo-aeo-replicator skill complete", "description": "7th skill: find SEO tool sites, score them, test AEO potential, assess replicability", "completed": "2026-01-30T10:35:00Z" },
         { "id": "a-5", "title": "Archived delivery-platforms skill", "description": "Redundant with our Stripe+Klaviyo stack. Course platforms can go in infoproduct-creation if needed later.", "completed": "2026-01-29T18:48:00Z" },
-        { "id": "a-4", "title": "Delivery-platforms skill complete", "description": "Platform selection workflow + 5 reference files: course platforms, download platforms, community (Skool), creator platforms, comparison matrix", "completed": "2026-01-30T11:30:00Z" },
-        { "id": "a-3", "title": "Legal-templates skill complete", "description": "Privacy/cookie policy, terms for digital/physical, all disclaimers (earnings, health, affiliate, testimonial), shipping/refund templates", "completed": "2026-01-29T15:20:00Z" },
-        { "id": "a-2", "title": "Dashboard sync fix", "description": "Moved orchestrator + business-naming to Done, single source of truth now", "completed": "2026-01-30T10:00:00Z" },
-        { "id": "a-1", "title": "Expert-level skill upgrade", "description": "Added titles/descriptions, multi-LLM editing, storytelling, expanded hooks/intros/Skool", "completed": "2026-01-29T14:30:00Z" },
-        { "id": "a0", "title": "Infoproduct-creation skill", "description": "Complete skill: research methods, voice styles, outline patterns, publishing stack, formatting tools", "completed": "2026-01-29T13:45:00Z" },
-        { "id": "a1", "title": "Set up Gemini API", "description": "Tested Nano Banana Pro + Flash, both working", "completed": "2026-01-29T11:55:00Z" },
-        { "id": "a2", "title": "Deep research: Nano Banana vs Ideogram", "description": "Compared image gen options", "completed": "2026-01-28T20:00:00Z" },
-        { "id": "a3", "title": "Skills capability assessment", "description": "Analyzed all 4 skills honestly", "completed": "2026-01-28T19:45:00Z" }
+        { "id": "a-3", "title": "Legal-templates skill complete", "description": "Privacy/cookie policy, terms for digital/physical, all disclaimers (earnings, health, affiliate, testimonial), shipping/refund templates", "completed": "2026-01-29T15:20:00Z" }
       ]
     }
   ],
@@ -218,17 +214,13 @@
   },
   "globalIdeas": [],
   "globalActivityLog": [
+    { "id": "g-10", "title": "SEO-AEO critical analysis complete", "description": "Three-lens review: business consultant 7/10, monetization 6/10, technical 6.5/10. Identified must-have fixes (traffic gate, maintenance score, query-level intent). Awaiting Yaakov's decision.", "completed": "2026-01-30T10:42:00Z" },
     { "id": "g-9", "title": "OptionHype strategy report sent", "description": "Emailed comprehensive relaunch plan to Yaakov: competitive analysis, positioning, channel strategy, 30-day action plan. Awaiting GA4 access.", "completed": "2026-01-30T04:05:00Z" },
     { "id": "g-8", "title": "Credit Card Debt project started", "description": "Yaakov's first business idea: infoproduct for CC debt management. Did competitive research, identified tactical gap, emailed questions.", "completed": "2026-01-29T19:45:00Z" },
-    { "id": "g-7", "title": "Streamlined logging framework", "description": "Replaced over-engineered proposal with single LOG.md per project. Awaiting Yaakov's approval.", "completed": "2026-01-29T18:48:00Z" },
     { "id": "g-6", "title": "Archived delivery-platforms skill", "description": "Redundant with Stripe+Klaviyo. Moved to skills/_archived. Course platforms can be added to infoproduct-creation later if needed.", "completed": "2026-01-29T18:37:00Z" },
-    { "id": "g-5", "title": "Critical skill self-analysis", "description": "Analyzed delivery-platforms skill honestly — identified gaps between claims and actual capabilities", "completed": "2026-01-29T18:05:00Z" },
-    { "id": "g-4", "title": "Delivery-platforms skill complete", "description": "7th skill done: Teachable, Gumroad, Skool, Stan Store, etc. — platform selection + content prep workflows", "completed": "2026-01-30T11:30:00Z" },
     { "id": "g-3", "title": "Legal-templates skill complete", "description": "6th skill done: privacy, terms, disclaimers, shipping/refund for small business sites", "completed": "2026-01-29T15:20:00Z" },
     { "id": "g-2", "title": "Dashboard is now single source of truth", "description": "Deleted MASTER-PLAN.md, added update rule to AGENTS.md", "completed": "2026-01-30T10:00:00Z" },
-    { "id": "g-1", "title": "Skill expert review complete", "description": "Added 3 new reference files, expanded Skool section, multi-LLM editing process", "completed": "2026-01-29T14:30:00Z" },
     { "id": "g0", "title": "Infoproduct-creation skill complete", "description": "5 reference files covering full ebook creation pipeline", "completed": "2026-01-29T13:45:00Z" },
-    { "id": "g1", "title": "Dashboard improvements", "description": "Multi-project support, activity logs, refresh button", "completed": "2026-01-29T12:00:00Z" },
-    { "id": "g2", "title": "Built Kanban dashboard", "description": "Initial version of status board", "completed": "2026-01-28T22:30:00Z" }
+    { "id": "g1", "title": "Dashboard improvements", "description": "Multi-project support, activity logs, refresh button", "completed": "2026-01-29T12:00:00Z" }
   ]
 }

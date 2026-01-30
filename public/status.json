@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-30T14:40:00Z",
+  "lastUpdated": "2026-01-30T14:43:00Z",
   "projects": [
     {
       "id": "seo-aeo",
@@ -26,7 +26,7 @@
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "aeo-w1", "title": "AEO-First Methodology Approval", "description": "Proposed strategic shift: run AEO test FIRST (ask AI what tool it recommends), then validate other criteria. Waiting for Yaakov's go-ahead to run next cycle with new approach.", "created": "01/30" }
+            { "id": "aeo-w1", "title": "Expanded Methodology Approval", "description": "Yaakov's direction: 1) Wider scope (all replicable tools, not just calculators), 2) AEO test = real filter (ask AI, see who gets cited, can we beat #1-3?). Proposed real estate test with full AEO query results. Awaiting approval.", "created": "01/30" }
           ]
         },
         "done": {

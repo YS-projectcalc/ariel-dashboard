@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-29T19:45:00Z",
+  "lastUpdated": "2026-01-30T04:05:00Z",
   "projects": [
     {
       "id": "credit-card-debt",
@@ -72,9 +72,7 @@
         "inProgress": {
           "title": "🔨 In Progress",
           "color": "#3b82f6",
-          "tasks": [
-            { "id": "oh-p1", "title": "Deep diagnosis + launch strategy", "description": "Analyze why marketing failed, create complete relaunch plan", "started": "01/29" }
-          ]
+          "tasks": []
         },
         "waiting": {
           "title": "⏳ Waiting",
@@ -88,10 +86,13 @@
         "done": {
           "title": "✅ Done",
           "color": "#22c55e",
-          "tasks": []
+          "tasks": [
+            { "id": "oh-p1", "title": "Deep diagnosis + launch strategy", "description": "Comprehensive 30-day plan emailed to Yaakov", "completed": "01/30" }
+          ]
         }
       },
       "activityLog": [
+        { "id": "oh-a2", "title": "Strategy report sent", "description": "Emailed Yaakov comprehensive diagnosis: why marketing failed, competitor analysis (OptionStrat, OPC), positioning recs, channel strategy, 30-day action plan. Requested GA4 access.", "completed": "2026-01-30T04:05:00Z" },
         { "id": "oh-a1", "title": "Product research", "description": "Reviewed OptionHype features, tiers, tech stack", "completed": "2026-01-29T13:00:00Z" }
       ]
     },
@@ -176,6 +177,7 @@
     { "id": "i1", "title": "SEO → AEO product duplication", "description": "Find successful SEO-driven sites (calculators, tools), replicate them, optimize for AI citations (AEO)", "created": "01/28" }
   ],
   "globalActivityLog": [
+    { "id": "g-9", "title": "OptionHype strategy report sent", "description": "Emailed comprehensive relaunch plan to Yaakov: competitive analysis, positioning, channel strategy, 30-day action plan. Awaiting GA4 access.", "completed": "2026-01-30T04:05:00Z" },
     { "id": "g-8", "title": "Credit Card Debt project started", "description": "Yaakov's first business idea: infoproduct for CC debt management. Did competitive research, identified tactical gap, emailed questions.", "completed": "2026-01-29T19:45:00Z" },
     { "id": "g-7", "title": "Streamlined logging framework", "description": "Replaced over-engineered proposal with single LOG.md per project. Awaiting Yaakov's approval.", "completed": "2026-01-29T18:48:00Z" },
     { "id": "g-6", "title": "Archived delivery-platforms skill", "description": "Redundant with Stripe+Klaviyo. Moved to skills/_archived. Course platforms can be added to infoproduct-creation later if needed.", "completed": "2026-01-29T18:37:00Z" },

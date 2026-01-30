@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-30T13:01:00Z",
+  "lastUpdated": "2026-01-30T13:27:00Z",
   "projects": [
     {
       "id": "seo-aeo",
@@ -43,6 +43,7 @@
         }
       },
       "activityLog": [
+        { "id": "aeo-a7", "title": "📋 Project tracking set up", "description": "Created /projects/seo-aeo-discovery/PROJECT-LOG.md. Tracks: decisions, discovery cycles (candidate-by-candidate), gate failure analysis, lessons learned.", "completed": "2026-01-30T13:27:00Z" },
         { "id": "aeo-a6", "title": "⚠️ Tracking failure identified", "description": "Emailed 'Business calculators' but ran Health/misc + Real Estate instead. Project log updated with accurate history. Lesson: update tracker BEFORE changing scope.", "completed": "2026-01-30T13:01:00Z" },
         { "id": "aeo-a5", "title": "Discovery cycles complete (0/29)", "description": "Ran 2 cycles: Health/misc (11 candidates, 0 passed) and Real Estate (18 candidates, 0 passed). Main blockers: Gate 5 (AI calculates), Gate 4 (giants), Gate 10 (defensibility).", "completed": "2026-01-30T13:00:00Z" },
         { "id": "aeo-a4", "title": "Converted to binary gates", "description": "Yaakov's feedback: no scoring, just pass/fail. Eliminated 7-dimension weighted scoring. Now 13 binary gates — tool must pass ALL or die. Built-in escape valve: if nothing passes, report which gate kills most and propose loosening ONE with explicit tradeoff.", "completed": "2026-01-30T12:55:00Z" },
@@ -222,6 +223,7 @@
   },
   "globalIdeas": [],
   "globalActivityLog": [
+    { "id": "g-15", "title": "📋 SEO-AEO project tracking on dashboard", "description": "Per Yaakov: project log created + dashboard updated. Tracks decisions, discovery cycles, gate failures, and lessons. Dashboard = status, PROJECT-LOG.md = detailed history.", "completed": "2026-01-30T13:27:00Z" },
     { "id": "g-14", "title": "⚠️ Tracking failure fixed", "description": "Yaakov asked to check tracker — found mismatch between stated plan (Business) and actual runs (Health/misc + Real Estate). Updated PROJECT-LOG.md with accurate history. Added speedbump entry.", "completed": "2026-01-30T13:01:00Z" },
     { "id": "g-13", "title": "Discovery cycles: 0/29 passed", "description": "Completed 2 cycles: Health/misc (0/11) and Real Estate (0/18). Key blockers: Gate 5 (AI calculates), Gate 4 (giants), Gate 10 (defensibility). Business niche still not scanned.", "completed": "2026-01-30T13:00:00Z" },
     { "id": "g-12", "title": "SEO-AEO converted to binary gates", "description": "Per Yaakov's feedback: eliminated scoring entirely. Now 13 binary pass/fail gates. All must pass or tool is killed. No averaging, no 'close enough'. If nothing passes, we report which gate killed the most and propose loosening ONE gate.", "completed": "2026-01-30T12:55:00Z" },

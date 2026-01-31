@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-01-31T18:40:00Z",
+  "lastUpdated": "2026-01-31T18:50:00Z",
   "projects": [
     {
       "id": "seo-aeo",
@@ -20,14 +20,14 @@
         "inProgress": {
           "title": "🔨 In Progress",
           "color": "#3b82f6",
-          "tasks": []
+          "tasks": [
+            { "id": "aeo-p1", "title": "Government/Benefits Discovery Cycle", "description": "Comprehensive enumeration with relaxed gates (5K traffic, $300 revenue, no wedge gate, email optional)", "started": "01/31" }
+          ]
         },
         "waiting": {
           "title": "⏳ Waiting",
           "color": "#f59e0b",
-          "tasks": [
-            { "id": "aeo-w1", "title": "Government/Benefits Discovery Cycle", "description": "Yaakov approved flow + relaxed gates (5K traffic, $300 revenue, no wedge gate, email optional). Starting comprehensive enumeration.", "created": "01/31" }
-          ]
+          "tasks": []
         },
         "done": {
           "title": "✅ Done",
@@ -87,7 +87,7 @@
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "ccd-w1", "title": "Yaakov expertise details", "description": "Asked: target audience, unique angle, format pref. Awaiting his debt knowledge dump.", "created": "01/30" }
+            { "id": "ccd-w1", "title": "[QUESTION] Yaakov expertise details", "description": "Asked: target audience, unique angle, format pref. Awaiting his debt knowledge dump.", "created": "01/30" }
           ]
         },
         "done": {
@@ -133,9 +133,9 @@
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "oh-w1", "title": "Twitter/X account access", "description": "Need @OptionHype credentials or OAuth", "created": "01/29" },
-            { "id": "oh-w2", "title": "Stocktwits account access", "description": "Need login for browser automation", "created": "01/29" },
-            { "id": "oh-w3", "title": "GA4 access", "description": "Need analytics to diagnose traffic/conversion issues", "created": "01/29" }
+            { "id": "oh-w1", "title": "[ACCESS] Twitter/X account access", "description": "Need @OptionHype credentials or OAuth", "created": "01/29" },
+            { "id": "oh-w2", "title": "[ACCESS] Stocktwits account access", "description": "Need login for browser automation", "created": "01/29" },
+            { "id": "oh-w3", "title": "[ACCESS] GA4 access", "description": "Need analytics to diagnose traffic/conversion issues", "created": "01/29" }
           ]
         },
         "done": {
@@ -226,6 +226,7 @@
   },
   "globalIdeas": [],
   "globalActivityLog": [
+    { "id": "g-16", "title": "📋 Workflow improvements implemented", "description": "Per Yaakov's approval: 3-layer memory system, type-tagged waiting items ([APPROVAL], [QUESTION], [ACCESS]), weekly open items email. Updated HEARTBEAT.md, MEMORY.md, dashboard.", "completed": "2026-01-31T18:50:00Z" },
     { "id": "g-15", "title": "📋 SEO-AEO project tracking on dashboard", "description": "Per Yaakov: project log created + dashboard updated. Tracks decisions, discovery cycles, gate failures, and lessons. Dashboard = status, PROJECT-LOG.md = detailed history.", "completed": "2026-01-30T13:27:00Z" },
     { "id": "g-14", "title": "⚠️ Tracking failure fixed", "description": "Yaakov asked to check tracker — found mismatch between stated plan (Business) and actual runs (Health/misc + Real Estate). Updated PROJECT-LOG.md with accurate history. Added speedbump entry.", "completed": "2026-01-30T13:01:00Z" },
     { "id": "g-13", "title": "Discovery cycles: 0/29 passed", "description": "Completed 2 cycles: Health/misc (0/11) and Real Estate (0/18). Key blockers: Gate 5 (AI calculates), Gate 4 (giants), Gate 10 (defensibility). Business niche still not scanned.", "completed": "2026-01-30T13:00:00Z" },

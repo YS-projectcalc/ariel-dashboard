@@ -1,8 +1,8 @@
 {
-  "lastUpdated": "2026-02-01T15:20:00Z",
+  "lastUpdated": "2026-02-01T15:24:00Z",
   "waitingOnYaakov": [
     {
-      "item": "Monetization approach decision (tiered funnel vs simple)",
+      "item": "Funnel structure decision (SLO: $17 ebook → $47 bundle → Skool)",
       "asked": "2026-02-01",
       "channel": "Email: Re: Starting our first business",
       "reminderAfterDays": 7
@@ -115,7 +115,7 @@
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "ccd-w2", "title": "[QUESTION] Monetization approach", "description": "Sent deep analysis: tiered funnel (lead magnet → ebook → community) vs simple ebook sale. Awaiting decision.", "created": "02/01" }
+            { "id": "ccd-w2", "title": "[QUESTION] Funnel structure approval", "description": "Recommended SLO model: skip free lead magnet, go $17-27 ebook → $47 bundle + physical → Skool $47/mo. Sent detailed math and reasoning.", "created": "02/01" }
           ]
         },
         "done": {
@@ -129,6 +129,7 @@
         }
       },
       "activityLog": [
+        { "id": "ccd-a4", "title": "📧 Funnel strategy decision", "description": "Yaakov asked: free lead magnet vs direct sale for paid traffic? Recommended SKIP free — go with SLO: $17-27 ebook (covers ad cost) → $47 bundle + physical (+$15 POD) → Skool $47/mo. Key insight: freebie seekers waste ad spend, especially in debt audience. Payment = self-selection.", "completed": "2026-02-01T15:24:00Z" },
         { "id": "ccd-a3", "title": "📧 Monetization analysis sent", "description": "Yaakov answered target audience + expertise questions. Sent deep analysis comparing ebook-only vs tiered funnel (lead magnet → ebook → community). Recommended tiered approach: free '5 Things' PDF, $37 ebook, $47/mo Skool community. Value prop: 'Why pay settlement company $4K when you can DIY for under $200?'", "completed": "2026-02-01T15:20:00Z" },
         { "id": "ccd-a2", "title": "Follow-up questions sent", "description": "Emailed Yaakov with assessment (strong niche, clear transformation) + questions: target audience precision, unique angle/tactics, format preference. Recommended eBook first.", "completed": "2026-01-30T10:45:00Z" },
         { "id": "ccd-a1", "title": "Project kickoff", "description": "Yaakov emailed with idea. Did competitive research, identified gap (tactical vs mindset), emailed questions.", "completed": "2026-01-29T19:45:00Z" }

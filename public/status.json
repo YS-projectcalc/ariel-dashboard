@@ -1,10 +1,10 @@
 {
-  "lastUpdated": "2026-07-26T18:30:00Z",
+  "lastUpdated": "2026-02-01T15:20:00Z",
   "waitingOnYaakov": [
     {
-      "item": "Credit card debt interview questions",
-      "asked": "2026-01-30",
-      "channel": "Email: Credit Card Debt Book - First Questions",
+      "item": "Monetization approach decision (tiered funnel vs simple)",
+      "asked": "2026-02-01",
+      "channel": "Email: Re: Starting our first business",
       "reminderAfterDays": 7
     },
     {
@@ -115,19 +115,21 @@
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "ccd-w1", "title": "[QUESTION] Yaakov expertise details", "description": "Asked: target audience, unique angle, format pref. Awaiting his debt knowledge dump.", "created": "01/30" }
+            { "id": "ccd-w2", "title": "[QUESTION] Monetization approach", "description": "Sent deep analysis: tiered funnel (lead magnet → ebook → community) vs simple ebook sale. Awaiting decision.", "created": "02/01" }
           ]
         },
         "done": {
           "title": "✅ Done",
           "color": "#22c55e",
           "tasks": [
+            { "id": "ccd-d3", "title": "Yaakov expertise details received", "description": "Target: anyone emotionally affected by debt. His edge: 5-15 negotiation calls, bank-specific tactics", "completed": "02/01" },
             { "id": "ccd-d1", "title": "Topic selected", "description": "Credit card debt management/negotiation", "completed": "01/29" },
             { "id": "ccd-d2", "title": "Project folder created", "description": "builds/credit-card-debt/ with research.md", "completed": "01/29" }
           ]
         }
       },
       "activityLog": [
+        { "id": "ccd-a3", "title": "📧 Monetization analysis sent", "description": "Yaakov answered target audience + expertise questions. Sent deep analysis comparing ebook-only vs tiered funnel (lead magnet → ebook → community). Recommended tiered approach: free '5 Things' PDF, $37 ebook, $47/mo Skool community. Value prop: 'Why pay settlement company $4K when you can DIY for under $200?'", "completed": "2026-02-01T15:20:00Z" },
         { "id": "ccd-a2", "title": "Follow-up questions sent", "description": "Emailed Yaakov with assessment (strong niche, clear transformation) + questions: target audience precision, unique angle/tactics, format preference. Recommended eBook first.", "completed": "2026-01-30T10:45:00Z" },
         { "id": "ccd-a1", "title": "Project kickoff", "description": "Yaakov emailed with idea. Did competitive research, identified gap (tactical vs mindset), emailed questions.", "completed": "2026-01-29T19:45:00Z" }
       ]

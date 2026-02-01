@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-01T15:24:00Z",
+  "lastUpdated": "2026-02-01T15:56:00Z",
   "waitingOnYaakov": [
     {
       "item": "Funnel structure decision (SLO: $17 ebook → $47 bundle → Skool)",
@@ -40,14 +40,15 @@
           "tasks": [
             { "id": "aeo-b1", "title": "Discovery scan - Finance niche", "description": "Find calculator sites in finance vertical", "created": "01/30" },
             { "id": "aeo-b3", "title": "Discovery scan - Business niche", "description": "Find calculator sites in business vertical (ORIGINALLY PLANNED but not run)", "created": "01/30" },
-            { "id": "aeo-b4", "title": "Build Debt Settlement Calculator", "description": "Top candidate from Batch 1. 10/10 gates passed. Aligns with CC debt book.", "created": "07/26" },
             { "id": "aeo-b5", "title": "Build Business Valuation Calculator", "description": "Second winner from Batch 1. 10/10 gates passed. High-value M&A leads.", "created": "07/26" }
           ]
         },
         "inProgress": {
           "title": "🔨 In Progress",
           "color": "#3b82f6",
-          "tasks": []
+          "tasks": [
+            { "id": "aeo-p1", "title": "Build Debt Settlement Calculator", "description": "Deep research COMPLETE. Now building MVP. Yaakov approved 02/01.", "started": "02/01" }
+          ]
         },
         "waiting": {
           "title": "⏳ Waiting",
@@ -58,6 +59,7 @@
           "title": "✅ Done",
           "color": "#22c55e",
           "tasks": [
+            { "id": "aeo-d8", "title": "Debt Settlement Calculator - Deep Research", "description": "Analyzed 15+ competitor tools. Identified gaps: no creditor-specific data, no tax calc, no SOL info, no DIY guidance. Created comprehensive RESEARCH.md with features, data, and AEO strategy.", "completed": "02/01" },
             { "id": "aeo-d7", "title": "Batch 1 Gate Analysis (2/10 pass)", "description": "Analyzed 10 tool candidates through 10 gates. Winners: Debt Settlement Calculator, Business Valuation Calculator. Full analysis at gate-analysis-batch1.md", "completed": "07/26" },
             { "id": "aeo-d6", "title": "Discovery #2 - Real Estate (0/18)", "description": "Giants + data moats everywhere. Gate 4 (71%) and Gate 10 (86%) killed most.", "completed": "01/30" },
             { "id": "aeo-d5", "title": "Discovery #1 - Health/Misc (0/11)", "description": "Gate 5 (AI can't answer) killed 7/11. Wheel spinners best but failed commercial gates.", "completed": "01/30" },
@@ -69,6 +71,7 @@
         }
       },
       "activityLog": [
+        { "id": "aeo-a13", "title": "📊 Debt Settlement Calculator - Deep Research Complete", "description": "Yaakov approved building the calculator. Completed comprehensive research: analyzed 15+ competitor tools, compiled creditor-specific settlement data (Chase 35-50%, Discover 30-60%, Amex 50-70%), statute of limitations by all 50 states, tax implications (1099-C), risk assessment framework. Identified key differentiators: creditor-specific estimates, tax calculator, DIY vs professional comparison, lawsuit risk indicator. Full report at projects/debt-settlement-calculator/RESEARCH.md. Now building MVP.", "completed": "2026-02-01T15:56:00Z" },
         { "id": "aeo-a12", "title": "✅ Batch 1 Gate Analysis Complete", "description": "10 candidates through 10 gates. WINNERS: Debt Settlement Calculator (10/10) + Business Valuation Calculator (10/10). CONDITIONAL: Repair vs Replace (9/10), Litigation Cost (9/10). KILLED: Freelance (Upwork), Startup Runway (AI answers), Renovation (NerdWallet), BRRRR (BiggerPockets), Break-even (SBA), Permit (data nightmare). Full analysis emailed to Yaakov.", "completed": "2026-07-26T18:30:00Z" },
         { "id": "aeo-a12", "title": "🎯 AEO Testing Complete - Top 3 Identified", "description": "Ran AEO tests on high-traffic categories. Winners: 1) Debt Settlement Calculator (high - underserved), 2) Repair vs Replace Universal (high - fragmented), 3) Permit Fee Estimator (high - no multi-city tool). Sent recommendations to Yaakov.", "completed": "2026-02-01T15:35:00Z" },
         { "id": "aeo-a11", "title": "🔍 Systematic Discovery Started", "description": "Built 50+ tool ideas via Reddit mining + Ahrefs research. Top 10 candidates identified: Debt settlement, Repair vs Replace, Freelance rate, Litigation cost, Permit fees, Business valuation, Renovation cost, BRRRR, Break-even, Startup runway. Running through 13 gates now.", "completed": "2026-02-01T15:15:00Z" },

@@ -1,6 +1,12 @@
 {
-  "lastUpdated": "2026-02-01T15:56:00Z",
+  "lastUpdated": "2026-02-02T14:02:00Z",
   "waitingOnYaakov": [
+    {
+      "item": "Cloudflare Pages one-time setup (connect GitHub repo)",
+      "asked": "2026-02-02",
+      "channel": "Email: Re: Fwd: Failed deployment from ariel@clawd.bot",
+      "reminderAfterDays": 3
+    },
     {
       "item": "Funnel structure decision (SLO: $17 ebook → $47 bundle → Skool)",
       "asked": "2026-02-01",
@@ -266,6 +272,7 @@
   },
   "globalIdeas": [],
   "globalActivityLog": [
+    { "id": "g-17", "title": "🔄 Vercel → Cloudflare Pages migration", "description": "Yaakov approved switch. Repo prepped (removed vercel.json, cleaned structure). Sent Yaakov one-time setup instructions for Cloudflare Pages dashboard.", "completed": "2026-02-02T14:02:00Z" },
     { "id": "g-16", "title": "📋 Workflow improvements implemented", "description": "Per Yaakov's approval: 3-layer memory system, type-tagged waiting items ([APPROVAL], [QUESTION], [ACCESS]), weekly open items email. Updated HEARTBEAT.md, MEMORY.md, dashboard.", "completed": "2026-01-31T18:50:00Z" },
     { "id": "g-15", "title": "📋 SEO-AEO project tracking on dashboard", "description": "Per Yaakov: project log created + dashboard updated. Tracks decisions, discovery cycles, gate failures, and lessons. Dashboard = status, PROJECT-LOG.md = detailed history.", "completed": "2026-01-30T13:27:00Z" },
     { "id": "g-14", "title": "⚠️ Tracking failure fixed", "description": "Yaakov asked to check tracker — found mismatch between stated plan (Business) and actual runs (Health/misc + Real Estate). Updated PROJECT-LOG.md with accurate history. Added speedbump entry.", "completed": "2026-01-30T13:01:00Z" },

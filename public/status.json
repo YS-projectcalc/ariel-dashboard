@@ -1,6 +1,12 @@
 {
-  "lastUpdated": "2026-02-02T19:53:00Z",
+  "lastUpdated": "2026-02-02T23:18:00Z",
   "waitingOnYaakov": [
+    {
+      "item": "Dashboard improvements scope: Phase 1 only or more?",
+      "asked": "2026-02-02",
+      "channel": "Email: Re: Dashboard Link",
+      "reminderAfterDays": 7
+    },
     {
       "item": "Go signal to run orchestrator (funnel build paused)",
       "asked": "2026-02-02",
@@ -267,6 +273,7 @@
   },
   "globalIdeas": [],
   "globalActivityLog": [
+    { "id": "g-20", "title": "🔍 Dashboard deep analysis complete", "description": "Yaakov asked for dashboard improvements. Found: code exists but was never deployed. Proposed 3-phase improvement plan: Phase 1 (links + waiting age), Phase 2 (embedded content), Phase 3 (action buttons). Recommended Phase 1 + Cloudflare deployment. Awaiting decision.", "completed": "2026-02-02T23:18:00Z" },
     { "id": "g-19", "title": "⏸️ Credit Card Debt funnel paused", "description": "Yaakov requested hold. When ready, wants to run full sequence starting with orchestrator. Premium package tentatively = step-by-step guide with templates.", "completed": "2026-02-02T19:53:00Z" },
     { "id": "g-18", "title": "✅ Cloudflare Pages deployment working", "description": "Yaakov completed one-time setup. Token works, deployment successful. Live site: funnels-25m.pages.dev. Future deployments auto-deploy.", "completed": "2026-02-02T14:16:00Z" },
     { "id": "g-17", "title": "🔄 Vercel → Cloudflare Pages migration", "description": "Yaakov approved switch. Repo prepped (removed vercel.json, cleaned structure). Sent Yaakov one-time setup instructions for Cloudflare Pages dashboard.", "completed": "2026-02-02T14:02:00Z" },

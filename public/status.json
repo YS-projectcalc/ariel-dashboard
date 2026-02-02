@@ -1,8 +1,8 @@
 {
-  "lastUpdated": "2026-02-02T19:46:00Z",
+  "lastUpdated": "2026-02-02T19:53:00Z",
   "waitingOnYaakov": [
     {
-      "item": "Premium package details (immediate upsell after book purchase)",
+      "item": "Go signal to run orchestrator (funnel build paused)",
       "asked": "2026-02-02",
       "channel": "Email: Re: Calculator 1",
       "reminderAfterDays": 7
@@ -97,7 +97,7 @@
       "name": "Credit Card Debt Guide",
       "description": "Infoproduct: Tactical guide to managing/negotiating credit card debt",
       "color": "#8b5cf6",
-      "status": "active",
+      "status": "paused",
       "columns": {
         "backlog": {
           "title": "📋 Backlog",
@@ -116,15 +116,13 @@
         "inProgress": {
           "title": "🔨 In Progress",
           "color": "#3b82f6",
-          "tasks": [
-            { "id": "ccd-p1", "title": "Competitive research", "description": "Identified gap: tactical playbook vs mindset books", "started": "01/29" }
-          ]
+          "tasks": []
         },
         "waiting": {
           "title": "⏳ Waiting",
           "color": "#f59e0b",
           "tasks": [
-            { "id": "ccd-w3", "title": "[QUESTION] Premium package details", "description": "What's the immediate upsell after book purchase? Higher-tier community, coaching, or something else?", "created": "02/02" }
+            { "id": "ccd-w4", "title": "[GO SIGNAL] Run full orchestrator sequence", "description": "Yaakov wants to go through the whole funnel build starting from orchestrator when ready. Premium = step-by-step guide with templates (tentative).", "created": "02/02" }
           ]
         },
         "done": {
@@ -139,6 +137,7 @@
         }
       },
       "activityLog": [
+        { "id": "ccd-a6", "title": "⏸️ Funnel work paused", "description": "Yaakov requested hold on funnel build. When ready, wants to run full orchestrator sequence from the start. Premium package tentatively = step-by-step guide with templates.", "completed": "2026-02-02T19:53:00Z" },
         { "id": "ccd-a5", "title": "✅ Funnel pricing confirmed", "description": "Yaakov confirmed: eBook $7 → Physical $19 → Community $19/mo → Premium package (TBD, immediate upsell after book). Traffic from paid ads + organic (SM, site posting, calculator). Starting with $7 eBook landing page.", "completed": "2026-02-02T19:46:00Z" },
         { "id": "ccd-a4", "title": "📧 Funnel strategy decision", "description": "Yaakov asked: free lead magnet vs direct sale for paid traffic? Recommended SKIP free — go with SLO: $17-27 ebook (covers ad cost) → $47 bundle + physical (+$15 POD) → Skool $47/mo. Key insight: freebie seekers waste ad spend, especially in debt audience. Payment = self-selection.", "completed": "2026-02-01T15:24:00Z" },
         { "id": "ccd-a3", "title": "📧 Monetization analysis sent", "description": "Yaakov answered target audience + expertise questions. Sent deep analysis comparing ebook-only vs tiered funnel (lead magnet → ebook → community). Recommended tiered approach: free '5 Things' PDF, $37 ebook, $47/mo Skool community. Value prop: 'Why pay settlement company $4K when you can DIY for under $200?'", "completed": "2026-02-01T15:20:00Z" },
@@ -268,6 +267,7 @@
   },
   "globalIdeas": [],
   "globalActivityLog": [
+    { "id": "g-19", "title": "⏸️ Credit Card Debt funnel paused", "description": "Yaakov requested hold. When ready, wants to run full sequence starting with orchestrator. Premium package tentatively = step-by-step guide with templates.", "completed": "2026-02-02T19:53:00Z" },
     { "id": "g-18", "title": "✅ Cloudflare Pages deployment working", "description": "Yaakov completed one-time setup. Token works, deployment successful. Live site: funnels-25m.pages.dev. Future deployments auto-deploy.", "completed": "2026-02-02T14:16:00Z" },
     { "id": "g-17", "title": "🔄 Vercel → Cloudflare Pages migration", "description": "Yaakov approved switch. Repo prepped (removed vercel.json, cleaned structure). Sent Yaakov one-time setup instructions for Cloudflare Pages dashboard.", "completed": "2026-02-02T14:02:00Z" },
     { "id": "g-16", "title": "📋 Workflow improvements implemented", "description": "Per Yaakov's approval: 3-layer memory system, type-tagged waiting items ([APPROVAL], [QUESTION], [ACCESS]), weekly open items email. Updated HEARTBEAT.md, MEMORY.md, dashboard.", "completed": "2026-01-31T18:50:00Z" },

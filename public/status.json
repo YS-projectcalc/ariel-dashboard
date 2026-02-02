@@ -40,7 +40,12 @@
           "tasks": [
             { "id": "aeo-b1", "title": "Discovery scan - Finance niche", "description": "Find calculator sites in finance vertical", "created": "01/30" },
             { "id": "aeo-b3", "title": "Discovery scan - Business niche", "description": "Find calculator sites in business vertical (ORIGINALLY PLANNED but not run)", "created": "01/30" },
-            { "id": "aeo-b5", "title": "Build Business Valuation Calculator", "description": "Second winner from Batch 1. 10/10 gates passed. High-value M&A leads.", "created": "07/26" }
+            { "id": "aeo-b5", "title": "Build Business Valuation Calculator", "description": "Second winner from Batch 1. 10/10 gates passed. High-value M&A leads.", "created": "07/26" },
+            { "id": "aeo-b6", "title": "State-by-State Settlement Calculators", "description": "SmartAsset pattern: same tool, state-specific data (SOL, wage garnishment, exemptions). 50 pages from 1 tool. 'Debt settlement calculator [STATE]' keywords.", "created": "02/02" },
+            { "id": "aeo-b7", "title": "Settle vs Bankruptcy Calculator", "description": "Compare settlement vs Chapter 7/13 outcomes. Research already done.", "created": "02/02" },
+            { "id": "aeo-b8", "title": "Timeline Predictor Tool", "description": "'What happens next' - predict collection timeline based on debt age, amount, creditor.", "created": "02/02" },
+            { "id": "aeo-b9", "title": "Debt Payoff Comparison Calculator", "description": "Compare payoff strategies: avalanche vs snowball vs settlement vs minimum payments.", "created": "02/02" },
+            { "id": "aeo-b10", "title": "Content Upgrades for Calculators", "description": "Wrap tools with: how-to explainer, FAQ guides, related calculator links. Basic SEO we haven't done yet.", "created": "02/02" }
           ]
         },
         "inProgress": {

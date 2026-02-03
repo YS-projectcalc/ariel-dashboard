@@ -1,12 +1,6 @@
 {
-  "lastUpdated": "2026-02-03T13:55:00Z",
+  "lastUpdated": "2026-02-03T14:40:00Z",
   "waitingOnYaakov": [
-    {
-      "item": "🚨 URGENT: Gmail OAuth token expired - need to re-auth",
-      "asked": "2026-02-03",
-      "channel": "Run: gog auth add dealsandpoints@gmail.com",
-      "reminderAfterDays": 1
-    },
     {
       "item": "Dashboard improvements scope: Phase 1 only or more?",
       "asked": "2026-02-02",
@@ -17,12 +11,6 @@
       "item": "Go signal to run orchestrator (funnel build paused)",
       "asked": "2026-02-02",
       "channel": "Email: Re: Calculator 1",
-      "reminderAfterDays": 7
-    },
-    {
-      "item": "Twitter/X @OptionHype credentials or OAuth",
-      "asked": "2026-01-29",
-      "channel": "Email: OptionHype Strategy Report",
       "reminderAfterDays": 7
     },
     {

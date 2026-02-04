@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-04T16:15:00Z",
+  "lastUpdated": "2026-02-04T18:32:00Z",
   "approvals": [
     {
-      "id": "brand-cover-premium",
+      "id": "brand-cover-v2",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Premium Cover (HTML-Rendered)",
-      "description": "Created via Puppeteer headless browser rendering HTML/CSS. Has fine details: gradient background, chevron pattern overlay, diamond decorator, elegant serif typography, gold accents, corner frames. This is the level of detail AI couldn't achieve.",
-      "image": "/assets/the-debt-code/cover-premium-rendered.png",
-      "options": ["Approve this direction", "Adjust typography", "Different decorator element", "Change color scheme"],
-      "created": "2026-02-04T16:15:00Z"
+      "title": "Cover v2 - Fixed & Improved",
+      "description": "Fixes applied: Much bigger title, gold 'THE', key icon (meaningful!), larger subtitle, radial glow background, diagonal texture, frame border. Should work better at thumbnail.",
+      "image": "/assets/the-debt-code/cover-v2-rendered.png",
+      "options": ["Approve", "Title still needs work", "Different icon", "Adjust colors"],
+      "created": "2026-02-04T18:32:00Z"
     }
   ],
   "projects": [
@@ -19,8 +19,6 @@
       "color": "#8b5cf6",
       "status": "active",
       "currentSkill": "brand-assets",
-      "approvedName": "The Debt Code: Own Your Debt - No More Fear",
-      "domain": "thedebtcode.com",
       "skillProgress": {
         "orchestrator": "complete",
         "business-naming": "complete",
@@ -28,20 +26,7 @@
         "infoproduct-creation": "pending",
         "funnel-builder": "pending",
         "legal-templates": "pending"
-      },
-      "activityLog": [
-        {
-          "id": "ccd-a10",
-          "title": "🎨 Premium cover via Puppeteer",
-          "completed": "2026-02-04T16:15:00Z"
-        }
-      ]
-    },
-    {
-      "id": "seo-aeo",
-      "name": "SEO-AEO Replication",
-      "color": "#10b981",
-      "status": "paused"
+      }
     }
   ]
 }

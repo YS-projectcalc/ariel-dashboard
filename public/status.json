@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-04T18:32:00Z",
+  "lastUpdated": "2026-02-04T18:40:00Z",
   "approvals": [
     {
-      "id": "brand-cover-v2",
+      "id": "brand-cover-v3",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Cover v2 - Fixed & Improved",
-      "description": "Fixes applied: Much bigger title, gold 'THE', key icon (meaningful!), larger subtitle, radial glow background, diagonal texture, frame border. Should work better at thumbnail.",
-      "image": "/assets/the-debt-code/cover-v2-rendered.png",
-      "options": ["Approve", "Title still needs work", "Different icon", "Adjust colors"],
-      "created": "2026-02-04T18:32:00Z"
+      "title": "Cover v3 - Atomic Habits Scale",
+      "description": "Even bigger title (280px), larger subtitle (48px). Added fine graphics: orbital circles behind title, decorative dots, gold corner accents. More refined and impactful.",
+      "image": "/assets/the-debt-code/cover-v3-rendered.png",
+      "options": ["Approve", "Even bigger text", "Different graphics", "Color adjustments"],
+      "created": "2026-02-04T18:40:00Z"
     }
   ],
   "projects": [

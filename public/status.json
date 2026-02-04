@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-04T19:10:00Z",
+  "lastUpdated": "2026-02-04T19:25:00Z",
   "approvals": [
     {
-      "id": "brand-cover-ai-v1",
+      "id": "brand-cover-nanobanana",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "AI-Generated Cover - LEGENDARY! 🔑",
-      "description": "DALL-E 3 generated stunning ornate Victorian golden key with sunburst rays, elegant gold border, deep navy background. Text composited on top. Premium bestseller quality!",
-      "image": "/assets/the-debt-code/final-cover-v1.png",
-      "options": ["Approve", "Adjust text placement", "Generate more variations", "Different key style"],
-      "created": "2026-02-04T19:10:00Z"
+      "title": "NANO BANANA PRO Cover - THE ONE! 🔑✨",
+      "description": "Generated with Google's Nano Banana Pro (gemini-3-pro-image-preview). Stunning ornate Victorian golden key with intricate scrollwork, radial light rays, deep navy background. Text composited perfectly. THIS IS LEGENDARY!",
+      "image": "/assets/the-debt-code/final-nanobanana-cover.png",
+      "options": ["Approve! 🎉", "Adjust text size/position", "Generate more variations", "Different style"],
+      "created": "2026-02-04T19:25:00Z"
     }
   ],
   "projects": [

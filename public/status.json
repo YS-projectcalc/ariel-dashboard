@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-04T00:20:00Z",
+  "lastUpdated": "2026-02-04T00:45:00Z",
   "waitingOnYaakov": [
     {
       "item": "Dashboard improvements scope: Phase 1 only or more?",
@@ -246,7 +246,7 @@
       "name": "Credit Card Debt Guide",
       "description": "Infoproduct: Tactical guide to managing/negotiating credit card debt",
       "color": "#8b5cf6",
-      "status": "paused",
+      "status": "active",
       "columns": {
         "backlog": {
           "title": "📋 Backlog",
@@ -386,6 +386,35 @@
           "title": "Project kickoff",
           "description": "Yaakov emailed with idea. Did competitive research, identified gap (tactical vs mindset), emailed questions.",
           "completed": "2026-01-29T19:45:00Z"
+        }
+      ],
+      "currentSkill": "business-naming",
+      "skillProgress": {
+        "orchestrator": "complete",
+        "business-naming": "in-progress",
+        "brand-assets": "pending",
+        "infoproduct-creation": "pending",
+        "funnel-builder": "pending",
+        "legal-templates": "pending"
+      },
+      "issuesLog": [
+        {
+          "date": "2026-02-04",
+          "issue": "Hook sessions created duplicate dashboard project",
+          "fix": "Merged into single project",
+          "status": "resolved"
+        },
+        {
+          "date": "2026-02-04",
+          "issue": "Hook sessions wrote chapters without orchestrator flow",
+          "fix": "Restarting with proper skill sequence",
+          "status": "in-progress"
+        },
+        {
+          "date": "2026-02-04",
+          "issue": "Orchestrator skill was doing work instead of delegating",
+          "fix": "Rewrote skill to coordinate and hand off",
+          "status": "resolved"
         }
       ]
     },
@@ -617,47 +646,6 @@
           "completed": "2026-01-29T15:20:00Z"
         }
       ]
-    },
-    {
-      "id": "cc-debt-book",
-      "name": "Credit Card Debt Book",
-      "description": "eBook + physical book + community upsell for credit card debt settlement",
-      "color": "#10b981",
-      "status": "active",
-      "currentSkill": "Orchestrator",
-      "columns": {
-        "backlog": {
-          "title": "📋 Backlog",
-          "color": "#64748b",
-          "tasks": []
-        },
-        "inProgress": {
-          "title": "🔨 In Progress",
-          "color": "#3b82f6",
-          "tasks": [
-            {
-              "id": "cc-1",
-              "title": "Orchestrator - Project Setup",
-              "description": "Running through orchestrator skill",
-              "created": "02/04",
-              "skill": "orchestrator"
-            }
-          ]
-        },
-        "done": {
-          "title": "✅ Done",
-          "color": "#22c55e",
-          "tasks": []
-        }
-      },
-      "skillProgress": {
-        "orchestrator": "in-progress",
-        "business-naming": "pending",
-        "brand-assets": "pending",
-        "infoproduct-creation": "pending",
-        "funnel-builder": "pending",
-        "legal-templates": "pending"
-      }
     }
   ],
   "general": {

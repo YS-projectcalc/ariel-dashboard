@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-04T14:59:00Z",
+  "lastUpdated": "2026-02-04T15:10:00Z",
   "approvals": [
     {
-      "id": "brand-cover-v4",
+      "id": "brand-cover-v5",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Book Cover v4 (Typography-Focused Premium)",
-      "description": "Elegant serif typography on dark blue. No cheesy icons. Like 'The Psychology of Money' style - confident, authoritative, letting the title carry it.",
-      "image": "/assets/the-debt-code/book-cover-v7.png",
-      "options": ["Approve this direction", "Different font style", "Add subtle element", "Try different color scheme"],
-      "created": "2026-02-04T14:59:00Z"
+      "title": "Book Cover v5 (Geometric Abstract)",
+      "description": "Bold sans-serif title with abstract geometric gold line element. Middle ground between too-literal icons and too-basic text-only.",
+      "image": "/assets/the-debt-code/book-cover-v8.png",
+      "options": ["Approve direction", "Geometric element too random", "Try different typography", "Need Canva for precise control"],
+      "created": "2026-02-04T15:08:00Z"
     }
   ],
   "projects": [
@@ -31,14 +31,9 @@
       },
       "activityLog": [
         {
-          "id": "ccd-a8",
-          "title": "🎨 Cover v4 (typography-focused)",
-          "completed": "2026-02-04T14:59:00Z"
-        },
-        {
-          "id": "ccd-a4",
-          "title": "✅ Name approved: The Debt Code",
-          "completed": "2026-02-04T13:29:00Z"
+          "id": "ccd-a9",
+          "title": "🎨 Cover v5 + Logo attempts",
+          "completed": "2026-02-04T15:10:00Z"
         }
       ]
     },
@@ -46,18 +41,6 @@
       "id": "seo-aeo",
       "name": "SEO-AEO Replication",
       "color": "#10b981",
-      "status": "paused"
-    },
-    {
-      "id": "optionhype",
-      "name": "OptionHype",
-      "color": "#f59e0b",
-      "status": "paused"
-    },
-    {
-      "id": "skill-stack",
-      "name": "Business Builder Skills",
-      "color": "#6366f1",
       "status": "paused"
     }
   ]

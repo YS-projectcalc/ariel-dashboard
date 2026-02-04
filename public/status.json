@@ -1,25 +1,15 @@
 {
-  "lastUpdated": "2026-02-04T14:49:00Z",
+  "lastUpdated": "2026-02-04T14:59:00Z",
   "approvals": [
     {
-      "id": "brand-logo-v1",
-      "projectId": "credit-card-debt",
-      "type": "logo",
-      "title": "Text-Based Styled Logo",
-      "description": "THE DEBT CODE wordmark with lock integrated into the O. Gold underline accent. Text-based but styled.",
-      "image": "/assets/the-debt-code/wordmark-v1.png",
-      "options": ["Approve this logo", "Try different lock integration", "Different font style", "Remove the underline"],
-      "created": "2026-02-04T14:49:00Z"
-    },
-    {
-      "id": "brand-cover-v3",
+      "id": "brand-cover-v4",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Book Cover v3 (Structured Premium)",
-      "description": "Gold lock icon, centered title, gold divider, structured layout. Returns to v1 direction but cleaner.",
-      "image": "/assets/the-debt-code/book-cover-v5.png",
-      "options": ["Approve this direction", "Adjust colors", "Different icon style", "Layout tweaks needed"],
-      "created": "2026-02-04T14:48:00Z"
+      "title": "Book Cover v4 (Typography-Focused Premium)",
+      "description": "Elegant serif typography on dark blue. No cheesy icons. Like 'The Psychology of Money' style - confident, authoritative, letting the title carry it.",
+      "image": "/assets/the-debt-code/book-cover-v7.png",
+      "options": ["Approve this direction", "Different font style", "Add subtle element", "Try different color scheme"],
+      "created": "2026-02-04T14:59:00Z"
     }
   ],
   "projects": [
@@ -39,21 +29,11 @@
         "funnel-builder": "pending",
         "legal-templates": "pending"
       },
-      "columns": {
-        "waiting": {
-          "tasks": []
-        }
-      },
       "activityLog": [
         {
-          "id": "ccd-a7",
-          "title": "🎨 Logo + Cover v3 (fixed)",
-          "completed": "2026-02-04T14:49:00Z"
-        },
-        {
-          "id": "ccd-a6",
-          "title": "🎨 Book cover v2 (premium)",
-          "completed": "2026-02-04T14:39:00Z"
+          "id": "ccd-a8",
+          "title": "🎨 Cover v4 (typography-focused)",
+          "completed": "2026-02-04T14:59:00Z"
         },
         {
           "id": "ccd-a4",

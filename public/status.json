@@ -1,25 +1,15 @@
 {
-  "lastUpdated": "2026-02-04T14:18:00Z",
+  "lastUpdated": "2026-02-04T14:40:00Z",
   "approvals": [
     {
-      "id": "brand-logo-1",
-      "projectId": "credit-card-debt",
-      "type": "logo",
-      "title": "Logo Icon Concepts",
-      "description": "Stylized 'D' with keyhole variations. Top-left is cleanest option.",
-      "image": "/assets/the-debt-code/icon-concept-1.png",
-      "options": ["Top-left (D with amber keyhole)", "Top-right (D with white keyhole)", "Bottom-left (Solid D)", "Bottom-right (D with key)"],
-      "created": "2026-02-04T14:10:00Z"
-    },
-    {
-      "id": "brand-cover-1",
+      "id": "brand-cover-2",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Book Cover Concept",
-      "description": "Navy blue with lock icon, amber subtitle. Has AI text artifacts - will cleanup after direction approved.",
-      "image": "/assets/the-debt-code/book-cover-concept-1.png",
-      "options": ["Approve direction (cleanup needed)", "Try different style", "More concepts needed"],
-      "created": "2026-02-04T14:10:00Z"
+      "title": "Book Cover v2 (Premium Direction)",
+      "description": "Clean navy background, white title, gold subtitle. Minimalist premium style. This is AI-generated - I can also create a pixel-perfect HTML version.",
+      "image": "/assets/the-debt-code/book-cover-v2.png",
+      "options": ["Approve this direction", "Want more centered layout", "Try different font style", "Create HTML version for precise control"],
+      "created": "2026-02-04T14:39:00Z"
     }
   ],
   "projects": [
@@ -46,6 +36,11 @@
       },
       "activityLog": [
         {
+          "id": "ccd-a6",
+          "title": "🎨 Book cover v2 (premium)",
+          "completed": "2026-02-04T14:39:00Z"
+        },
+        {
           "id": "ccd-a5",
           "title": "🎨 Brand assets generated",
           "completed": "2026-02-04T14:10:00Z"
@@ -59,16 +54,6 @@
           "id": "ccd-a1",
           "title": "🔤 Name options ready",
           "completed": "2026-02-04T00:46:00Z"
-        },
-        {
-          "id": "ccd-a2",
-          "title": "🎯 Orchestrator complete",
-          "completed": "2026-02-04T00:40:00Z"
-        },
-        {
-          "id": "ccd-a3",
-          "title": "🚀 Full skill pipeline started",
-          "completed": "2026-02-04T00:13:00Z"
         }
       ]
     },

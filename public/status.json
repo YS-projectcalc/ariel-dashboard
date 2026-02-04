@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-04T15:10:00Z",
+  "lastUpdated": "2026-02-04T16:15:00Z",
   "approvals": [
     {
-      "id": "brand-cover-v5",
+      "id": "brand-cover-premium",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Book Cover v5 (Geometric Abstract)",
-      "description": "Bold sans-serif title with abstract geometric gold line element. Middle ground between too-literal icons and too-basic text-only.",
-      "image": "/assets/the-debt-code/book-cover-v8.png",
-      "options": ["Approve direction", "Geometric element too random", "Try different typography", "Need Canva for precise control"],
-      "created": "2026-02-04T15:08:00Z"
+      "title": "Premium Cover (HTML-Rendered)",
+      "description": "Created via Puppeteer headless browser rendering HTML/CSS. Has fine details: gradient background, chevron pattern overlay, diamond decorator, elegant serif typography, gold accents, corner frames. This is the level of detail AI couldn't achieve.",
+      "image": "/assets/the-debt-code/cover-premium-rendered.png",
+      "options": ["Approve this direction", "Adjust typography", "Different decorator element", "Change color scheme"],
+      "created": "2026-02-04T16:15:00Z"
     }
   ],
   "projects": [
@@ -31,9 +31,9 @@
       },
       "activityLog": [
         {
-          "id": "ccd-a9",
-          "title": "🎨 Cover v5 + Logo attempts",
-          "completed": "2026-02-04T15:10:00Z"
+          "id": "ccd-a10",
+          "title": "🎨 Premium cover via Puppeteer",
+          "completed": "2026-02-04T16:15:00Z"
         }
       ]
     },

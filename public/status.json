@@ -1,10 +1,9 @@
 {
-  "lastUpdated": "2026-02-04T00:52:00Z",
+  "lastUpdated": "2026-02-04T02:45:00Z",
   "projects": [
     {
       "id": "credit-card-debt",
       "name": "Credit Card Debt Guide",
-      "description": "Infoproduct: Tactical guide to credit card debt negotiation/settlement",
       "color": "#8b5cf6",
       "status": "active",
       "currentSkill": "business-naming",
@@ -17,191 +16,52 @@
         "legal-templates": "pending"
       },
       "columns": {
-        "backlog": {
-          "title": "📋 Backlog",
-          "color": "#64748b",
-          "tasks": [
-            {
-              "id": "ccd-b1",
-              "title": "Logo & brand identity",
-              "description": "brand-assets skill: colors, typography, logo via Gemini",
-              "skill": "brand-assets",
-              "created": "02/04"
-            },
-            {
-              "id": "ccd-b2",
-              "title": "Write all chapters",
-              "description": "infoproduct-creation skill: 6 chapters based on Yaakov's outline",
-              "skill": "infoproduct-creation",
-              "created": "02/04"
-            },
-            {
-              "id": "ccd-b3",
-              "title": "Sales page & checkout",
-              "description": "funnel-builder skill: landing page, Stripe, Klaviyo",
-              "skill": "funnel-builder",
-              "created": "02/04"
-            },
-            {
-              "id": "ccd-b4",
-              "title": "Legal pages",
-              "description": "legal-templates skill: privacy, terms, disclaimers",
-              "skill": "legal-templates",
-              "created": "02/04"
-            }
-          ]
-        },
-        "inProgress": {
-          "title": "🔨 In Progress",
-          "color": "#3b82f6",
-          "tasks": [
-            {
-              "id": "ccd-ip1",
-              "title": "Name & domain selection",
-              "description": "business-naming skill: 5 options researched, awaiting Yaakov's pick",
-              "skill": "business-naming",
-              "created": "02/04"
-            }
-          ]
-        },
         "waiting": {
-          "title": "⏳ Waiting on Yaakov",
-          "color": "#f59e0b",
           "tasks": [
             {
               "id": "ccd-w1",
-              "title": "[CHECKPOINT] Pick business name",
-              "description": "Options: The Debt Code, Debt Free Playbook, The Debt Settler, Path From Debt, Pennies Debt. Recommendation: The Debt Code (thedebtcode.com)",
-              "asked": "2026-02-04",
-              "created": "02/04"
-            }
-          ]
-        },
-        "done": {
-          "title": "✅ Done",
-          "color": "#22c55e",
-          "tasks": [
-            {
-              "id": "ccd-d1",
-              "title": "Orchestrator intake",
-              "description": "Product type, pricing ($9 ebook, $19 physical, $19/mo community), style (Atomic Habits), chapter outline",
-              "skill": "orchestrator",
-              "completed": "02/04"
-            },
-            {
-              "id": "ccd-d2",
-              "title": "Validation: GO",
-              "description": "Expert-driven (Yaakov knows the market), skipped formal validation",
-              "skill": "orchestrator",
-              "completed": "02/04"
-            },
-            {
-              "id": "ccd-d3",
-              "title": "Domain availability research",
-              "description": "Checked 100+ domains, found 5 available options with .com",
-              "skill": "business-naming",
-              "completed": "02/04"
-            },
-            {
-              "id": "ccd-d4",
-              "title": "Chapter outline received",
-              "description": "6 chapters: fears debunked, banks aren't scary, long-term effects, right process, your rights, practical steps",
-              "completed": "02/04"
+              "title": "Pick business name",
+              "description": "Options: The Debt Code (recommended), Debt Free Playbook, The Debt Settler, Path From Debt. All have .com available.",
+              "asked": "2026-02-04"
             }
           ]
         }
       },
       "activityLog": [
         {
-          "id": "ccd-a8",
-          "title": "🔤 Name options emailed",
-          "description": "Sent 5 available domain options to Yaakov. Recommended: The Debt Code (thedebtcode.com). Awaiting selection.",
+          "id": "ccd-a1",
+          "title": "🔤 Name options ready",
           "completed": "2026-02-04T00:46:00Z"
         },
         {
-          "id": "ccd-a7",
-          "title": "🔧 Fixed orchestrator skill",
-          "description": "Orchestrator now coordinates and delegates to skills instead of doing work itself. Created proper status.md tracking file.",
-          "completed": "2026-02-04T00:45:00Z"
+          "id": "ccd-a2",
+          "title": "🎯 Orchestrator complete",
+          "completed": "2026-02-04T00:40:00Z"
         },
         {
-          "id": "ccd-a6",
+          "id": "ccd-a3",
           "title": "🚀 Full skill pipeline started",
-          "description": "Yaakov emailed GO signal. Running through: orchestrator → business-naming → brand-assets → infoproduct-creation → funnel-builder → legal-templates",
           "completed": "2026-02-04T00:13:00Z"
-        }
-      ],
-      "issuesLog": [
-        {
-          "date": "2026-02-04",
-          "issue": "Domain check script appeared broken (all domains shown as taken)",
-          "rootCause": "Case-sensitive grep filtering uppercase script output",
-          "fix": "Added troubleshooting docs to skill, use grep -i",
-          "status": "resolved"
-        },
-        {
-          "date": "2026-02-04",
-          "issue": "Hook sessions created duplicate dashboard project",
-          "fix": "Merged into single project",
-          "status": "resolved"
-        },
-        {
-          "date": "2026-02-04",
-          "issue": "Orchestrator skill was doing work instead of delegating",
-          "fix": "Rewrote skill to coordinate and hand off to other skills",
-          "status": "resolved"
         }
       ]
     },
     {
       "id": "seo-aeo",
       "name": "SEO-AEO Replication",
-      "description": "Find profitable SEO tool sites, replicate with AEO optimization",
       "color": "#10b981",
-      "status": "paused",
-      "columns": {
-        "backlog": { "title": "📋 Backlog", "color": "#64748b", "tasks": [] },
-        "inProgress": { "title": "🔨 In Progress", "color": "#3b82f6", "tasks": [] },
-        "waiting": { "title": "⏳ Waiting", "color": "#f59e0b", "tasks": [] },
-        "done": { "title": "✅ Done", "color": "#22c55e", "tasks": [] }
-      }
+      "status": "paused"
     },
     {
       "id": "optionhype",
       "name": "OptionHype",
-      "description": "Options trading education platform",
       "color": "#f59e0b",
-      "status": "paused",
-      "columns": {
-        "backlog": { "title": "📋 Backlog", "color": "#64748b", "tasks": [] },
-        "inProgress": { "title": "🔨 In Progress", "color": "#3b82f6", "tasks": [] },
-        "waiting": { "title": "⏳ Waiting", "color": "#f59e0b", "tasks": [] },
-        "done": { "title": "✅ Done", "color": "#22c55e", "tasks": [] }
-      }
+      "status": "paused"
     },
     {
       "id": "skill-stack",
-      "name": "Build Business Builder Skills",
-      "description": "Creating the skill pipeline for end-to-end business building",
+      "name": "Business Builder Skills",
       "color": "#6366f1",
-      "status": "active",
-      "columns": {
-        "backlog": { "title": "📋 Backlog", "color": "#64748b", "tasks": [] },
-        "inProgress": { "title": "🔨 In Progress", "color": "#3b82f6", "tasks": [] },
-        "waiting": { "title": "⏳ Waiting", "color": "#f59e0b", "tasks": [] },
-        "done": {
-          "title": "✅ Done",
-          "color": "#22c55e",
-          "tasks": [
-            { "id": "ss-d1", "title": "orchestrator skill", "completed": "02/04" },
-            { "id": "ss-d2", "title": "business-naming skill", "completed": "01/30" },
-            { "id": "ss-d3", "title": "brand-assets skill", "completed": "01/30" },
-            { "id": "ss-d4", "title": "infoproduct-creation skill", "completed": "01/30" },
-            { "id": "ss-d5", "title": "funnel-builder skill", "completed": "01/30" },
-            { "id": "ss-d6", "title": "legal-templates skill", "completed": "01/30" }
-          ]
-        }
-      }
+      "status": "paused"
     }
   ]
 }

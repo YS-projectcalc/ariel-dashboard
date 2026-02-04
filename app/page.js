@@ -21,150 +21,164 @@ function timeAgo(dateString) {
   return `${date.getMonth() + 1}/${date.getDate()}`;
 }
 
-function isToday(dateString) {
-  if (!dateString) return false;
-  const date = new Date(dateString);
-  const today = new Date();
-  return date.toDateString() === today.toDateString();
+function WaitingCard({ task, projectName, projectColor }) {
+  return (
+    <div style={{
+      backgroundColor: '#0f172a',
+      borderRadius: '12px',
+      padding: '20px',
+      borderLeft: `4px solid ${projectColor || '#f59e0b'}`,
+      marginBottom: '12px',
+    }}>
+      <div style={{ 
+        fontSize: '11px', 
+        color: projectColor || '#f59e0b', 
+        fontWeight: 600, 
+        marginBottom: '8px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px'
+      }}>
+        {projectName}
+      </div>
+      <div style={{ fontWeight: 700, fontSize: '16px', marginBottom: '8px', color: '#f8fafc' }}>
+        {task.title}
+      </div>
+      <div style={{ fontSize: '14px', color: '#94a3b8', lineHeight: '1.5' }}>
+        {task.description}
+      </div>
+      {task.asked && (
+        <div style={{ fontSize: '12px', color: '#64748b', marginTop: '12px' }}>
+          Asked: {task.asked}
+        </div>
+      )}
+    </div>
+  );
 }
 
-function ProjectCard({ project }) {
-  const backlogCount = project.columns.backlog?.tasks?.length || 0;
-  const inProgressCount = project.columns.inProgress?.tasks?.length || 0;
-  const doneCount = project.columns.done?.tasks?.length || 0;
-  const waitingCount = project.columns.waiting?.tasks?.length || 0;
+function SkillProgressBar({ skillProgress }) {
+  if (!skillProgress) return null;
+  
+  const skills = [
+    { key: 'orchestrator', label: 'Orchestrator', icon: '🎯' },
+    { key: 'business-naming', label: 'Naming', icon: '🔤' },
+    { key: 'brand-assets', label: 'Brand', icon: '🎨' },
+    { key: 'infoproduct-creation', label: 'Content', icon: '📝' },
+    { key: 'funnel-builder', label: 'Funnel', icon: '🚀' },
+    { key: 'legal-templates', label: 'Legal', icon: '⚖️' },
+  ];
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'complete': return '#22c55e';
+      case 'in-progress': return '#3b82f6';
+      case 'awaiting-approval': return '#f59e0b';
+      default: return '#334155';
+    }
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case 'complete': return '✓';
+      case 'in-progress': return '●';
+      case 'awaiting-approval': return '!';
+      default: return '○';
+    }
+  };
+
+  return (
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'space-between', 
+      alignItems: 'center',
+      padding: '16px 0',
+    }}>
+      {skills.map((skill, i) => {
+        const status = skillProgress[skill.key] || 'pending';
+        const color = getStatusColor(status);
+        return (
+          <div key={skill.key} style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '50%',
+                backgroundColor: status === 'pending' ? 'transparent' : color,
+                border: `3px solid ${color}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: status === 'pending' ? color : 'white',
+                fontWeight: 700,
+                fontSize: '14px',
+              }}>
+                {getStatusIcon(status)}
+              </div>
+              <div style={{ 
+                fontSize: '11px', 
+                color: status === 'pending' ? '#64748b' : color,
+                marginTop: '6px',
+                fontWeight: status === 'awaiting-approval' ? 700 : 500,
+              }}>
+                {skill.label}
+              </div>
+            </div>
+            {i < skills.length - 1 && (
+              <div style={{
+                width: '60px',
+                height: '3px',
+                backgroundColor: skillProgress[skills[i + 1].key] === 'pending' ? '#334155' : getStatusColor(skillProgress[skills[i + 1].key]),
+                margin: '0 8px',
+                marginBottom: '20px',
+              }} />
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function ProjectMini({ project }) {
+  const statusColors = {
+    active: '#22c55e',
+    paused: '#64748b',
+    waiting: '#f59e0b',
+  };
   
   return (
     <Link href={`/project/${project.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '12px 16px',
         backgroundColor: '#1e293b',
-        borderRadius: '12px',
-        padding: '20px',
-        borderLeft: `4px solid ${project.color}`,
+        borderRadius: '8px',
         cursor: 'pointer',
-        transition: 'transform 0.2s, box-shadow 0.2s',
+        transition: 'background-color 0.2s',
       }}
-      onMouseEnter={e => {
-        e.currentTarget.style.transform = 'translateY(-2px)';
-        e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.3)';
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = 'none';
-      }}>
-        <h3 style={{ margin: '0 0 8px 0', fontSize: '18px' }}>{project.name}</h3>
-        <p style={{ margin: '0 0 16px 0', color: '#94a3b8', fontSize: '14px' }}>{project.description}</p>
-        <div style={{ display: 'flex', gap: '16px', fontSize: '13px' }}>
-          <span style={{ color: '#64748b' }}>📋 {backlogCount}</span>
-          <span style={{ color: '#3b82f6' }}>🔨 {inProgressCount}</span>
-          <span style={{ color: '#f59e0b' }}>⏳ {waitingCount}</span>
-          <span style={{ color: '#22c55e' }}>✅ {doneCount}</span>
+      onMouseEnter={e => e.currentTarget.style.backgroundColor = '#334155'}
+      onMouseLeave={e => e.currentTarget.style.backgroundColor = '#1e293b'}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '10px',
+            height: '10px',
+            borderRadius: '50%',
+            backgroundColor: statusColors[project.status] || '#64748b',
+          }} />
+          <span style={{ fontWeight: 600, fontSize: '14px' }}>{project.name}</span>
+        </div>
+        <div style={{ fontSize: '12px', color: '#64748b' }}>
+          {project.currentSkill && `→ ${project.currentSkill}`}
         </div>
       </div>
     </Link>
   );
 }
 
-function TaskCard({ task, color }) {
-  return (
-    <div style={{
-      backgroundColor: '#0f172a',
-      borderRadius: '8px',
-      padding: '10px',
-      marginBottom: '6px',
-      borderLeft: `3px solid ${color}`,
-    }}>
-      <div style={{ fontWeight: 600, fontSize: '13px', marginBottom: '2px' }}>{task.title}</div>
-      <div style={{ fontSize: '11px', color: '#94a3b8' }}>{task.description}</div>
-    </div>
-  );
-}
-
-function MiniColumn({ title, color, tasks }) {
-  return (
-    <div style={{
-      backgroundColor: '#1e293b',
-      borderRadius: '10px',
-      padding: '12px',
-      minWidth: '200px',
-      flex: '1',
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        paddingBottom: '8px',
-        borderBottom: `2px solid ${color}`,
-      }}>
-        <span style={{ fontWeight: 600, fontSize: '13px' }}>{title}</span>
-        <span style={{
-          backgroundColor: color,
-          color: 'white',
-          borderRadius: '10px',
-          padding: '1px 8px',
-          fontSize: '11px',
-          fontWeight: 600,
-        }}>{tasks.length}</span>
-      </div>
-      <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
-        {tasks.map(task => (
-          <TaskCard key={task.id} task={task} color={color} />
-        ))}
-        {tasks.length === 0 && (
-          <div style={{ color: '#64748b', fontSize: '12px', textAlign: 'center', padding: '12px' }}>
-            Empty
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function IdeaCard({ idea }) {
-  return (
-    <div style={{
-      backgroundColor: '#1e293b',
-      borderRadius: '8px',
-      padding: '12px',
-      borderLeft: '3px solid #a855f7',
-    }}>
-      <div style={{ fontWeight: 600, marginBottom: '4px' }}>{idea.title}</div>
-      <div style={{ fontSize: '13px', color: '#94a3b8' }}>{idea.description}</div>
-    </div>
-  );
-}
-
-function ActivityItem({ activity }) {
-  return (
-    <div style={{
-      display: 'flex',
-      alignItems: 'flex-start',
-      gap: '12px',
-      padding: '10px 0',
-      borderBottom: '1px solid #334155',
-    }}>
-      <div style={{
-        backgroundColor: '#22c55e',
-        borderRadius: '50%',
-        width: '8px',
-        height: '8px',
-        marginTop: '6px',
-        flexShrink: 0,
-      }} />
-      <div style={{ flex: 1 }}>
-        <div style={{ fontWeight: 600, fontSize: '14px' }}>{activity.title}</div>
-        <div style={{ fontSize: '12px', color: '#94a3b8' }}>{activity.description}</div>
-      </div>
-      <div style={{ fontSize: '12px', color: '#64748b', whiteSpace: 'nowrap' }}>
-        {timeAgo(activity.completed)}
-      </div>
-    </div>
-  );
-}
-
 export default function Home() {
-  const [data, setData] = useState({ projects: [], globalIdeas: [], globalActivityLog: [] });
+  const [data, setData] = useState({ projects: [] });
   const [lastRefresh, setLastRefresh] = useState(new Date());
   const [loading, setLoading] = useState(true);
 
@@ -189,283 +203,176 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Aggregate stats (including general)
-  const generalInProgress = data.general?.inProgress?.tasks?.length || 0;
-  const generalWaiting = data.general?.waiting?.tasks?.length || 0;
-  const generalDone = data.general?.done?.tasks?.length || 0;
-  const generalBacklog = data.general?.backlog?.tasks?.length || 0;
+  // Get ALL waiting items across all projects
+  const allWaiting = (data.projects || []).flatMap(p => 
+    (p.columns?.waiting?.tasks || []).map(t => ({ 
+      ...t, 
+      projectName: p.name, 
+      projectColor: p.color 
+    }))
+  );
 
-  const totalInProgress = (data.projects?.reduce((sum, p) => 
-    sum + (p.columns.inProgress?.tasks?.length || 0), 0) || 0) + generalInProgress;
-  const totalWaiting = (data.projects?.reduce((sum, p) => 
-    sum + (p.columns.waiting?.tasks?.length || 0), 0) || 0) + generalWaiting;
-  const totalDone = (data.projects?.reduce((sum, p) => 
-    sum + (p.columns.done?.tasks?.length || 0), 0) || 0) + generalDone;
-  const totalBacklog = (data.projects?.reduce((sum, p) => 
-    sum + (p.columns.backlog?.tasks?.length || 0), 0) || 0) + generalBacklog;
+  // Get active project (the one with work happening)
+  const activeProject = data.projects?.find(p => p.status === 'active' && p.skillProgress);
 
-  // Aggregate all in-progress and waiting tasks with their project info
-  const allInProgress = [
-    ...(data.general?.inProgress?.tasks || []).map(t => ({ ...t, projectName: 'General', projectColor: '#64748b' })),
-    ...(data.projects || []).flatMap(p => 
-      (p.columns.inProgress?.tasks || []).map(t => ({ ...t, projectName: p.name, projectColor: p.color }))
-    )
-  ];
-  
-  const allWaiting = [
-    ...(data.general?.waiting?.tasks || []).map(t => ({ ...t, projectName: 'General', projectColor: '#64748b' })),
-    ...(data.projects || []).flatMap(p => 
-      (p.columns.waiting?.tasks || []).map(t => ({ ...t, projectName: p.name, projectColor: p.color }))
-    )
-  ];
+  // Get recent activity from active project
+  const recentActivity = activeProject?.activityLog?.slice(0, 3) || [];
 
   return (
-    <div style={{ minHeight: '100vh', padding: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+    <div style={{ 
+      minHeight: '100vh', 
+      padding: '40px 24px', 
+      maxWidth: '900px', 
+      margin: '0 auto',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    }}>
       {/* Header */}
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '32px',
+        marginBottom: '48px',
       }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: '28px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-            🦁 Ariel Status Board
+          <h1 style={{ margin: 0, fontSize: '32px', fontWeight: 700, letterSpacing: '-0.5px' }}>
+            🦁 Ariel
           </h1>
           <p style={{ margin: '4px 0 0', color: '#64748b', fontSize: '14px' }}>
-            Last updated: {timeAgo(lastRefresh.toISOString())}
+            Updated {timeAgo(data.lastUpdated || lastRefresh.toISOString())}
           </p>
         </div>
         <button
           onClick={refresh}
           disabled={loading}
           style={{
-            backgroundColor: loading ? '#64748b' : '#3b82f6',
-            color: 'white',
-            border: 'none',
+            backgroundColor: 'transparent',
+            color: loading ? '#64748b' : '#94a3b8',
+            border: '1px solid #334155',
             borderRadius: '8px',
-            padding: '10px 20px',
+            padding: '8px 16px',
             cursor: loading ? 'wait' : 'pointer',
-            fontWeight: 600,
-            fontSize: '14px',
+            fontSize: '13px',
           }}
         >
-          {loading ? '⏳ Loading...' : '🔄 Refresh'}
+          {loading ? '...' : '↻ Refresh'}
         </button>
       </div>
 
-      {/* Stats Bar */}
-      <div style={{
-        display: 'flex',
-        gap: '24px',
-        marginBottom: '24px',
-        padding: '16px 24px',
-        backgroundColor: '#1e293b',
-        borderRadius: '12px',
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '28px', fontWeight: 700, color: '#3b82f6' }}>{totalInProgress}</div>
-          <div style={{ fontSize: '12px', color: '#64748b' }}>In Progress</div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '28px', fontWeight: 700, color: '#f59e0b' }}>{totalWaiting}</div>
-          <div style={{ fontSize: '12px', color: '#64748b' }}>Waiting</div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '28px', fontWeight: 700, color: '#22c55e' }}>{totalDone}</div>
-          <div style={{ fontSize: '12px', color: '#64748b' }}>Done</div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '28px', fontWeight: 700, color: '#64748b' }}>{totalBacklog}</div>
-          <div style={{ fontSize: '12px', color: '#64748b' }}>Backlog</div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '28px', fontWeight: 700, color: '#a855f7' }}>{data.projects?.length || 0}</div>
-          <div style={{ fontSize: '12px', color: '#64748b' }}>Projects</div>
-        </div>
-      </div>
-
-      {/* Aggregated In Progress & Waiting */}
-      {(allInProgress.length > 0 || allWaiting.length > 0) && (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '16px',
-          marginBottom: '32px',
-        }}>
-          {/* All In Progress */}
+      {/* SECTION 1: Needs Your Review (PRIMARY) */}
+      {allWaiting.length > 0 && (
+        <div style={{ marginBottom: '48px' }}>
           <div style={{
-            backgroundColor: '#1e293b',
-            borderRadius: '12px',
-            padding: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            marginBottom: '20px',
           }}>
             <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '12px',
-              paddingBottom: '10px',
-              borderBottom: '2px solid #3b82f6',
+              backgroundColor: '#f59e0b',
+              color: 'black',
+              fontWeight: 700,
+              fontSize: '13px',
+              padding: '4px 12px',
+              borderRadius: '4px',
             }}>
-              <span style={{ fontWeight: 600, fontSize: '15px' }}>🔨 In Progress</span>
-              <span style={{
-                backgroundColor: '#3b82f6',
-                color: 'white',
-                borderRadius: '12px',
-                padding: '2px 10px',
-                fontSize: '12px',
-                fontWeight: 600,
-              }}>{allInProgress.length}</span>
-            </div>
-            <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
-              {allInProgress.map(task => (
-                <div key={task.id} style={{
-                  backgroundColor: '#0f172a',
-                  borderRadius: '8px',
-                  padding: '10px 12px',
-                  marginBottom: '8px',
-                  borderLeft: `3px solid ${task.projectColor}`,
-                }}>
-                  <div style={{ fontWeight: 600, fontSize: '13px', marginBottom: '2px' }}>{task.title}</div>
-                  <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '4px' }}>{task.description}</div>
-                  <div style={{ fontSize: '10px', color: task.projectColor, fontWeight: 500 }}>{task.projectName}</div>
-                </div>
-              ))}
-              {allInProgress.length === 0 && (
-                <div style={{ color: '#64748b', fontSize: '13px', textAlign: 'center', padding: '16px' }}>
-                  Nothing in progress
-                </div>
-              )}
+              {allWaiting.length} NEEDS REVIEW
             </div>
           </div>
+          
+          {allWaiting.map(task => (
+            <WaitingCard 
+              key={task.id} 
+              task={task} 
+              projectName={task.projectName}
+              projectColor={task.projectColor}
+            />
+          ))}
+        </div>
+      )}
 
-          {/* All Waiting */}
+      {/* SECTION 2: Active Project Progress */}
+      {activeProject && activeProject.skillProgress && (
+        <div style={{ marginBottom: '48px' }}>
+          <div style={{ 
+            fontSize: '12px', 
+            color: '#64748b', 
+            textTransform: 'uppercase', 
+            letterSpacing: '1px',
+            marginBottom: '12px',
+          }}>
+            Current: {activeProject.name}
+          </div>
+          
           <div style={{
             backgroundColor: '#1e293b',
             borderRadius: '12px',
-            padding: '16px',
+            padding: '20px 24px',
           }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '12px',
-              paddingBottom: '10px',
-              borderBottom: '2px solid #f59e0b',
-            }}>
-              <span style={{ fontWeight: 600, fontSize: '15px' }}>⏳ Waiting on Yaakov</span>
-              <span style={{
-                backgroundColor: '#f59e0b',
-                color: 'white',
-                borderRadius: '12px',
-                padding: '2px 10px',
-                fontSize: '12px',
-                fontWeight: 600,
-              }}>{allWaiting.length}</span>
-            </div>
-            <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
-              {allWaiting.map(task => (
-                <div key={task.id} style={{
-                  backgroundColor: '#0f172a',
-                  borderRadius: '8px',
-                  padding: '10px 12px',
-                  marginBottom: '8px',
-                  borderLeft: `3px solid ${task.projectColor}`,
-                }}>
-                  <div style={{ fontWeight: 600, fontSize: '13px', marginBottom: '2px' }}>{task.title}</div>
-                  <div style={{ fontSize: '11px', color: '#94a3b8', marginBottom: '4px' }}>{task.description}</div>
-                  <div style={{ fontSize: '10px', color: task.projectColor, fontWeight: 500 }}>{task.projectName}</div>
-                </div>
-              ))}
-              {allWaiting.length === 0 && (
-                <div style={{ color: '#64748b', fontSize: '13px', textAlign: 'center', padding: '16px' }}>
-                  Nothing waiting
-                </div>
-              )}
-            </div>
+            <SkillProgressBar skillProgress={activeProject.skillProgress} />
           </div>
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
-        {/* Left: Projects */}
-        <div>
-          <h2 style={{ margin: '0 0 16px 0', fontSize: '18px', color: '#94a3b8' }}>Projects</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {data.projects?.map(project => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-            {(!data.projects || data.projects.length === 0) && (
-              <div style={{ color: '#64748b', padding: '20px', textAlign: 'center' }}>
-                No projects yet
+      {/* SECTION 3: Recent Activity (Minimal) */}
+      {recentActivity.length > 0 && (
+        <div style={{ marginBottom: '48px' }}>
+          <div style={{ 
+            fontSize: '12px', 
+            color: '#64748b', 
+            textTransform: 'uppercase', 
+            letterSpacing: '1px',
+            marginBottom: '12px',
+          }}>
+            Recent
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {recentActivity.map(activity => (
+              <div key={activity.id} style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 16px',
+                backgroundColor: '#1e293b',
+                borderRadius: '8px',
+              }}>
+                <span style={{ fontSize: '14px', color: '#e2e8f0' }}>{activity.title}</span>
+                <span style={{ fontSize: '12px', color: '#64748b' }}>{timeAgo(activity.completed)}</span>
               </div>
-            )}
+            ))}
           </div>
         </div>
+      )}
 
-        {/* Right: Ideas & Recent Activity */}
-        <div>
-          {/* Ideas */}
-          <h2 style={{ margin: '0 0 16px 0', fontSize: '18px', color: '#94a3b8' }}>
-            💡 Ideas ({data.globalIdeas?.length || 0})
-          </h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '24px' }}>
-            {data.globalIdeas?.map(idea => (
-              <IdeaCard key={idea.id} idea={idea} />
-            ))}
-            {(!data.globalIdeas || data.globalIdeas.length === 0) && (
-              <div style={{ color: '#64748b', fontSize: '14px' }}>No ideas yet</div>
-            )}
-          </div>
-
-          {/* Recent Activity */}
-          <h2 style={{ margin: '0 0 16px 0', fontSize: '18px', color: '#94a3b8' }}>
-            📜 Recent Activity
-          </h2>
-          <div style={{
-            backgroundColor: '#1e293b',
-            borderRadius: '12px',
-            padding: '12px 16px',
-            maxHeight: '300px',
-            overflowY: 'auto',
-          }}>
-            {data.globalActivityLog?.map(activity => (
-              <ActivityItem key={activity.id} activity={activity} />
-            ))}
-            {(!data.globalActivityLog || data.globalActivityLog.length === 0) && (
-              <div style={{ color: '#64748b', textAlign: 'center', padding: '20px' }}>
-                No activity yet
-              </div>
-            )}
-          </div>
+      {/* SECTION 4: All Projects (Compact List) */}
+      <div>
+        <div style={{ 
+          fontSize: '12px', 
+          color: '#64748b', 
+          textTransform: 'uppercase', 
+          letterSpacing: '1px',
+          marginBottom: '12px',
+        }}>
+          All Projects
+        </div>
+        
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {data.projects?.map(project => (
+            <ProjectMini key={project.id} project={project} />
+          ))}
         </div>
       </div>
 
-      {/* General / Miscellaneous Board */}
-      {data.general && (
-        <div style={{ marginTop: '32px' }}>
-          <h2 style={{ margin: '0 0 16px 0', fontSize: '18px', color: '#94a3b8' }}>
-            🗂️ General / Miscellaneous
-          </h2>
-          <div style={{
-            display: 'flex',
-            gap: '12px',
-            overflowX: 'auto',
-            paddingBottom: '8px',
-          }}>
-            {['backlog', 'inProgress', 'waiting', 'done'].map(key => {
-              const column = data.general[key];
-              if (!column) return null;
-              return (
-                <MiniColumn
-                  key={key}
-                  title={column.title}
-                  color={column.color}
-                  tasks={column.tasks || []}
-                />
-              );
-            })}
-          </div>
+      {/* Nothing to show fallback */}
+      {allWaiting.length === 0 && !activeProject && (
+        <div style={{ 
+          textAlign: 'center', 
+          color: '#64748b', 
+          padding: '60px 20px',
+          fontSize: '16px',
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>✨</div>
+          <div>All clear! Nothing needs your attention.</div>
         </div>
       )}
     </div>

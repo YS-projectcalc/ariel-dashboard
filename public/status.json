@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-04T19:25:00Z",
+  "lastUpdated": "2026-02-04T22:18:00Z",
   "approvals": [
     {
-      "id": "brand-cover-nanobanana",
+      "id": "brand-cover-final-v2",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "NANO BANANA PRO Cover - THE ONE! 🔑✨",
-      "description": "Generated with Google's Nano Banana Pro (gemini-3-pro-image-preview). Stunning ornate Victorian golden key with intricate scrollwork, radial light rays, deep navy background. Text composited perfectly. THIS IS LEGENDARY!",
-      "image": "/assets/the-debt-code/final-nanobanana-cover.png",
-      "options": ["Approve! 🎉", "Adjust text size/position", "Generate more variations", "Different style"],
-      "created": "2026-02-04T19:25:00Z"
+      "title": "Cover v2 - DALL-E with Revisions",
+      "description": "Reverted to DALL-E 3D book mockup per Yaakov's preference. Changes: Bigger tagline (36px), moved higher up, changed to 'Fear No More'.",
+      "image": "/assets/the-debt-code/final-cover-v2.png",
+      "options": ["Approve! 🎉", "More adjustments needed"],
+      "created": "2026-02-04T22:18:00Z"
     }
   ],
   "projects": [

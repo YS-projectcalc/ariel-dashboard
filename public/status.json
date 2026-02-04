@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-04T18:58:00Z",
+  "lastUpdated": "2026-02-04T19:10:00Z",
   "approvals": [
     {
-      "id": "brand-cover-v4",
+      "id": "brand-cover-ai-v1",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Cover v4 - BOLD Graphics",
-      "description": "Large key graphic behind title (900px), golden sparkles, light rays, even bigger title (300px), larger subtitle (52px), thicker frame. Going bold as requested.",
-      "image": "/assets/the-debt-code/cover-v4-rendered.png",
-      "options": ["Approve", "Key needs more prominence", "Different graphic style", "Color adjustments"],
-      "created": "2026-02-04T18:58:00Z"
+      "title": "AI-Generated Cover - LEGENDARY! 🔑",
+      "description": "DALL-E 3 generated stunning ornate Victorian golden key with sunburst rays, elegant gold border, deep navy background. Text composited on top. Premium bestseller quality!",
+      "image": "/assets/the-debt-code/final-cover-v1.png",
+      "options": ["Approve", "Adjust text placement", "Generate more variations", "Different key style"],
+      "created": "2026-02-04T19:10:00Z"
     }
   ],
   "projects": [

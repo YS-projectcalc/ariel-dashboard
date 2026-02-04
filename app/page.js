@@ -21,6 +21,101 @@ function timeAgo(dateString) {
   return `${date.getMonth() + 1}/${date.getDate()}`;
 }
 
+function ApprovalCard({ approval, projectName, projectColor }) {
+  const [selectedOption, setSelectedOption] = useState(null);
+  
+  return (
+    <div style={{
+      backgroundColor: '#0f172a',
+      borderRadius: '12px',
+      padding: '20px',
+      borderLeft: `4px solid ${projectColor || '#f59e0b'}`,
+      marginBottom: '16px',
+    }}>
+      <div style={{ 
+        fontSize: '11px', 
+        color: projectColor || '#f59e0b', 
+        fontWeight: 600, 
+        marginBottom: '8px',
+        textTransform: 'uppercase',
+        letterSpacing: '0.5px'
+      }}>
+        {projectName} • {approval.type}
+      </div>
+      <div style={{ fontWeight: 700, fontSize: '18px', marginBottom: '8px', color: '#f8fafc' }}>
+        {approval.title}
+      </div>
+      <div style={{ fontSize: '14px', color: '#94a3b8', lineHeight: '1.5', marginBottom: '16px' }}>
+        {approval.description}
+      </div>
+      
+      {/* Image Preview */}
+      {approval.image && (
+        <div style={{ marginBottom: '16px' }}>
+          <a href={approval.image} target="_blank" rel="noopener noreferrer">
+            <img 
+              src={approval.image} 
+              alt={approval.title}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '400px',
+                borderRadius: '8px',
+                border: '1px solid #334155',
+                cursor: 'pointer',
+              }}
+            />
+          </a>
+          <div style={{ fontSize: '12px', color: '#64748b', marginTop: '8px' }}>
+            Click to view full size
+          </div>
+        </div>
+      )}
+      
+      {/* Options */}
+      {approval.options && approval.options.length > 0 && (
+        <div style={{ marginTop: '16px' }}>
+          <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px' }}>
+            Your choice:
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {approval.options.map((option, i) => (
+              <button
+                key={i}
+                onClick={() => setSelectedOption(i)}
+                style={{
+                  backgroundColor: selectedOption === i ? '#3b82f6' : '#1e293b',
+                  color: selectedOption === i ? 'white' : '#e2e8f0',
+                  border: selectedOption === i ? '2px solid #3b82f6' : '1px solid #334155',
+                  borderRadius: '8px',
+                  padding: '12px 16px',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  transition: 'all 0.2s',
+                }}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+          {selectedOption !== null && (
+            <div style={{ 
+              marginTop: '12px', 
+              padding: '12px', 
+              backgroundColor: '#1e3a5f', 
+              borderRadius: '8px',
+              fontSize: '13px',
+              color: '#93c5fd',
+            }}>
+              💡 Selection saved locally. Email Ariel at dealsandpoints@gmail.com with your choice, or wait for the next check-in.
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function WaitingCard({ task, projectName, projectColor }) {
   return (
     <div style={{
@@ -212,6 +307,16 @@ export default function Home() {
     }))
   );
 
+  // Get all approvals with project info
+  const allApprovals = (data.approvals || []).map(a => {
+    const project = data.projects?.find(p => p.id === a.projectId);
+    return {
+      ...a,
+      projectName: project?.name || 'Unknown Project',
+      projectColor: project?.color || '#f59e0b',
+    };
+  });
+
   // Get active project (the one with work happening)
   const activeProject = data.projects?.find(p => p.status === 'active' && p.skillProgress);
 
@@ -258,7 +363,39 @@ export default function Home() {
         </button>
       </div>
 
-      {/* SECTION 1: Needs Your Review (PRIMARY) */}
+      {/* SECTION 1: Visual Approvals (HIGHEST PRIORITY) */}
+      {allApprovals.length > 0 && (
+        <div style={{ marginBottom: '48px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            marginBottom: '20px',
+          }}>
+            <div style={{
+              backgroundColor: '#8b5cf6',
+              color: 'white',
+              fontWeight: 700,
+              fontSize: '13px',
+              padding: '4px 12px',
+              borderRadius: '4px',
+            }}>
+              🎨 {allApprovals.length} VISUAL APPROVAL{allApprovals.length > 1 ? 'S' : ''}
+            </div>
+          </div>
+          
+          {allApprovals.map(approval => (
+            <ApprovalCard 
+              key={approval.id} 
+              approval={approval} 
+              projectName={approval.projectName}
+              projectColor={approval.projectColor}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* SECTION 2: Needs Your Review (Text Items) */}
       {allWaiting.length > 0 && (
         <div style={{ marginBottom: '48px' }}>
           <div style={{
@@ -290,7 +427,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* SECTION 2: Active Project Progress */}
+      {/* SECTION 3: Active Project Progress */}
       {activeProject && activeProject.skillProgress && (
         <div style={{ marginBottom: '48px' }}>
           <div style={{ 
@@ -313,7 +450,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* SECTION 3: Recent Activity (Minimal) */}
+      {/* SECTION 4: Recent Activity (Minimal) */}
       {recentActivity.length > 0 && (
         <div style={{ marginBottom: '48px' }}>
           <div style={{ 
@@ -344,7 +481,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* SECTION 4: All Projects (Compact List) */}
+      {/* SECTION 5: All Projects (Compact List) */}
       <div>
         <div style={{ 
           fontSize: '12px', 
@@ -364,7 +501,7 @@ export default function Home() {
       </div>
 
       {/* Nothing to show fallback */}
-      {allWaiting.length === 0 && !activeProject && (
+      {allApprovals.length === 0 && allWaiting.length === 0 && !activeProject && (
         <div style={{ 
           textAlign: 'center', 
           color: '#64748b', 

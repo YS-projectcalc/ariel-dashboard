@@ -1,5 +1,27 @@
 {
-  "lastUpdated": "2026-02-04T13:30:00Z",
+  "lastUpdated": "2026-02-04T14:18:00Z",
+  "approvals": [
+    {
+      "id": "brand-logo-1",
+      "projectId": "credit-card-debt",
+      "type": "logo",
+      "title": "Logo Icon Concepts",
+      "description": "Stylized 'D' with keyhole variations. Top-left is cleanest option.",
+      "image": "/assets/the-debt-code/icon-concept-1.png",
+      "options": ["Top-left (D with amber keyhole)", "Top-right (D with white keyhole)", "Bottom-left (Solid D)", "Bottom-right (D with key)"],
+      "created": "2026-02-04T14:10:00Z"
+    },
+    {
+      "id": "brand-cover-1",
+      "projectId": "credit-card-debt",
+      "type": "book-cover",
+      "title": "Book Cover Concept",
+      "description": "Navy blue with lock icon, amber subtitle. Has AI text artifacts - will cleanup after direction approved.",
+      "image": "/assets/the-debt-code/book-cover-concept-1.png",
+      "options": ["Approve direction (cleanup needed)", "Try different style", "More concepts needed"],
+      "created": "2026-02-04T14:10:00Z"
+    }
+  ],
   "projects": [
     {
       "id": "credit-card-debt",
@@ -12,7 +34,7 @@
       "skillProgress": {
         "orchestrator": "complete",
         "business-naming": "complete",
-        "brand-assets": "in-progress",
+        "brand-assets": "awaiting-approval",
         "infoproduct-creation": "pending",
         "funnel-builder": "pending",
         "legal-templates": "pending"
@@ -23,6 +45,11 @@
         }
       },
       "activityLog": [
+        {
+          "id": "ccd-a5",
+          "title": "🎨 Brand assets generated",
+          "completed": "2026-02-04T14:10:00Z"
+        },
         {
           "id": "ccd-a4",
           "title": "✅ Name approved: The Debt Code",

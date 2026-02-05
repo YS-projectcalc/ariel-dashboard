@@ -1,0 +1,101 @@
+{
+  "lastUpdated": "2026-02-05T14:23:00Z",
+  "approvals": [
+    {
+      "id": "brand-cover-final-v2",
+      "projectId": "credit-card-debt",
+      "type": "book-cover",
+      "title": "Cover v2 - DALL-E with Revisions",
+      "description": "Reverted to DALL-E 3D book mockup per Yaakov's preference. Changes: Bigger tagline (36px), moved higher up, changed to 'Fear No More'.",
+      "image": "/assets/the-debt-code/final-cover-v2.png",
+      "options": ["Approve! 🎉", "More adjustments needed"],
+      "created": "2026-02-04T22:18:00Z"
+    }
+  ],
+  "brandAlternatives": [
+    {
+      "id": "variant1_light_A",
+      "projectId": "credit-card-debt",
+      "title": "Breaking Free",
+      "description": "Key breaking through chains of bills/receipts. Concept: Financial liberation through knowledge.",
+      "image": "/assets/the-debt-code/variants/variant1_light_A.png",
+      "created": "2026-02-05T11:08:00Z"
+    },
+    {
+      "id": "variant1_light_B",
+      "projectId": "credit-card-debt",
+      "title": "Unlocking Potential",
+      "description": "Elegant padlock with $ symbol. Light emanating from lock. Concept: Unlocking financial secrets.",
+      "image": "/assets/the-debt-code/variants/variant1_light_B.png",
+      "created": "2026-02-05T11:08:00Z",
+      "recommended": true
+    },
+    {
+      "id": "variant1_light_C",
+      "projectId": "credit-card-debt",
+      "title": "Rising Above",
+      "description": "Nautical compass with graph lines. Concept: Strategy and navigation through debt.",
+      "image": "/assets/the-debt-code/variants/variant1_light_C.png",
+      "created": "2026-02-05T11:08:00Z"
+    },
+    {
+      "id": "variant2_minimal_A",
+      "projectId": "credit-card-debt",
+      "title": "Pure Control",
+      "description": "White background, navy spine band, gold square. Concept: Controlled, precise, sophisticated.",
+      "image": "/assets/the-debt-code/variants/variant2_minimal_A.png",
+      "created": "2026-02-05T11:08:00Z"
+    },
+    {
+      "id": "variant2_minimal_B",
+      "projectId": "credit-card-debt",
+      "title": "Geometric Clarity",
+      "description": "Navy circle with gold dot on light gray. Concept: Focus and clarity.",
+      "image": "/assets/the-debt-code/variants/variant2_minimal_B.png",
+      "created": "2026-02-05T11:08:00Z",
+      "recommended": true
+    },
+    {
+      "id": "variant2_minimal_C",
+      "projectId": "credit-card-debt",
+      "title": "Strategic Simplicity",
+      "description": "Navy key silhouette on white. Concept: The key to debt freedom.",
+      "image": "/assets/the-debt-code/variants/variant2_minimal_C.png",
+      "created": "2026-02-05T11:08:00Z",
+      "recommended": true
+    }
+  ],
+  "waitingItems": [
+    {
+      "id": "cloudflare-migration",
+      "type": "[INFRASTRUCTURE]",
+      "title": "Complete Cloudflare Dashboard Deployment",
+      "description": "Preparing final steps for Cloudflare Pages migration with proper token authentication.",
+      "created": "2026-02-05T14:23:00Z"
+    },
+    {
+      "id": "mission-control-design",
+      "type": "[UI/UX]",
+      "title": "Mission Control Dashboard Design Research",
+      "description": "Analyzing Alex Finn's dashboard layout for top-level navigation. Awaiting full image details.",
+      "created": "2026-02-05T14:23:00Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "credit-card-debt",
+      "name": "The Debt Code",
+      "color": "#8b5cf6",
+      "status": "active",
+      "currentSkill": "brand-assets",
+      "skillProgress": {
+        "orchestrator": "complete",
+        "business-naming": "complete",
+        "brand-assets": "awaiting-approval",
+        "infoproduct-creation": "pending",
+        "funnel-builder": "pending",
+        "legal-templates": "pending"
+      }
+    }
+  ]
+}

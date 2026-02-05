@@ -1,12 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 
 function timeAgo(dateString) {
   if (!dateString) return '';
-  if (/^\d{1,2}\/\d{1,2}$/.test(dateString)) return dateString;
-  
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = now - date;
@@ -21,260 +18,380 @@ function timeAgo(dateString) {
   return `${date.getMonth() + 1}/${date.getDate()}`;
 }
 
-function ApprovalCard({ approval, projectName, projectColor }) {
-  const [selectedOption, setSelectedOption] = useState(null);
-  
-  return (
-    <div style={{
-      backgroundColor: '#0f172a',
-      borderRadius: '12px',
-      padding: '20px',
-      borderLeft: `4px solid ${projectColor || '#f59e0b'}`,
-      marginBottom: '16px',
-    }}>
-      <div style={{ 
-        fontSize: '11px', 
-        color: projectColor || '#f59e0b', 
-        fontWeight: 600, 
-        marginBottom: '8px',
-        textTransform: 'uppercase',
-        letterSpacing: '0.5px'
-      }}>
-        {projectName} • {approval.type}
-      </div>
-      <div style={{ fontWeight: 700, fontSize: '18px', marginBottom: '8px', color: '#f8fafc' }}>
-        {approval.title}
-      </div>
-      <div style={{ fontSize: '14px', color: '#94a3b8', lineHeight: '1.5', marginBottom: '16px' }}>
-        {approval.description}
-      </div>
-      
-      {/* Image Preview */}
-      {approval.image && (
-        <div style={{ marginBottom: '16px' }}>
-          <a href={approval.image} target="_blank" rel="noopener noreferrer">
-            <img 
-              src={approval.image} 
-              alt={approval.title}
-              style={{
-                maxWidth: '100%',
-                maxHeight: '400px',
-                borderRadius: '8px',
-                border: '1px solid #334155',
-                cursor: 'pointer',
-              }}
-            />
-          </a>
-          <div style={{ fontSize: '12px', color: '#64748b', marginTop: '8px' }}>
-            Click to view full size
-          </div>
-        </div>
-      )}
-      
-      {/* Options */}
-      {approval.options && approval.options.length > 0 && (
-        <div style={{ marginTop: '16px' }}>
-          <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px' }}>
-            Your choice:
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {approval.options.map((option, i) => (
-              <button
-                key={i}
-                onClick={() => setSelectedOption(i)}
-                style={{
-                  backgroundColor: selectedOption === i ? '#3b82f6' : '#1e293b',
-                  color: selectedOption === i ? 'white' : '#e2e8f0',
-                  border: selectedOption === i ? '2px solid #3b82f6' : '1px solid #334155',
-                  borderRadius: '8px',
-                  padding: '12px 16px',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  fontSize: '14px',
-                  transition: 'all 0.2s',
-                }}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-          {selectedOption !== null && (
-            <div style={{ 
-              marginTop: '12px', 
-              padding: '12px', 
-              backgroundColor: '#1e3a5f', 
-              borderRadius: '8px',
-              fontSize: '13px',
-              color: '#93c5fd',
-            }}>
-              💡 Selection saved locally. Email Ariel at dealsandpoints@gmail.com with your choice, or wait for the next check-in.
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function WaitingCard({ task, projectName, projectColor }) {
-  return (
-    <div style={{
-      backgroundColor: '#0f172a',
-      borderRadius: '12px',
-      padding: '20px',
-      borderLeft: `4px solid ${projectColor || '#f59e0b'}`,
-      marginBottom: '12px',
-    }}>
-      <div style={{ 
-        fontSize: '11px', 
-        color: projectColor || '#f59e0b', 
-        fontWeight: 600, 
-        marginBottom: '8px',
-        textTransform: 'uppercase',
-        letterSpacing: '0.5px'
-      }}>
-        {projectName}
-      </div>
-      <div style={{ fontWeight: 700, fontSize: '16px', marginBottom: '8px', color: '#f8fafc' }}>
-        {task.title}
-      </div>
-      <div style={{ fontSize: '14px', color: '#94a3b8', lineHeight: '1.5' }}>
-        {task.description}
-      </div>
-      {task.asked && (
-        <div style={{ fontSize: '12px', color: '#64748b', marginTop: '12px' }}>
-          Asked: {task.asked}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function SkillProgressBar({ skillProgress }) {
-  if (!skillProgress) return null;
-  
-  const skills = [
-    { key: 'orchestrator', label: 'Orchestrator', icon: '🎯' },
-    { key: 'business-naming', label: 'Naming', icon: '🔤' },
-    { key: 'brand-assets', label: 'Brand', icon: '🎨' },
-    { key: 'infoproduct-creation', label: 'Content', icon: '📝' },
-    { key: 'funnel-builder', label: 'Funnel', icon: '🚀' },
-    { key: 'legal-templates', label: 'Legal', icon: '⚖️' },
+// Top Navigation Tabs
+function TopNav({ activeTab, setActiveTab }) {
+  const tabs = [
+    { id: 'tasks', label: 'Tasks', icon: '📋' },
+    { id: 'projects', label: 'Projects', icon: '📁' },
+    { id: 'memory', label: 'Memory', icon: '🧠' },
+    { id: 'docs', label: 'Docs', icon: '📄' },
+    { id: 'search', label: 'Search', icon: '🔍' },
   ];
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'complete': return '#22c55e';
-      case 'in-progress': return '#3b82f6';
-      case 'awaiting-approval': return '#f59e0b';
-      default: return '#334155';
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'complete': return '✓';
-      case 'in-progress': return '●';
-      case 'awaiting-approval': return '!';
-      default: return '○';
-    }
-  };
-
   return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'space-between', 
-      alignItems: 'center',
-      padding: '16px 0',
+    <div style={{
+      display: 'flex',
+      gap: '4px',
+      padding: '8px 16px',
+      backgroundColor: '#1e293b',
+      borderRadius: '8px',
+      marginBottom: '24px',
     }}>
-      {skills.map((skill, i) => {
-        const status = skillProgress[skill.key] || 'pending';
-        const color = getStatusColor(status);
-        return (
-          <div key={skill.key} style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ textAlign: 'center' }}>
-              <div style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '50%',
-                backgroundColor: status === 'pending' ? 'transparent' : color,
-                border: `3px solid ${color}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: status === 'pending' ? color : 'white',
-                fontWeight: 700,
-                fontSize: '14px',
-              }}>
-                {getStatusIcon(status)}
-              </div>
-              <div style={{ 
-                fontSize: '11px', 
-                color: status === 'pending' ? '#64748b' : color,
-                marginTop: '6px',
-                fontWeight: status === 'awaiting-approval' ? 700 : 500,
-              }}>
-                {skill.label}
-              </div>
-            </div>
-            {i < skills.length - 1 && (
-              <div style={{
-                width: '60px',
-                height: '3px',
-                backgroundColor: skillProgress[skills[i + 1].key] === 'pending' ? '#334155' : getStatusColor(skillProgress[skills[i + 1].key]),
-                margin: '0 8px',
-                marginBottom: '20px',
-              }} />
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-function ProjectMini({ project }) {
-  const statusColors = {
-    active: '#22c55e',
-    paused: '#64748b',
-    waiting: '#f59e0b',
-  };
-  
-  return (
-    <Link href={`/project/${project.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '12px 16px',
-        backgroundColor: '#1e293b',
-        borderRadius: '8px',
-        cursor: 'pointer',
-        transition: 'background-color 0.2s',
-      }}
-      onMouseEnter={e => e.currentTarget.style.backgroundColor = '#334155'}
-      onMouseLeave={e => e.currentTarget.style.backgroundColor = '#1e293b'}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '10px',
-            height: '10px',
-            borderRadius: '50%',
-            backgroundColor: statusColors[project.status] || '#64748b',
-          }} />
-          <span style={{ fontWeight: 600, fontSize: '14px' }}>{project.name}</span>
-        </div>
-        <div style={{ fontSize: '12px', color: '#64748b' }}>
-          {project.currentSkill && `→ ${project.currentSkill}`}
-        </div>
+        gap: '8px',
+        padding: '8px 16px',
+        backgroundColor: '#0f172a',
+        borderRadius: '6px',
+        marginRight: '8px',
+      }}>
+        <span style={{ fontSize: '20px' }}>🦁</span>
+        <span style={{ fontWeight: 700, color: '#f8fafc' }}>Ariel</span>
       </div>
-    </Link>
+      
+      {tabs.map(tab => (
+        <button
+          key={tab.id}
+          onClick={() => setActiveTab(tab.id)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '8px 16px',
+            backgroundColor: activeTab === tab.id ? '#3b82f6' : 'transparent',
+            color: activeTab === tab.id ? 'white' : '#94a3b8',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '14px',
+            fontWeight: 500,
+            transition: 'all 0.2s',
+          }}
+        >
+          <span>{tab.icon}</span>
+          <span>{tab.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// Stats Bar
+function StatsBar({ data }) {
+  const totalTasks = (data.waitingItems?.length || 0) + (data.approvals?.length || 0);
+  const completedTasks = data.projects?.[0]?.activityLog?.length || 0;
+  const inProgress = data.waitingItems?.length || 0;
+  const completion = totalTasks > 0 ? Math.round((completedTasks / (completedTasks + totalTasks)) * 100) : 0;
+
+  return (
+    <div style={{
+      display: 'flex',
+      gap: '32px',
+      marginBottom: '24px',
+      padding: '16px 0',
+    }}>
+      <div>
+        <span style={{ fontSize: '28px', fontWeight: 700, color: '#22c55e' }}>{completedTasks}</span>
+        <span style={{ fontSize: '14px', color: '#64748b', marginLeft: '8px' }}>Completed</span>
+      </div>
+      <div>
+        <span style={{ fontSize: '28px', fontWeight: 700, color: '#f59e0b' }}>{inProgress}</span>
+        <span style={{ fontSize: '14px', color: '#64748b', marginLeft: '8px' }}>In Progress</span>
+      </div>
+      <div>
+        <span style={{ fontSize: '28px', fontWeight: 700, color: '#94a3b8' }}>{totalTasks}</span>
+        <span style={{ fontSize: '14px', color: '#64748b', marginLeft: '8px' }}>Total</span>
+      </div>
+      <div>
+        <span style={{ fontSize: '28px', fontWeight: 700, color: '#8b5cf6' }}>{completion}%</span>
+        <span style={{ fontSize: '14px', color: '#64748b', marginLeft: '8px' }}>Completion</span>
+      </div>
+    </div>
+  );
+}
+
+// Task Card Component
+function TaskCard({ task, color }) {
+  return (
+    <div style={{
+      backgroundColor: '#1e293b',
+      borderRadius: '8px',
+      padding: '16px',
+      marginBottom: '12px',
+      borderLeft: `3px solid ${color || '#3b82f6'}`,
+    }}>
+      {task.type && (
+        <div style={{
+          fontSize: '11px',
+          color: '#64748b',
+          marginBottom: '6px',
+          textTransform: 'uppercase',
+        }}>
+          {task.type}
+        </div>
+      )}
+      <div style={{ fontWeight: 600, fontSize: '14px', color: '#f8fafc', marginBottom: '8px' }}>
+        {task.title}
+      </div>
+      {task.description && (
+        <div style={{ fontSize: '13px', color: '#94a3b8', lineHeight: '1.4' }}>
+          {task.description}
+        </div>
+      )}
+      {task.image && (
+        <a href={task.image} target="_blank" rel="noopener noreferrer">
+          <img 
+            src={task.image} 
+            alt={task.title}
+            style={{
+              width: '100%',
+              marginTop: '12px',
+              borderRadius: '6px',
+              border: '1px solid #334155',
+            }}
+          />
+        </a>
+      )}
+      <div style={{ 
+        fontSize: '11px', 
+        color: '#64748b', 
+        marginTop: '12px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+      }}>
+        <span>🦁 Ariel</span>
+        <span>•</span>
+        <span>{timeAgo(task.created || task.updated)}</span>
+      </div>
+    </div>
+  );
+}
+
+// Kanban Column
+function KanbanColumn({ title, count, tasks, color }) {
+  return (
+    <div style={{ flex: 1, minWidth: '280px' }}>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '16px',
+        padding: '8px 0',
+      }}>
+        <div style={{
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          backgroundColor: color,
+        }} />
+        <span style={{ fontWeight: 600, color: '#f8fafc' }}>{title}</span>
+        <span style={{
+          backgroundColor: '#334155',
+          color: '#94a3b8',
+          padding: '2px 8px',
+          borderRadius: '10px',
+          fontSize: '12px',
+        }}>
+          {count}
+        </span>
+      </div>
+      
+      <div style={{ 
+        backgroundColor: '#0f172a', 
+        borderRadius: '8px', 
+        padding: '12px',
+        minHeight: '200px',
+      }}>
+        {tasks.length === 0 ? (
+          <div style={{ color: '#64748b', fontSize: '14px', padding: '20px', textAlign: 'center' }}>
+            No tasks
+          </div>
+        ) : (
+          tasks.map(task => (
+            <TaskCard key={task.id} task={task} color={color} />
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Activity Feed
+function ActivityFeed({ activities }) {
+  return (
+    <div style={{
+      width: '300px',
+      backgroundColor: '#0f172a',
+      borderRadius: '8px',
+      padding: '16px',
+      height: 'fit-content',
+    }}>
+      <div style={{
+        fontWeight: 600,
+        color: '#f8fafc',
+        marginBottom: '16px',
+        fontSize: '14px',
+      }}>
+        ACTIVITY
+      </div>
+      
+      {activities.length === 0 ? (
+        <div style={{ color: '#64748b', fontSize: '13px' }}>No recent activity</div>
+      ) : (
+        activities.map((activity, i) => (
+          <div key={i} style={{
+            padding: '12px 0',
+            borderBottom: i < activities.length - 1 ? '1px solid #1e293b' : 'none',
+          }}>
+            <div style={{ fontSize: '13px', color: '#94a3b8' }}>
+              <span style={{ color: '#8b5cf6' }}>Ariel</span>
+              {' '}{activity.action || 'completed'}{' '}
+              <span style={{ color: '#3b82f6' }}>{activity.title}</span>
+            </div>
+            <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
+              {timeAgo(activity.completed || activity.created)}
+            </div>
+          </div>
+        ))
+      )}
+    </div>
+  );
+}
+
+// Projects View
+function ProjectsView({ data }) {
+  const project = data.projects?.[0];
+  if (!project) return <div style={{ color: '#64748b' }}>No projects</div>;
+
+  return (
+    <div>
+      <h2 style={{ color: '#f8fafc', marginBottom: '24px' }}>{project.name}</h2>
+      
+      {/* Skill Progress */}
+      <div style={{
+        display: 'flex',
+        gap: '16px',
+        marginBottom: '32px',
+        flexWrap: 'wrap',
+      }}>
+        {Object.entries(project.skillProgress || {}).map(([skill, status]) => (
+          <div key={skill} style={{
+            padding: '12px 16px',
+            backgroundColor: status === 'complete' ? '#166534' : status === 'awaiting-approval' ? '#854d0e' : '#1e293b',
+            borderRadius: '8px',
+            fontSize: '13px',
+          }}>
+            <div style={{ color: '#94a3b8', fontSize: '11px', marginBottom: '4px' }}>{skill}</div>
+            <div style={{ color: '#f8fafc', fontWeight: 600 }}>{status}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Brand Alternatives */}
+      {data.brandAlternatives && data.brandAlternatives.length > 0 && (
+        <div>
+          <h3 style={{ color: '#f8fafc', marginBottom: '16px' }}>📚 Book Cover Options</h3>
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+            gap: '16px' 
+          }}>
+            {data.brandAlternatives.map(variant => (
+              <div key={variant.id} style={{
+                backgroundColor: '#1e293b',
+                borderRadius: '8px',
+                padding: '16px',
+                borderLeft: variant.recommended ? '3px solid #22c55e' : '3px solid #334155',
+              }}>
+                {variant.recommended && (
+                  <div style={{ color: '#22c55e', fontSize: '11px', fontWeight: 700, marginBottom: '8px' }}>
+                    ⭐ RECOMMENDED
+                  </div>
+                )}
+                <div style={{ fontWeight: 600, color: '#f8fafc', marginBottom: '8px' }}>{variant.title}</div>
+                <div style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '12px' }}>{variant.description}</div>
+                {variant.image && (
+                  <a href={variant.image} target="_blank" rel="noopener noreferrer">
+                    <img src={variant.image} alt={variant.title} style={{ width: '100%', borderRadius: '6px' }} />
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Memory View
+function MemoryView() {
+  return (
+    <div style={{ color: '#94a3b8' }}>
+      <h2 style={{ color: '#f8fafc', marginBottom: '16px' }}>🧠 Memory</h2>
+      <p>Memory search and browsing coming soon.</p>
+    </div>
+  );
+}
+
+// Docs View
+function DocsView() {
+  return (
+    <div style={{ color: '#94a3b8' }}>
+      <h2 style={{ color: '#f8fafc', marginBottom: '16px' }}>📄 Documentation</h2>
+      <p>Documentation browser coming soon.</p>
+    </div>
+  );
+}
+
+// Search View
+function SearchView() {
+  return (
+    <div style={{ color: '#94a3b8' }}>
+      <h2 style={{ color: '#f8fafc', marginBottom: '16px' }}>🔍 Search</h2>
+      <p>Global search coming soon.</p>
+    </div>
+  );
+}
+
+// Tasks View (Kanban)
+function TasksView({ data }) {
+  const approvals = (data.approvals || []).map(a => ({ ...a, type: 'APPROVAL' }));
+  const waiting = (data.waitingItems || []).map(w => ({ ...w }));
+  const activities = data.projects?.[0]?.activityLog || [];
+
+  return (
+    <div style={{ display: 'flex', gap: '24px' }}>
+      <div style={{ flex: 1, display: 'flex', gap: '16px', overflowX: 'auto' }}>
+        <KanbanColumn 
+          title="Approvals" 
+          count={approvals.length} 
+          tasks={approvals}
+          color="#8b5cf6"
+        />
+        <KanbanColumn 
+          title="In Progress" 
+          count={waiting.length} 
+          tasks={waiting}
+          color="#f59e0b"
+        />
+        <KanbanColumn 
+          title="Done" 
+          count={activities.length} 
+          tasks={activities.map(a => ({ id: a.id, title: a.title, created: a.completed }))}
+          color="#22c55e"
+        />
+      </div>
+      <ActivityFeed activities={activities.slice(0, 10)} />
+    </div>
   );
 }
 
 export default function Home() {
   const [data, setData] = useState({ projects: [] });
-  const [lastRefresh, setLastRefresh] = useState(new Date());
+  const [activeTab, setActiveTab] = useState('tasks');
   const [loading, setLoading] = useState(true);
 
   const refresh = async () => {
@@ -288,7 +405,6 @@ export default function Home() {
     } catch (e) {
       console.error('Failed to fetch status:', e);
     }
-    setLastRefresh(new Date());
     setLoading(false);
   };
 
@@ -298,293 +414,34 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  // Get ALL waiting items across all projects
-  const allWaiting = (data.projects || []).flatMap(p => 
-    (p.columns?.waiting?.tasks || []).map(t => ({ 
-      ...t, 
-      projectName: p.name, 
-      projectColor: p.color 
-    }))
-  );
-
-  // Get all approvals with project info
-  const allApprovals = (data.approvals || []).map(a => {
-    const project = data.projects?.find(p => p.id === a.projectId);
-    return {
-      ...a,
-      projectName: project?.name || 'Unknown Project',
-      projectColor: project?.color || '#f59e0b',
-    };
-  });
-
-  // Get active project (the one with work happening)
-  const activeProject = data.projects?.find(p => p.status === 'active' && p.skillProgress);
-
-  // Get recent activity from active project
-  const recentActivity = activeProject?.activityLog?.slice(0, 3) || [];
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'tasks': return <TasksView data={data} />;
+      case 'projects': return <ProjectsView data={data} />;
+      case 'memory': return <MemoryView />;
+      case 'docs': return <DocsView />;
+      case 'search': return <SearchView />;
+      default: return <TasksView data={data} />;
+    }
+  };
 
   return (
     <div style={{ 
       minHeight: '100vh', 
-      padding: '40px 24px', 
-      maxWidth: '900px', 
-      margin: '0 auto',
+      padding: '24px', 
+      backgroundColor: '#0f172a',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      color: '#f8fafc',
     }}>
-      {/* Header */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '48px',
-      }}>
-        <div>
-          <h1 style={{ margin: 0, fontSize: '32px', fontWeight: 700, letterSpacing: '-0.5px' }}>
-            🦁 Ariel
-          </h1>
-          <p style={{ margin: '4px 0 0', color: '#64748b', fontSize: '14px' }}>
-            Updated {timeAgo(data.lastUpdated || lastRefresh.toISOString())}
-          </p>
-        </div>
-        <button
-          onClick={refresh}
-          disabled={loading}
-          style={{
-            backgroundColor: 'transparent',
-            color: loading ? '#64748b' : '#94a3b8',
-            border: '1px solid #334155',
-            borderRadius: '8px',
-            padding: '8px 16px',
-            cursor: loading ? 'wait' : 'pointer',
-            fontSize: '13px',
-          }}
-        >
-          {loading ? '...' : '↻ Refresh'}
-        </button>
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        <TopNav activeTab={activeTab} setActiveTab={setActiveTab} />
+        <StatsBar data={data} />
+        {loading ? (
+          <div style={{ color: '#64748b', padding: '40px', textAlign: 'center' }}>Loading...</div>
+        ) : (
+          renderContent()
+        )}
       </div>
-
-      {/* SECTION 1: Visual Approvals (HIGHEST PRIORITY) */}
-      {allApprovals.length > 0 && (
-        <div style={{ marginBottom: '48px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            marginBottom: '20px',
-          }}>
-            <div style={{
-              backgroundColor: '#8b5cf6',
-              color: 'white',
-              fontWeight: 700,
-              fontSize: '13px',
-              padding: '4px 12px',
-              borderRadius: '4px',
-            }}>
-              🎨 {allApprovals.length} VISUAL APPROVAL{allApprovals.length > 1 ? 'S' : ''}
-            </div>
-          </div>
-          
-          {allApprovals.map(approval => (
-            <ApprovalCard 
-              key={approval.id} 
-              approval={approval} 
-              projectName={approval.projectName}
-              projectColor={approval.projectColor}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* SECTION 1B: Brand Alternatives (Book Cover Variants) */}
-      {data.brandAlternatives && data.brandAlternatives.length > 0 && (
-        <div style={{ marginBottom: '48px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            marginBottom: '20px',
-          }}>
-            <div style={{
-              backgroundColor: '#06b6d4',
-              color: 'white',
-              fontWeight: 700,
-              fontSize: '13px',
-              padding: '4px 12px',
-              borderRadius: '4px',
-            }}>
-              📚 BOOK COVER OPTIONS
-            </div>
-          </div>
-          
-          <div style={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
-            gap: '16px' 
-          }}>
-            {data.brandAlternatives.map(variant => {
-              const project = data.projects?.find(p => p.id === variant.projectId);
-              return (
-                <div key={variant.id} style={{
-                  backgroundColor: '#0f172a',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  borderLeft: variant.recommended ? '4px solid #22c55e' : '4px solid #334155',
-                }}>
-                  {variant.recommended && (
-                    <div style={{
-                      fontSize: '11px',
-                      color: '#22c55e',
-                      fontWeight: 700,
-                      marginBottom: '8px',
-                      textTransform: 'uppercase',
-                    }}>
-                      ⭐ RECOMMENDED
-                    </div>
-                  )}
-                  <div style={{ fontWeight: 700, fontSize: '16px', marginBottom: '8px', color: '#f8fafc' }}>
-                    {variant.title}
-                  </div>
-                  <div style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '12px' }}>
-                    {variant.description}
-                  </div>
-                  {variant.image && (
-                    <a href={variant.image} target="_blank" rel="noopener noreferrer">
-                      <img 
-                        src={variant.image} 
-                        alt={variant.title}
-                        style={{
-                          width: '100%',
-                          borderRadius: '8px',
-                          border: '1px solid #334155',
-                          cursor: 'pointer',
-                        }}
-                      />
-                    </a>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* SECTION 2: Needs Your Review (Text Items) */}
-      {allWaiting.length > 0 && (
-        <div style={{ marginBottom: '48px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            marginBottom: '20px',
-          }}>
-            <div style={{
-              backgroundColor: '#f59e0b',
-              color: 'black',
-              fontWeight: 700,
-              fontSize: '13px',
-              padding: '4px 12px',
-              borderRadius: '4px',
-            }}>
-              {allWaiting.length} NEEDS REVIEW
-            </div>
-          </div>
-          
-          {allWaiting.map(task => (
-            <WaitingCard 
-              key={task.id} 
-              task={task} 
-              projectName={task.projectName}
-              projectColor={task.projectColor}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* SECTION 3: Active Project Progress */}
-      {activeProject && activeProject.skillProgress && (
-        <div style={{ marginBottom: '48px' }}>
-          <div style={{ 
-            fontSize: '12px', 
-            color: '#64748b', 
-            textTransform: 'uppercase', 
-            letterSpacing: '1px',
-            marginBottom: '12px',
-          }}>
-            Current: {activeProject.name}
-          </div>
-          
-          <div style={{
-            backgroundColor: '#1e293b',
-            borderRadius: '12px',
-            padding: '20px 24px',
-          }}>
-            <SkillProgressBar skillProgress={activeProject.skillProgress} />
-          </div>
-        </div>
-      )}
-
-      {/* SECTION 4: Recent Activity (Minimal) */}
-      {recentActivity.length > 0 && (
-        <div style={{ marginBottom: '48px' }}>
-          <div style={{ 
-            fontSize: '12px', 
-            color: '#64748b', 
-            textTransform: 'uppercase', 
-            letterSpacing: '1px',
-            marginBottom: '12px',
-          }}>
-            Recent
-          </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {recentActivity.map(activity => (
-              <div key={activity.id} style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '12px 16px',
-                backgroundColor: '#1e293b',
-                borderRadius: '8px',
-              }}>
-                <span style={{ fontSize: '14px', color: '#e2e8f0' }}>{activity.title}</span>
-                <span style={{ fontSize: '12px', color: '#64748b' }}>{timeAgo(activity.completed)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* SECTION 5: All Projects (Compact List) */}
-      <div>
-        <div style={{ 
-          fontSize: '12px', 
-          color: '#64748b', 
-          textTransform: 'uppercase', 
-          letterSpacing: '1px',
-          marginBottom: '12px',
-        }}>
-          All Projects
-        </div>
-        
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {data.projects?.map(project => (
-            <ProjectMini key={project.id} project={project} />
-          ))}
-        </div>
-      </div>
-
-      {/* Nothing to show fallback */}
-      {allApprovals.length === 0 && allWaiting.length === 0 && !activeProject && (
-        <div style={{ 
-          textAlign: 'center', 
-          color: '#64748b', 
-          padding: '60px 20px',
-          fontSize: '16px',
-        }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>✨</div>
-          <div>All clear! Nothing needs your attention.</div>
-        </div>
-      )}
     </div>
   );
 }

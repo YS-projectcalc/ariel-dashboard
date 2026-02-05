@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T13:49:00Z",
+  "lastUpdated": "2026-02-05T13:53:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -67,11 +67,12 @@
   ],
   "waitingItems": [
     {
-      "id": "api-keys-centralization",
-      "type": "[INFRASTRUCTURE]",
-      "title": "API Keys Centralization Complete",
-      "description": "Consolidated all API keys into secure, encrypted central storage with automated management.",
-      "created": "2026-02-05T13:49:00Z"
+      "id": "cloudflare-deployment",
+      "type": "[ACCESS]",
+      "title": "Cloudflare Pages Deployment Blocked",
+      "description": "Token retrieval and environment configuration issue preventing deployment.",
+      "created": "2026-02-05T11:24:00Z",
+      "updated": "2026-02-05T13:53:00Z"
     }
   ],
   "projects": [

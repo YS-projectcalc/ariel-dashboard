@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T13:23:00Z",
+  "lastUpdated": "2026-02-05T13:27:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -67,12 +67,11 @@
   ],
   "waitingItems": [
     {
-      "id": "dashboard-deployment",
-      "type": "[ACCESS]",
-      "title": "Credential Management Redesign",
-      "description": "Analyzing and redesigning infrastructure for token management and automatic deployment.",
-      "created": "2026-02-05T11:24:00Z",
-      "updated": "2026-02-05T13:23:00Z"
+      "id": "secret-management-overhaul",
+      "type": "[INFRASTRUCTURE]",
+      "title": "Comprehensive Secret Management Strategy",
+      "description": "Developing end-to-end secret management solution with OWASP best practices. Full security architecture redesign.",
+      "created": "2026-02-05T13:27:00Z"
     }
   ],
   "projects": [

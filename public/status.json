@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T14:13:00Z",
+  "lastUpdated": "2026-02-05T14:23:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -67,11 +67,18 @@
   ],
   "waitingItems": [
     {
-      "id": "dependency-resolution",
+      "id": "cloudflare-migration",
       "type": "[INFRASTRUCTURE]",
-      "title": "Deployment Dependencies Diagnostic",
-      "description": "Analyzing and resolving Python and Node.js package dependencies for deployment.",
-      "created": "2026-02-05T14:13:00Z"
+      "title": "Complete Cloudflare Dashboard Deployment",
+      "description": "Preparing final steps for Cloudflare Pages migration with proper token authentication.",
+      "created": "2026-02-05T14:23:00Z"
+    },
+    {
+      "id": "mission-control-design",
+      "type": "[UI/UX]",
+      "title": "Mission Control Dashboard Design Research",
+      "description": "Analyzing Alex Finn's dashboard layout for top-level navigation. Awaiting full image details.",
+      "created": "2026-02-05T14:23:00Z"
     }
   ],
   "projects": [

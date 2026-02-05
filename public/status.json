@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T19:25:29Z",
+  "lastUpdated": "2026-02-05T19:40:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -14,54 +14,30 @@
   ],
   "brandAlternatives": [
     {
-      "id": "variant1_light_A",
+      "id": "nb_A_pure_minimal",
       "projectId": "credit-card-debt",
-      "title": "Breaking Free",
-      "description": "Key breaking through chains of bills/receipts. Concept: Financial liberation through knowledge.",
-      "image": "/assets/the-debt-code/variants/variant1_light_A.png",
-      "created": "2026-02-05T11:08:00Z"
-    },
-    {
-      "id": "variant1_light_B",
-      "projectId": "credit-card-debt",
-      "title": "Unlocking Potential",
-      "description": "Elegant padlock with $ symbol. Light emanating from lock. Concept: Unlocking financial secrets.",
-      "image": "/assets/the-debt-code/variants/variant1_light_B.png",
-      "created": "2026-02-05T11:08:00Z",
+      "title": "Pure Minimal (Nano Banana)",
+      "description": "Clean flat cream, gold accent line, navy block. Zero texture, pure Swiss design minimalism. Typography-led.",
+      "image": "/assets/the-debt-code/variants/nb_A_pure_minimal.png",
+      "created": "2026-02-05T19:40:00Z",
       "recommended": true
     },
     {
-      "id": "variant1_light_C",
+      "id": "nb_B_subtle_geometric",
       "projectId": "credit-card-debt",
-      "title": "Rising Above",
-      "description": "Nautical compass with graph lines. Concept: Strategy and navigation through debt.",
-      "image": "/assets/the-debt-code/variants/variant1_light_C.png",
-      "created": "2026-02-05T11:08:00Z"
-    },
-    {
-      "id": "variant2_minimal_A",
-      "projectId": "credit-card-debt",
-      "title": "Pure Control",
-      "description": "White background, navy spine band, gold square. Concept: Controlled, precise, sophisticated.",
-      "image": "/assets/the-debt-code/variants/variant2_minimal_A.png",
-      "created": "2026-02-05T11:08:00Z"
-    },
-    {
-      "id": "variant2_minimal_B",
-      "projectId": "credit-card-debt",
-      "title": "Geometric Clarity",
-      "description": "Navy circle with gold dot on light gray. Concept: Focus and clarity.",
-      "image": "/assets/the-debt-code/variants/variant2_minimal_B.png",
-      "created": "2026-02-05T11:08:00Z",
+      "title": "Subtle Geometric (Nano Banana)",
+      "description": "Faint intersecting lines in cream section (watermark effect). Gold accent, navy block. Premium stationery feel.",
+      "image": "/assets/the-debt-code/variants/nb_B_subtle_geometric.png",
+      "created": "2026-02-05T19:40:00Z",
       "recommended": true
     },
     {
-      "id": "variant2_minimal_C",
+      "id": "nb_C_soft_organic",
       "projectId": "credit-card-debt",
-      "title": "Strategic Simplicity",
-      "description": "Navy key silhouette on white. Concept: The key to debt freedom.",
-      "image": "/assets/the-debt-code/variants/variant2_minimal_C.png",
-      "created": "2026-02-05T11:08:00Z",
+      "title": "Soft Organic (Nano Banana)",
+      "description": "Natural paper grain texture, warm organic feel. Gold accent, navy block. Artisan premium quality.",
+      "image": "/assets/the-debt-code/variants/nb_C_soft_organic.png",
+      "created": "2026-02-05T19:40:00Z",
       "recommended": true
     }
   ],

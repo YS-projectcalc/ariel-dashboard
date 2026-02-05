@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T11:15:00Z",
+  "lastUpdated": "2026-02-05T11:24:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -63,6 +63,15 @@
       "image": "/assets/the-debt-code/variants/variant2_minimal_C.png",
       "created": "2026-02-05T11:08:00Z",
       "recommended": true
+    }
+  ],
+  "waitingItems": [
+    {
+      "id": "dashboard-deployment",
+      "type": "[ACCESS]",
+      "title": "Dashboard Deployment Issue",
+      "description": "Vercel deployment not showing updated content. Needs investigation.",
+      "created": "2026-02-05T11:24:00Z"
     }
   ],
   "projects": [

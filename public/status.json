@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T13:27:00Z",
+  "lastUpdated": "2026-02-05T13:33:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -67,11 +67,11 @@
   ],
   "waitingItems": [
     {
-      "id": "secret-management-overhaul",
+      "id": "secret-management-approach",
       "type": "[INFRASTRUCTURE]",
-      "title": "Comprehensive Secret Management Strategy",
-      "description": "Developing end-to-end secret management solution with OWASP best practices. Full security architecture redesign.",
-      "created": "2026-02-05T13:27:00Z"
+      "title": "Lightweight Secret Management Solution",
+      "description": "Developing simple, secure method for credential access and rotation.",
+      "created": "2026-02-05T13:33:00Z"
     }
   ],
   "projects": [

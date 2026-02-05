@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T11:24:00Z",
+  "lastUpdated": "2026-02-05T11:43:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -70,8 +70,9 @@
       "id": "dashboard-deployment",
       "type": "[ACCESS]",
       "title": "Dashboard Deployment Issue",
-      "description": "Vercel deployment not showing updated content. Needs investigation.",
-      "created": "2026-02-05T11:24:00Z"
+      "description": "Vercel CLI authentication problem. Requires credential reset.",
+      "created": "2026-02-05T11:24:00Z",
+      "updated": "2026-02-05T11:43:00Z"
     }
   ],
   "projects": [

@@ -395,6 +395,79 @@ export default function Home() {
         </div>
       )}
 
+      {/* SECTION 1B: Brand Alternatives (Book Cover Variants) */}
+      {data.brandAlternatives && data.brandAlternatives.length > 0 && (
+        <div style={{ marginBottom: '48px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            marginBottom: '20px',
+          }}>
+            <div style={{
+              backgroundColor: '#06b6d4',
+              color: 'white',
+              fontWeight: 700,
+              fontSize: '13px',
+              padding: '4px 12px',
+              borderRadius: '4px',
+            }}>
+              📚 BOOK COVER OPTIONS
+            </div>
+          </div>
+          
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', 
+            gap: '16px' 
+          }}>
+            {data.brandAlternatives.map(variant => {
+              const project = data.projects?.find(p => p.id === variant.projectId);
+              return (
+                <div key={variant.id} style={{
+                  backgroundColor: '#0f172a',
+                  borderRadius: '12px',
+                  padding: '16px',
+                  borderLeft: variant.recommended ? '4px solid #22c55e' : '4px solid #334155',
+                }}>
+                  {variant.recommended && (
+                    <div style={{
+                      fontSize: '11px',
+                      color: '#22c55e',
+                      fontWeight: 700,
+                      marginBottom: '8px',
+                      textTransform: 'uppercase',
+                    }}>
+                      ⭐ RECOMMENDED
+                    </div>
+                  )}
+                  <div style={{ fontWeight: 700, fontSize: '16px', marginBottom: '8px', color: '#f8fafc' }}>
+                    {variant.title}
+                  </div>
+                  <div style={{ fontSize: '13px', color: '#94a3b8', marginBottom: '12px' }}>
+                    {variant.description}
+                  </div>
+                  {variant.image && (
+                    <a href={variant.image} target="_blank" rel="noopener noreferrer">
+                      <img 
+                        src={variant.image} 
+                        alt={variant.title}
+                        style={{
+                          width: '100%',
+                          borderRadius: '8px',
+                          border: '1px solid #334155',
+                          cursor: 'pointer',
+                        }}
+                      />
+                    </a>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* SECTION 2: Needs Your Review (Text Items) */}
       {allWaiting.length > 0 && (
         <div style={{ marginBottom: '48px' }}>

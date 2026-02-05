@@ -18,14 +18,13 @@ function timeAgo(dateString) {
   return `${date.getMonth() + 1}/${date.getDate()}`;
 }
 
-// Top Navigation Tabs
-function TopNav({ activeTab, setActiveTab }) {
+// Top Navigation with Project Selector
+function TopNav({ activeTab, setActiveTab, projects, activeProject, setActiveProject }) {
   const tabs = [
     { id: 'tasks', label: 'Tasks', icon: '📋' },
-    { id: 'projects', label: 'Projects', icon: '📁' },
+    { id: 'pulse', label: 'Pulse', icon: '📊' },
     { id: 'memory', label: 'Memory', icon: '🧠' },
     { id: 'docs', label: 'Docs', icon: '📄' },
-    { id: 'search', label: 'Search', icon: '🔍' },
   ];
 
   return (
@@ -36,6 +35,7 @@ function TopNav({ activeTab, setActiveTab }) {
       backgroundColor: '#1e293b',
       borderRadius: '8px',
       marginBottom: '24px',
+      alignItems: 'center',
     }}>
       <div style={{
         display: 'flex',
@@ -44,11 +44,36 @@ function TopNav({ activeTab, setActiveTab }) {
         padding: '8px 16px',
         backgroundColor: '#0f172a',
         borderRadius: '6px',
-        marginRight: '8px',
+        marginRight: '16px',
       }}>
         <span style={{ fontSize: '20px' }}>🦁</span>
         <span style={{ fontWeight: 700, color: '#f8fafc' }}>Ariel</span>
       </div>
+
+      {/* Project Selector Dropdown */}
+      <select
+        value={activeProject}
+        onChange={(e) => setActiveProject(e.target.value)}
+        style={{
+          padding: '8px 12px',
+          backgroundColor: '#0f172a',
+          color: '#f8fafc',
+          border: '1px solid #334155',
+          borderRadius: '6px',
+          fontSize: '14px',
+          fontWeight: 500,
+          cursor: 'pointer',
+          marginRight: '16px',
+        }}
+      >
+        {projects.map(project => (
+          <option key={project.id} value={project.id}>
+            {project.name}
+          </option>
+        ))}
+      </select>
+
+      <div style={{ flex: 1 }} />
       
       {tabs.map(tab => (
         <button
@@ -73,40 +98,6 @@ function TopNav({ activeTab, setActiveTab }) {
           <span>{tab.label}</span>
         </button>
       ))}
-    </div>
-  );
-}
-
-// Stats Bar
-function StatsBar({ data }) {
-  const totalTasks = (data.waitingItems?.length || 0) + (data.approvals?.length || 0);
-  const completedTasks = data.projects?.[0]?.activityLog?.length || 0;
-  const inProgress = data.waitingItems?.length || 0;
-  const completion = totalTasks > 0 ? Math.round((completedTasks / (completedTasks + totalTasks)) * 100) : 0;
-
-  return (
-    <div style={{
-      display: 'flex',
-      gap: '32px',
-      marginBottom: '24px',
-      padding: '16px 0',
-    }}>
-      <div>
-        <span style={{ fontSize: '28px', fontWeight: 700, color: '#22c55e' }}>{completedTasks}</span>
-        <span style={{ fontSize: '14px', color: '#64748b', marginLeft: '8px' }}>Completed</span>
-      </div>
-      <div>
-        <span style={{ fontSize: '28px', fontWeight: 700, color: '#f59e0b' }}>{inProgress}</span>
-        <span style={{ fontSize: '14px', color: '#64748b', marginLeft: '8px' }}>In Progress</span>
-      </div>
-      <div>
-        <span style={{ fontSize: '28px', fontWeight: 700, color: '#94a3b8' }}>{totalTasks}</span>
-        <span style={{ fontSize: '14px', color: '#64748b', marginLeft: '8px' }}>Total</span>
-      </div>
-      <div>
-        <span style={{ fontSize: '28px', fontWeight: 700, color: '#8b5cf6' }}>{completion}%</span>
-        <span style={{ fontSize: '14px', color: '#64748b', marginLeft: '8px' }}>Completion</span>
-      </div>
     </div>
   );
 }
@@ -260,45 +251,98 @@ function ActivityFeed({ activities }) {
   );
 }
 
-// Projects View
-function ProjectsView({ data }) {
-  const project = data.projects?.[0];
-  if (!project) return <div style={{ color: '#64748b' }}>No projects</div>;
+// Project Detail View (Scoped)
+function ProjectDetailView({ project, data, activeProjectId }) {
+  // Filter data for this specific project
+  const projectApprovals = (data.approvals || []).filter(a => a.projectId === activeProjectId);
+  const projectWaiting = (data.waitingItems || []).filter(w => w.projectId === activeProjectId);
+  const projectAlternatives = (data.brandAlternatives || []).filter(b => b.projectId === activeProjectId);
+  const projectActivities = project?.activityLog || [];
 
   return (
     <div>
       <h2 style={{ color: '#f8fafc', marginBottom: '24px' }}>{project.name}</h2>
       
-      {/* Skill Progress */}
-      <div style={{
-        display: 'flex',
-        gap: '16px',
-        marginBottom: '32px',
-        flexWrap: 'wrap',
-      }}>
-        {Object.entries(project.skillProgress || {}).map(([skill, status]) => (
-          <div key={skill} style={{
-            padding: '12px 16px',
-            backgroundColor: status === 'complete' ? '#166534' : status === 'awaiting-approval' ? '#854d0e' : '#1e293b',
-            borderRadius: '8px',
-            fontSize: '13px',
-          }}>
-            <div style={{ color: '#94a3b8', fontSize: '11px', marginBottom: '4px' }}>{skill}</div>
-            <div style={{ color: '#f8fafc', fontWeight: 600 }}>{status}</div>
-          </div>
-        ))}
+      {/* Skill Pipeline */}
+      <div style={{ marginBottom: '32px' }}>
+        <h3 style={{ color: '#94a3b8', fontSize: '12px', fontWeight: 600, marginBottom: '12px', textTransform: 'uppercase' }}>Pipeline Status</h3>
+        <div style={{
+          display: 'flex',
+          gap: '16px',
+          flexWrap: 'wrap',
+        }}>
+          {Object.entries(project.skillProgress || {}).map(([skill, status]) => (
+            <div key={skill} style={{
+              padding: '12px 16px',
+              backgroundColor: status === 'complete' ? '#166534' : status === 'active' ? '#1e40af' : status === 'awaiting-approval' ? '#854d0e' : '#1e293b',
+              borderRadius: '8px',
+              fontSize: '13px',
+              borderLeft: status === 'active' ? '2px solid #3b82f6' : 'none',
+            }}>
+              <div style={{ color: '#94a3b8', fontSize: '11px', marginBottom: '4px' }}>{skill}</div>
+              <div style={{ color: '#f8fafc', fontWeight: 600 }}>{status}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Brand Alternatives */}
-      {data.brandAlternatives && data.brandAlternatives.length > 0 && (
+      {/* Quick Stats */}
+      <div style={{
+        display: 'flex',
+        gap: '32px',
+        marginBottom: '32px',
+        padding: '16px',
+        backgroundColor: '#1e293b',
+        borderRadius: '8px',
+      }}>
         <div>
-          <h3 style={{ color: '#f8fafc', marginBottom: '16px' }}>📚 Book Cover Options</h3>
+          <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Waiting Approval</div>
+          <div style={{ fontSize: '24px', fontWeight: 700, color: '#f59e0b' }}>{projectApprovals.length}</div>
+        </div>
+        <div>
+          <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>In Progress</div>
+          <div style={{ fontSize: '24px', fontWeight: 700, color: '#3b82f6' }}>{projectWaiting.length}</div>
+        </div>
+        <div>
+          <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>Completed</div>
+          <div style={{ fontSize: '24px', fontWeight: 700, color: '#22c55e' }}>{projectActivities.length}</div>
+        </div>
+      </div>
+
+      {/* Approvals Section */}
+      {projectApprovals.length > 0 && (
+        <div style={{ marginBottom: '32px' }}>
+          <h3 style={{ color: '#f8fafc', marginBottom: '16px', fontSize: '14px', fontWeight: 600 }}>⏳ Awaiting Your Decision</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {projectApprovals.map(approval => (
+              <TaskCard key={approval.id} task={approval} color="#f59e0b" />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* In Progress Section */}
+      {projectWaiting.length > 0 && (
+        <div style={{ marginBottom: '32px' }}>
+          <h3 style={{ color: '#f8fafc', marginBottom: '16px', fontSize: '14px', fontWeight: 600 }}>🔄 Currently Working</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {projectWaiting.map(item => (
+              <TaskCard key={item.id} task={item} color="#3b82f6" />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Brand Alternatives */}
+      {projectAlternatives.length > 0 && (
+        <div style={{ marginBottom: '32px' }}>
+          <h3 style={{ color: '#f8fafc', marginBottom: '16px', fontSize: '14px', fontWeight: 600 }}>📚 Design Alternatives</h3>
           <div style={{ 
             display: 'grid', 
             gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
             gap: '16px' 
           }}>
-            {data.brandAlternatives.map(variant => (
+            {projectAlternatives.map(variant => (
               <div key={variant.id} style={{
                 backgroundColor: '#1e293b',
                 borderRadius: '8px',
@@ -322,6 +366,148 @@ function ProjectsView({ data }) {
           </div>
         </div>
       )}
+
+      {/* Recent Activity */}
+      {projectActivities.length > 0 && (
+        <div>
+          <h3 style={{ color: '#f8fafc', marginBottom: '16px', fontSize: '14px', fontWeight: 600 }}>✅ Completed</h3>
+          <div style={{
+            backgroundColor: '#0f172a',
+            borderRadius: '8px',
+            padding: '16px',
+          }}>
+            {projectActivities.slice(0, 5).map((activity, i) => (
+              <div key={i} style={{
+                padding: '12px 0',
+                borderBottom: i < projectActivities.slice(0, 5).length - 1 ? '1px solid #1e293b' : 'none',
+                fontSize: '13px',
+                color: '#94a3b8',
+              }}>
+                <span style={{ color: '#22c55e' }}>✓</span> {activity.title}
+                <div style={{ fontSize: '11px', color: '#64748b', marginTop: '4px' }}>
+                  {timeAgo(activity.completed)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Master Pulse View (All Projects)
+function PulseView({ data }) {
+  return (
+    <div>
+      <h2 style={{ color: '#f8fafc', marginBottom: '24px' }}>📊 Master Pulse</h2>
+      
+      {/* All Project Cards */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {(data.projects || []).map(project => {
+          const approvals = (data.approvals || []).filter(a => a.projectId === project.id).length;
+          const waiting = (data.waitingItems || []).filter(w => w.projectId === project.id).length;
+          const completed = project.activityLog?.length || 0;
+
+          return (
+            <div key={project.id} style={{
+              backgroundColor: '#1e293b',
+              borderRadius: '8px',
+              padding: '20px',
+              borderLeft: `3px solid ${project.color || '#3b82f6'}`,
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'start',
+                marginBottom: '12px',
+              }}>
+                <div>
+                  <h3 style={{ color: '#f8fafc', fontWeight: 600, fontSize: '16px', marginBottom: '4px' }}>
+                    {project.name}
+                  </h3>
+                  <div style={{ fontSize: '12px', color: '#64748b' }}>
+                    Current: <span style={{ color: '#94a3b8' }}>{project.currentSkill}</span>
+                  </div>
+                </div>
+                <div style={{
+                  display: 'flex',
+                  gap: '16px',
+                }}>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '12px', color: '#64748b' }}>Awaiting</div>
+                    <div style={{ fontSize: '18px', fontWeight: 700, color: '#f59e0b' }}>{approvals}</div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '12px', color: '#64748b' }}>In Progress</div>
+                    <div style={{ fontSize: '18px', fontWeight: 700, color: '#3b82f6' }}>{waiting}</div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div style={{ fontSize: '12px', color: '#64748b' }}>Done</div>
+                    <div style={{ fontSize: '18px', fontWeight: 700, color: '#22c55e' }}>{completed}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mini Skill Progress */}
+              <div style={{
+                display: 'flex',
+                gap: '4px',
+                marginTop: '12px',
+              }}>
+                {Object.entries(project.skillProgress || {}).map(([skill, status]) => (
+                  <div
+                    key={skill}
+                    style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      backgroundColor: status === 'complete' ? '#22c55e' : status === 'active' ? '#3b82f6' : status === 'awaiting-approval' ? '#f59e0b' : '#334155',
+                      title: skill,
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Global Stats */}
+      <div style={{
+        marginTop: '32px',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+        gap: '16px',
+      }}>
+        <div style={{
+          backgroundColor: '#1e293b',
+          borderRadius: '8px',
+          padding: '16px',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px' }}>Total Projects</div>
+          <div style={{ fontSize: '28px', fontWeight: 700, color: '#f8fafc' }}>{data.projects?.length || 0}</div>
+        </div>
+        <div style={{
+          backgroundColor: '#1e293b',
+          borderRadius: '8px',
+          padding: '16px',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px' }}>Total Approvals</div>
+          <div style={{ fontSize: '28px', fontWeight: 700, color: '#f59e0b' }}>{data.approvals?.length || 0}</div>
+        </div>
+        <div style={{
+          backgroundColor: '#1e293b',
+          borderRadius: '8px',
+          padding: '16px',
+          textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px' }}>Total In Progress</div>
+          <div style={{ fontSize: '28px', fontWeight: 700, color: '#3b82f6' }}>{data.waitingItems?.length || 0}</div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -392,6 +578,7 @@ function TasksView({ data }) {
 export default function Home() {
   const [data, setData] = useState({ projects: [] });
   const [activeTab, setActiveTab] = useState('tasks');
+  const [activeProject, setActiveProject] = useState('');
   const [loading, setLoading] = useState(true);
 
   const refresh = async () => {
@@ -401,6 +588,10 @@ export default function Home() {
       if (res.ok) {
         const newData = await res.json();
         setData(newData);
+        // Set first project as default if not set
+        if (!activeProject && newData.projects?.length > 0) {
+          setActiveProject(newData.projects[0].id);
+        }
       }
     } catch (e) {
       console.error('Failed to fetch status:', e);
@@ -414,14 +605,28 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  const currentProject = data.projects?.find(p => p.id === activeProject) || data.projects?.[0];
+
   const renderContent = () => {
     switch (activeTab) {
-      case 'tasks': return <TasksView data={data} />;
-      case 'projects': return <ProjectsView data={data} />;
-      case 'memory': return <MemoryView />;
-      case 'docs': return <DocsView />;
-      case 'search': return <SearchView />;
-      default: return <TasksView data={data} />;
+      case 'tasks': 
+        return currentProject ? (
+          <ProjectDetailView project={currentProject} data={data} activeProjectId={activeProject} />
+        ) : (
+          <div style={{ color: '#64748b' }}>No projects available</div>
+        );
+      case 'pulse': 
+        return <PulseView data={data} />;
+      case 'memory': 
+        return <MemoryView />;
+      case 'docs': 
+        return <DocsView />;
+      default: 
+        return currentProject ? (
+          <ProjectDetailView project={currentProject} data={data} activeProjectId={activeProject} />
+        ) : (
+          <div style={{ color: '#64748b' }}>No projects available</div>
+        );
     }
   };
 
@@ -434,8 +639,13 @@ export default function Home() {
       color: '#f8fafc',
     }}>
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-        <TopNav activeTab={activeTab} setActiveTab={setActiveTab} />
-        <StatsBar data={data} />
+        <TopNav 
+          activeTab={activeTab} 
+          setActiveTab={setActiveTab}
+          projects={data.projects || []}
+          activeProject={activeProject}
+          setActiveProject={setActiveProject}
+        />
         {loading ? (
           <div style={{ color: '#64748b', padding: '40px', textAlign: 'center' }}>Loading...</div>
         ) : (

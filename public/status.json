@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T11:43:00Z",
+  "lastUpdated": "2026-02-05T12:13:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -69,10 +69,10 @@
     {
       "id": "dashboard-deployment",
       "type": "[ACCESS]",
-      "title": "Dashboard Deployment Issue",
-      "description": "Vercel CLI authentication problem. Requires credential reset.",
+      "title": "Migrating to Cloudflare Pages",
+      "description": "Switching from Vercel to Cloudflare Pages per Yaakov's recommendation. Deployment in progress.",
       "created": "2026-02-05T11:24:00Z",
-      "updated": "2026-02-05T11:43:00Z"
+      "updated": "2026-02-05T12:13:00Z"
     }
   ],
   "projects": [

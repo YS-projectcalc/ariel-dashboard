@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T14:23:00Z",
+  "lastUpdated": "2026-02-05T19:25:29Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -70,7 +70,7 @@
       "id": "cloudflare-migration",
       "type": "[INFRASTRUCTURE]",
       "title": "Complete Cloudflare Dashboard Deployment",
-      "description": "Preparing final steps for Cloudflare Pages migration with proper token authentication.",
+      "description": "Migration in progress. Token auth setup near completion. Ready to go live tomorrow morning (~20 mins final push).",
       "created": "2026-02-05T14:23:00Z"
     },
     {
@@ -91,8 +91,8 @@
       "skillProgress": {
         "orchestrator": "complete",
         "business-naming": "complete",
-        "brand-assets": "awaiting-approval",
-        "infoproduct-creation": "pending",
+        "brand-assets": "complete",
+        "infoproduct-creation": "active",
         "funnel-builder": "pending",
         "legal-templates": "pending"
       }

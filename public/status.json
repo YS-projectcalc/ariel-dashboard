@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T19:40:00Z",
+  "lastUpdated": "2026-02-05T19:42:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -51,20 +51,22 @@
       "created": "2026-02-05T14:23:00Z"
     },
     {
-      "id": "dashboard-multi-project",
-      "projectId": "credit-card-debt",
-      "type": "[UI/UX]",
-      "title": "Build Multi-Project Dashboard Layout",
-      "description": "Implement project selector + project-scoped views. Master pulse tab aggregates all projects.",
-      "created": "2026-02-05T19:35:00Z"
-    },
-    {
       "id": "projectcalc-research",
       "projectId": "projectcalc",
       "type": "[RESEARCH]",
       "title": "Validate ProjectCalc Niche Opportunity",
       "description": "Site traffic analysis, replicability scoring, and AI mention testing in progress.",
       "created": "2026-02-03T10:00:00Z"
+    }
+  ],
+  "completedItems": [
+    {
+      "id": "dashboard-multi-project",
+      "projectId": "credit-card-debt",
+      "type": "[UI/UX]",
+      "title": "Build Multi-Project Dashboard Layout",
+      "description": "Implemented project selector + project-scoped views. Master pulse tab aggregates all projects.",
+      "completed": "2026-02-05T19:42:00Z"
     }
   ],
   "projects": [

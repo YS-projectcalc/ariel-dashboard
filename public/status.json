@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-05T14:05:00Z",
+  "lastUpdated": "2026-02-05T14:09:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v2",
@@ -67,11 +67,11 @@
   ],
   "waitingItems": [
     {
-      "id": "token-retrieval-solution",
+      "id": "deployment-challenges",
       "type": "[INFRASTRUCTURE]",
-      "title": "Secure Token Retrieval Mechanism",
-      "description": "Developed multi-source, encrypted token retrieval strategy with fallback methods.",
-      "created": "2026-02-05T14:05:00Z"
+      "title": "Deployment and Skill Retrieval Obstacles",
+      "description": "Investigating token retrieval, Cloudflare deployment, and skill installation methods.",
+      "created": "2026-02-05T14:09:00Z"
     }
   ],
   "projects": [

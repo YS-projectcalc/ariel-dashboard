@@ -49,6 +49,14 @@
       "title": "Complete Cloudflare Dashboard Deployment",
       "description": "Migration in progress. Token auth setup near completion. Ready to go live tomorrow morning (~20 mins final push).",
       "created": "2026-02-05T14:23:00Z"
+    },
+    {
+      "id": "projectcalc-competitive-audit",
+      "projectId": "projectcalc",
+      "type": "[RESEARCH]",
+      "title": "Deep Dive: Competitive SEO/AEO Audit",
+      "description": "What else is the original calculator doing to drive traffic? Research site structure, content depth, backlinks, technical SEO, AEO footprint, UX signals. Goal: Identify all replication needs beyond core functionality.",
+      "created": "2026-02-07T20:05:00Z"
     }
   ],
   "completedItems": [

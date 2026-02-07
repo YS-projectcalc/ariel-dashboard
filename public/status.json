@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T20:22:30Z",
+  "lastUpdated": "2026-02-07T20:26:45Z",
   "approvals": [
     {
       "id": "brand-cover-final-v3",
@@ -42,6 +42,14 @@
     }
   ],
   "waitingItems": [
+    {
+      "id": "projectcalc-exercise-descriptions",
+      "projectId": "projectcalc",
+      "type": "[IMPLEMENTATION]",
+      "title": "Update Exercise Level Descriptions + Input Layout",
+      "description": "Deep analysis complete. Recommendation: Replace abstract \"Moderate\"/\"Heavy\" with time-based descriptions (15-30 min, 45-90 min, etc.) + activity examples. Add activity quiz for uncertain users. Audit input layout for above-the-fold visibility on desktop. Ready to implement when you approve direction.",
+      "created": "2026-02-07T20:26:00Z"
+    },
     {
       "id": "cloudflare-migration",
       "projectId": "credit-card-debt",

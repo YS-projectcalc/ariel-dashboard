@@ -43,14 +43,6 @@
   ],
   "waitingItems": [
     {
-      "id": "projectcalc-522-outage",
-      "projectId": "projectcalc",
-      "type": "[INCIDENT]",
-      "title": "TDEE Calculator — Cloudflare 522 Error (Resolving)",
-      "description": "Repo is clean, all commits present. 522 = Cloudflare Pages build timeout. Redeploy triggered. Should recover in 5-10 min. Monitoring.",
-      "created": "2026-02-07T20:20:00Z"
-    },
-    {
       "id": "cloudflare-migration",
       "projectId": "credit-card-debt",
       "type": "[INFRASTRUCTURE]",
@@ -59,12 +51,12 @@
       "created": "2026-02-05T14:23:00Z"
     },
     {
-      "id": "projectcalc-competitive-audit",
+      "id": "projectcalc-growth-strategy",
       "projectId": "projectcalc",
-      "type": "[RESEARCH]",
-      "title": "Post-Launch SEO/Growth Strategy",
-      "description": "Now that TDEE calculator is live: analyze competitor traffic tactics, backlink strategy, content expansion opportunities, and AEO positioning for search visibility.",
-      "created": "2026-02-07T20:05:00Z"
+      "type": "[APPROVAL]",
+      "title": "Growth Strategy: Backlinks + Content Expansion",
+      "description": "Post-launch SEO roadmap. Identify high-authority backlink opportunities (fitness blogs, health sites, weight-loss forums). Develop audience-specific content: 'TDEE Calculator for Women,' 'Athlete TDEE,' 'Cutting/Bulking Guide.' AEO positioning for Google's AI Overviews.",
+      "created": "2026-02-07T20:25:00Z"
     }
   ],
   "completedItems": [

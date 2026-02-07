@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-07T19:55:00Z",
+  "lastUpdated": "2026-02-07T19:57:00Z",
   "approvals": [
     {
-      "id": "brand-cover-final-v2",
+      "id": "brand-cover-final-v3",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Cover v2 - DALL-E with Revisions",
-      "description": "Reverted to DALL-E 3D book mockup per Yaakov's preference. Changes: Bigger tagline (36px), moved higher up, changed to 'Fear No More'.",
-      "image": "/assets/the-debt-code/final-cover-v2.png",
-      "options": ["Approve! 🎉", "More adjustments needed"],
-      "created": "2026-02-04T22:18:00Z"
+      "title": "Cover v3 - Three-Section Layout",
+      "description": "Per Yaakov's request: White top (pretitle 'Own your debt, fear no more'), Black middle (main title 'The Debt Code'), Light gray bottom (subtitle). Minimalist, Atomic Habits style.",
+      "image": "/assets/the-debt-code/debt_code_v3_three_section.png",
+      "options": ["Approve! 🎉", "Adjust text/spacing", "Different direction"],
+      "created": "2026-02-07T19:57:00Z"
     }
   ],
   "brandAlternatives": [

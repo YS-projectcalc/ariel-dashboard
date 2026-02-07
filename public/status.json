@@ -43,12 +43,12 @@
   ],
   "waitingItems": [
     {
-      "id": "cloudflare-migration",
+      "id": "cloudflare-github-integration",
       "projectId": "credit-card-debt",
       "type": "[INFRASTRUCTURE]",
-      "title": "Complete Cloudflare Dashboard Deployment",
-      "description": "Migration in progress. Token auth setup near completion. Ready to go live tomorrow morning (~20 mins final push).",
-      "created": "2026-02-05T14:23:00Z"
+      "title": "Enable Cloudflare Pages GitHub Auto-Deploy",
+      "description": "BLOCKED: All code is ready. Dashboard builds locally with correct status + images. Cloudflare Pages is set to manual deployments only. Yaakov: Please enable GitHub integration in Cloudflare Pages settings (Pages → ariel-dashboard → Settings → Source control). Once enabled, latest commit will deploy within 30-60 seconds.",
+      "created": "2026-02-07T20:50:00Z"
     },
     {
       "id": "projectcalc-growth-strategy",

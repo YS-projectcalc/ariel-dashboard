@@ -43,6 +43,14 @@
   ],
   "waitingItems": [
     {
+      "id": "projectcalc-522-outage",
+      "projectId": "projectcalc",
+      "type": "[INCIDENT]",
+      "title": "TDEE Calculator — Cloudflare 522 Error (Resolving)",
+      "description": "Repo is clean, all commits present. 522 = Cloudflare Pages build timeout. Redeploy triggered. Should recover in 5-10 min. Monitoring.",
+      "created": "2026-02-07T20:20:00Z"
+    },
+    {
       "id": "cloudflare-migration",
       "projectId": "credit-card-debt",
       "type": "[INFRASTRUCTURE]",

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T20:26:45Z",
+  "lastUpdated": "2026-02-07T20:40:30Z",
   "approvals": [
     {
       "id": "brand-cover-final-v3",
@@ -43,14 +43,6 @@
   ],
   "waitingItems": [
     {
-      "id": "projectcalc-exercise-descriptions",
-      "projectId": "projectcalc",
-      "type": "[IMPLEMENTATION]",
-      "title": "Update Exercise Level Descriptions + Input Layout",
-      "description": "Deep analysis complete. Recommendation: Replace abstract \"Moderate\"/\"Heavy\" with time-based descriptions (15-30 min, 45-90 min, etc.) + activity examples. Add activity quiz for uncertain users. Audit input layout for above-the-fold visibility on desktop. Ready to implement when you approve direction.",
-      "created": "2026-02-07T20:26:00Z"
-    },
-    {
       "id": "cloudflare-migration",
       "projectId": "credit-card-debt",
       "type": "[INFRASTRUCTURE]",
@@ -68,6 +60,14 @@
     }
   ],
   "completedItems": [
+    {
+      "id": "projectcalc-exercise-descriptions",
+      "projectId": "projectcalc",
+      "type": "[IMPLEMENTATION]",
+      "title": "Exercise Level Descriptions + Activity Quiz",
+      "description": "Implemented time-based descriptions (15-30 min Light, 30-45 min Moderate, 45-90 min Active, 2+ hours Extreme). Added ActivityGuide component with tabs, expanded descriptions, and optional activity quiz. Improves above-the-fold layout on desktop. Shipped in production.",
+      "completed": "2026-02-07T20:40:00Z"
+    },
     {
       "id": "projectcalc-deployed",
       "projectId": "projectcalc",
@@ -140,6 +140,11 @@
         "launch": "complete"
       },
       "activityLog": [
+        {
+          "id": "activity-14",
+          "title": "⚡ EXERCISE DESCRIPTIONS IMPLEMENTED | Time-based levels + Activity Quiz + Above-the-fold layout",
+          "completed": "2026-02-07T20:40:00Z"
+        },
         {
           "id": "activity-13",
           "title": "🚀 DEPLOYED TO CLOUDFLARE PAGES | Live at https://main.tdee-calculator-8yb.pages.dev",

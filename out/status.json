@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-07T20:45:00Z",
+  "lastUpdated": "2026-02-08T07:57:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v3",
@@ -43,23 +43,31 @@
   ],
   "waitingItems": [
     {
-      "id": "cloudflare-migration",
-      "projectId": "credit-card-debt",
-      "type": "[INFRASTRUCTURE]",
-      "title": "Complete Cloudflare Dashboard Deployment",
-      "description": "Migration in progress. Token auth setup near completion. Ready to go live tomorrow morning (~20 mins final push).",
-      "created": "2026-02-05T14:23:00Z"
-    },
-    {
-      "id": "projectcalc-growth-strategy",
+      "id": "projectcalc-prioritize-next",
       "projectId": "projectcalc",
       "type": "[APPROVAL]",
-      "title": "Growth Strategy: Backlinks + Content Expansion",
-      "description": "Post-launch SEO roadmap. Identify high-authority backlink opportunities (fitness blogs, health sites, weight-loss forums). Develop audience-specific content: 'TDEE Calculator for Women,' 'Athlete TDEE,' 'Cutting/Bulking Guide.' AEO positioning for Google's AI Overviews.",
-      "created": "2026-02-07T20:25:00Z"
+      "title": "ProjectCalc Next Steps — UX Priority?",
+      "description": "Deep research complete (UX + traffic + monetization). Key findings: (1) Inputs MUST be above fold — see how Calculator.net gets 1.6M/mo. (2) Activity descriptions need daily-life examples, not just exercise. (3) State-specific variants for SEO growth. (4) Email capture before results for monetization. Yaakov: Which to prioritize first?",
+      "created": "2026-02-08T07:57:00Z"
     }
   ],
   "completedItems": [
+    {
+      "id": "projectcalc-deep-research-feb8",
+      "projectId": "projectcalc",
+      "type": "[RESEARCH]",
+      "title": "Competitive Deep Dive Complete: UX + Traffic + Monetization",
+      "description": "Analyzed top calculators (Calculator.net, NerdWallet, Bankrate). Findings: (1) Inputs above fold critical for conversions. (2) Daily-life examples in activity levels improve self-identification. (3) Programmatic SEO drives 690k+/mo traffic (SmartAsset model). (4) Affiliate monetization = $379M/yr (NerdWallet). Email with actionable roadmap sent.",
+      "completed": "2026-02-08T07:57:00Z"
+    },
+    {
+      "id": "dashboard-consolidation-complete",
+      "projectId": "credit-card-debt",
+      "type": "[INFRASTRUCTURE]",
+      "title": "Dashboard Consolidation Complete (Cloudflare Pages Only)",
+      "description": "Verified: Cloudflare Pages 200✓ | Vercel 404✓ | No dual deployments | Git remote correct. Single source of truth established. Memory updated.",
+      "completed": "2026-02-08T07:57:00Z"
+    },
     {
       "id": "projectcalc-exercise-descriptions",
       "projectId": "projectcalc",
@@ -140,6 +148,11 @@
         "launch": "complete"
       },
       "activityLog": [
+        {
+          "id": "activity-15",
+          "title": "📊 DEEP RESEARCH SENT TO YAAKOV | UX (inputs above fold) + traffic strategy (programmatic SEO) + monetization roadmap",
+          "completed": "2026-02-08T07:57:00Z"
+        },
         {
           "id": "activity-14",
           "title": "⚡ EXERCISE DESCRIPTIONS IMPLEMENTED | Time-based levels + Activity Quiz + Above-the-fold layout",

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-08T12:33:00Z",
+  "lastUpdated": "2026-02-08T12:57:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v3",
@@ -43,14 +43,6 @@
   ],
   "waitingItems": [
     {
-      "id": "business-build-protocol-skill",
-      "projectId": "meta",
-      "type": "[SKILL CREATION]",
-      "title": "Business Build Protocol Skill — Awaiting Approval",
-      "description": "Yaakov requested a reusable 4-phase gated workflow for building new products/services. Plan presented: (1) Add trigger section to SOUL.md (<15 lines). (2) Create SKILL.md with Discovery → PRD → Architecture → Build phases (each requires approval). Awaiting Yaakov's approval to write files.",
-      "created": "2026-02-08T12:33:00Z"
-    },
-    {
       "id": "projectcalc-prioritize-next",
       "projectId": "projectcalc",
       "type": "[APPROVAL]",
@@ -60,6 +52,14 @@
     }
   ],
   "completedItems": [
+    {
+      "id": "build-protocol-skill-complete",
+      "projectId": "meta",
+      "type": "[SKILL CREATION]",
+      "title": "Build Protocol Skill — Complete",
+      "description": "4-phase gated workflow for building new products: Discovery → PRD → Architecture → Build. Includes: quality-scoped research, batched Q&A, PRD/Architecture templates, SUMMARY.md for context efficiency, diagnostic error recovery, user story verification. Trigger rules added to SOUL.md.",
+      "completed": "2026-02-08T12:57:00Z"
+    },
     {
       "id": "projectcalc-deep-research-feb8",
       "projectId": "projectcalc",

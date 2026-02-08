@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-08T12:57:00Z",
+  "lastUpdated": "2026-02-08T13:10:00Z",
   "approvals": [
     {
-      "id": "brand-cover-final-v3",
+      "id": "brand-cover-v4-dual",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Cover v3 - Three-Section Layout",
-      "description": "Per Yaakov's request: White top (pretitle 'Own your debt, fear no more'), Black middle (main title 'The Debt Code'), Light gray bottom (subtitle). Minimalist, Atomic Habits style.",
-      "image": "/assets/the-debt-code/cover-v3-rendered.png",
-      "options": ["Approve! 🎉", "Adjust text/spacing", "Different direction"],
-      "created": "2026-02-07T19:57:00Z"
+      "title": "Cover v4 - Two New Versions (Yaakov's 3-Section Spec)",
+      "description": "Complete redesign per Yaakov's spec: Top third white ('Own your debt, fear no more'), Middle third black ('The Debt Code' in white), Bottom third subtitle. Version A: Nano Banana Pro. Version B: Manual creation. Atomic Habits inspired layout.",
+      "image": "/assets/the-debt-code/cover-v4-comparison.png",
+      "options": ["Version A (Nano Banana)", "Version B (Manual)", "Combine elements", "Iterate"],
+      "created": "2026-02-08T13:05:00Z"
     }
   ],
   "brandAlternatives": [

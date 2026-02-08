@@ -1,15 +1,15 @@
 {
-  "lastUpdated": "2026-02-08T13:10:00Z",
+  "lastUpdated": "2026-02-08T13:36:00Z",
   "approvals": [
     {
-      "id": "brand-cover-v4-dual",
+      "id": "brand-cover-v5-premium",
       "projectId": "credit-card-debt",
       "type": "book-cover",
-      "title": "Cover v4 - Two New Versions (Yaakov's 3-Section Spec)",
-      "description": "Complete redesign per Yaakov's spec: Top third white ('Own your debt, fear no more'), Middle third black ('The Debt Code' in white), Bottom third subtitle. Version A: Nano Banana Pro. Version B: Manual creation. Atomic Habits inspired layout.",
-      "image": "/assets/the-debt-code/cover-v4-comparison.png",
-      "options": ["Version A (Nano Banana)", "Version B (Manual)", "Combine elements", "Iterate"],
-      "created": "2026-02-08T13:05:00Z"
+      "title": "Cover v5 - Premium Redesign (White-Black-White Layout)",
+      "description": "Premium covers with exact white-black-white color scheme and professional typography per Yaakov's feedback. Version A: Classic Business (serif title). Version B: Swiss Minimal (sans-serif focus). Both use proper premium fonts and clean layouts.",
+      "image": "/assets/the-debt-code/cover-v5-comparison.png",
+      "options": ["Version A (Classic Business)", "Version B (Swiss Minimal)", "Combine elements", "Iterate further"],
+      "created": "2026-02-08T13:36:00Z"
     }
   ],
   "brandAlternatives": [
@@ -125,6 +125,11 @@
         "legal-templates": "pending"
       },
       "activityLog": [
+        {
+          "id": "activity-2-feb8",
+          "title": "🎨 PREMIUM COVERS CREATED | White-black-white layout ✓ | Professional typography ✓ | Two versions ready",
+          "completed": "2026-02-08T13:36:00Z"
+        },
         {
           "id": "activity-1",
           "title": "Finalized book cover design (Nano Banana Pro)",

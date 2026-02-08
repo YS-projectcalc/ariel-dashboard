@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-08T07:57:00Z",
+  "lastUpdated": "2026-02-08T12:33:00Z",
   "approvals": [
     {
       "id": "brand-cover-final-v3",
@@ -42,6 +42,14 @@
     }
   ],
   "waitingItems": [
+    {
+      "id": "business-build-protocol-skill",
+      "projectId": "meta",
+      "type": "[SKILL CREATION]",
+      "title": "Business Build Protocol Skill — Awaiting Approval",
+      "description": "Yaakov requested a reusable 4-phase gated workflow for building new products/services. Plan presented: (1) Add trigger section to SOUL.md (<15 lines). (2) Create SKILL.md with Discovery → PRD → Architecture → Build phases (each requires approval). Awaiting Yaakov's approval to write files.",
+      "created": "2026-02-08T12:33:00Z"
+    },
     {
       "id": "projectcalc-prioritize-next",
       "projectId": "projectcalc",

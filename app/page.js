@@ -592,9 +592,17 @@ export default function Home() {
         if (!activeProject && newData.projects?.length > 0) {
           setActiveProject(newData.projects[0].id);
         }
+      } else {
+        console.error('Failed to fetch status:', res.status, res.statusText);
+        // Fallback - show empty state instead of infinite loading
+        setData({ projects: [{ id: 'fallback', name: 'Dashboard', color: '#3b82f6' }] });
+        setActiveProject('fallback');
       }
     } catch (e) {
       console.error('Failed to fetch status:', e);
+      // Fallback - show empty state instead of infinite loading
+      setData({ projects: [{ id: 'fallback', name: 'Dashboard', color: '#3b82f6' }] });
+      setActiveProject('fallback');
     }
     setLoading(false);
   };

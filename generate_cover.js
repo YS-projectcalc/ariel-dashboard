@@ -2,7 +2,11 @@
 const fetch = require('node:fetch');
 
 async function generatePremiumCover() {
-  const GEMINI_API_KEY = 'REDACTED_KEY';
+  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+  if (!GEMINI_API_KEY) {
+    console.error('Error: GEMINI_API_KEY not set in environment');
+    process.exit(1);
+  }
   
   const prompt = `Create a premium business book cover for 'The Debt Code' with these EXACT specifications:
 

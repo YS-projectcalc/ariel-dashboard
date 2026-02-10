@@ -1,12 +1,12 @@
 {
-  "lastUpdated": "2026-02-08T16:02:00Z",
+  "lastUpdated": "2026-02-10T20:18:00Z",
   "approvals": [
     {
       "id": "brand-cover-v5-premium",
       "projectId": "credit-card-debt",
       "type": "book-cover",
       "title": "Cover v5 - Premium Redesign (White-Black-White Layout)",
-      "description": "Premium covers with exact white-black-white color scheme and professional typography per Yaakov's feedback. Version A: Classic Business (serif title). Version B: Swiss Minimal (sans-serif focus). Both use proper premium fonts and clean layouts.",
+      "description": "Premium covers with exact white-black-white color scheme and professional typography. Version A: Classic Business (serif). Version B: Swiss Minimal (sans-serif). Both use proper premium fonts and clean layouts.",
       "image": "/assets/the-debt-code/cover-v5-comparison.png",
       "options": ["Version A (Classic Business)", "Version B (Swiss Minimal)", "Combine elements", "Iterate further"],
       "created": "2026-02-08T13:36:00Z"
@@ -17,7 +17,7 @@
       "id": "nb_A_pure_minimal",
       "projectId": "credit-card-debt",
       "title": "Pure Minimal (Nano Banana)",
-      "description": "Clean flat cream, gold accent line, navy block. Zero texture, pure Swiss design minimalism. Typography-led.",
+      "description": "Clean flat cream, gold accent line, navy block. Zero texture, pure Swiss design minimalism.",
       "image": "/assets/the-debt-code/variants/nb_A_pure_minimal.png",
       "created": "2026-02-05T19:40:00Z",
       "recommended": true
@@ -26,7 +26,7 @@
       "id": "nb_B_subtle_geometric",
       "projectId": "credit-card-debt",
       "title": "Subtle Geometric (Nano Banana)",
-      "description": "Faint intersecting lines in cream section (watermark effect). Gold accent, navy block. Premium stationery feel.",
+      "description": "Faint intersecting lines in cream section. Gold accent, navy block. Premium stationery feel.",
       "image": "/assets/the-debt-code/variants/nb_B_subtle_geometric.png",
       "created": "2026-02-05T19:40:00Z",
       "recommended": true
@@ -35,78 +35,61 @@
       "id": "nb_C_soft_organic",
       "projectId": "credit-card-debt",
       "title": "Soft Organic (Nano Banana)",
-      "description": "Natural paper grain texture, warm organic feel. Gold accent, navy block. Artisan premium quality.",
+      "description": "Natural paper grain texture, warm organic feel. Gold accent, navy block.",
       "image": "/assets/the-debt-code/variants/nb_C_soft_organic.png",
       "created": "2026-02-05T19:40:00Z",
       "recommended": true
     }
   ],
-  "waitingItems": [
-  ],
+  "waitingItems": [],
   "completedItems": [
     {
+      "id": "dashboard-deep-fixup",
+      "projectId": "meta",
+      "type": "[UI/UX]",
+      "title": "Dashboard Deep Fixup — Layout Rebuild",
+      "description": "Complete layout overhaul: removed broken tabs, replaced kanban with collapsible project cards, fixed data flow, updated status.json, auto-deploys on push.",
+      "completed": "2026-02-10T20:18:00Z"
+    },
+    {
+      "id": "gmail-oauth-fix",
+      "projectId": "meta",
+      "type": "[INFRASTRUCTURE]",
+      "title": "Gmail OAuth Token Fix",
+      "description": "Fixed expired OAuth token via manual auth flow. Token exchanged and imported. Recommended publishing OAuth app to production to prevent 7-day expiry.",
+      "completed": "2026-02-10T14:56:00Z"
+    },
+    {
+      "id": "cloudflare-github-integration",
+      "projectId": "meta",
+      "type": "[INFRASTRUCTURE]",
+      "title": "Cloudflare Pages GitHub Auto-Deploy Enabled",
+      "description": "Yaakov recreated Pages project with GitHub integration. Auto-builds enabled on push to main. No more manual wrangler deploys needed.",
+      "completed": "2026-02-10T15:17:00Z"
+    },
+    {
       "id": "projectcalc-5hour-implementation",
-      "projectId": "projectcalc", 
+      "projectId": "projectcalc",
       "type": "[IMPLEMENTATION]",
       "title": "5-Hour Implementation Sprint Complete",
-      "description": "Implemented all research findings: (1) Above-fold input layout optimization (2) Time-based activity level descriptions (3) Email capture foundation (4) Mobile optimization (5) SEO foundation. Live site updated, affiliate program applications ready to begin Monday.",
+      "description": "Above-fold input layout, time-based activity levels, email capture foundation, mobile optimization, SEO foundation.",
       "completed": "2026-02-08T18:02:00Z"
     },
     {
       "id": "build-protocol-skill-complete",
       "projectId": "meta",
       "type": "[SKILL CREATION]",
-      "title": "Build Protocol Skill — Complete",
-      "description": "4-phase gated workflow for building new products: Discovery → PRD → Architecture → Build. Includes: quality-scoped research, batched Q&A, PRD/Architecture templates, SUMMARY.md for context efficiency, diagnostic error recovery, user story verification. Trigger rules added to SOUL.md.",
+      "title": "Build Protocol Skill Complete",
+      "description": "4-phase gated workflow: Discovery, PRD, Architecture, Build. Quality-scoped research, batched Q&A, diagnostic error recovery.",
       "completed": "2026-02-08T12:57:00Z"
     },
     {
       "id": "projectcalc-deep-research-feb8",
       "projectId": "projectcalc",
       "type": "[RESEARCH]",
-      "title": "Competitive Deep Dive Complete: UX + Traffic + Monetization",
-      "description": "Analyzed top calculators (Calculator.net, NerdWallet, Bankrate). Findings: (1) Inputs above fold critical for conversions. (2) Daily-life examples in activity levels improve self-identification. (3) Programmatic SEO drives 690k+/mo traffic (SmartAsset model). (4) Affiliate monetization = $379M/yr (NerdWallet). Email with actionable roadmap sent.",
+      "title": "ProjectCalc Competitive Deep Dive",
+      "description": "Analyzed Calculator.net, NerdWallet, Bankrate. Inputs above fold critical. Programmatic SEO drives 690k+/mo. Affiliate = $379M/yr.",
       "completed": "2026-02-08T07:57:00Z"
-    },
-    {
-      "id": "dashboard-consolidation-complete",
-      "projectId": "credit-card-debt",
-      "type": "[INFRASTRUCTURE]",
-      "title": "Dashboard Consolidation Complete (Cloudflare Pages Only)",
-      "description": "Verified: Cloudflare Pages 200✓ | Vercel 404✓ | No dual deployments | Git remote correct. Single source of truth established. Memory updated.",
-      "completed": "2026-02-08T07:57:00Z"
-    },
-    {
-      "id": "projectcalc-exercise-descriptions",
-      "projectId": "projectcalc",
-      "type": "[IMPLEMENTATION]",
-      "title": "Exercise Level Descriptions + Activity Quiz",
-      "description": "Implemented time-based descriptions (15-30 min Light, 30-45 min Moderate, 45-90 min Active, 2+ hours Extreme). Added ActivityGuide component with tabs, expanded descriptions, and optional activity quiz. Improves above-the-fold layout on desktop. Shipped in production.",
-      "completed": "2026-02-07T20:40:00Z"
-    },
-    {
-      "id": "projectcalc-deployed",
-      "projectId": "projectcalc",
-      "type": "[LAUNCH]",
-      "title": "TDEE Calculator Deployed to Production",
-      "description": "5 iterations complete. Live at https://main.tdee-calculator-8yb.pages.dev. Dark mode, CSV export, 23/23 tests, <1s load, 100% mobile responsive.",
-      "completed": "2026-02-07T20:19:00Z"
-    },
-    {
-      "id": "dashboard-multi-project",
-      "projectId": "credit-card-debt",
-      "type": "[UI/UX]",
-      "title": "Build Multi-Project Dashboard Layout",
-      "description": "Implemented project selector + project-scoped views. Master pulse tab aggregates all projects.",
-      "completed": "2026-02-05T19:42:00Z"
-    },
-    {
-      "id": "projectcalc-sprintsetup",
-      "projectId": "projectcalc",
-      "type": "[PLANNING]",
-      "title": "ProjectCalc $100k Build Sprint Setup",
-      "description": "Initiated 3-day build sprint (Feb 6-8). Tech stack, design strategy, and build+research sub-agents launched.",
-      "completed": "2026-02-06T14:10:00Z"
     }
   ],
   "projects": [
@@ -127,7 +110,7 @@
       "activityLog": [
         {
           "id": "activity-2-feb8",
-          "title": "🎨 PREMIUM COVERS CREATED | White-black-white layout ✓ | Professional typography ✓ | Two versions ready",
+          "title": "Premium covers created — white-black-white layout, professional typography, two versions ready",
           "completed": "2026-02-08T13:36:00Z"
         },
         {
@@ -163,68 +146,23 @@
       "activityLog": [
         {
           "id": "activity-16",
-          "title": "⚡ 5-HOUR IMPLEMENTATION COMPLETE | Above-fold UX ✓ | Email capture ✓ | Mobile optimization ✓ | SEO foundation ✓",
+          "title": "5-hour implementation complete — above-fold UX, email capture, mobile optimization, SEO foundation",
           "completed": "2026-02-08T18:02:00Z"
         },
         {
           "id": "activity-15",
-          "title": "📊 DEEP RESEARCH SENT TO YAAKOV | UX (inputs above fold) + traffic strategy (programmatic SEO) + monetization roadmap",
+          "title": "Deep research sent — UX patterns, traffic strategy, monetization roadmap",
           "completed": "2026-02-08T07:57:00Z"
         },
         {
           "id": "activity-14",
-          "title": "⚡ EXERCISE DESCRIPTIONS IMPLEMENTED | Time-based levels + Activity Quiz + Above-the-fold layout",
+          "title": "Exercise descriptions implemented — time-based levels, activity quiz, above-fold layout",
           "completed": "2026-02-07T20:40:00Z"
         },
         {
           "id": "activity-13",
-          "title": "🚀 DEPLOYED TO CLOUDFLARE PAGES | Live at https://main.tdee-calculator-8yb.pages.dev",
+          "title": "Deployed to Cloudflare Pages",
           "completed": "2026-02-07T20:19:00Z"
-        },
-        {
-          "id": "activity-12",
-          "title": "✅ Iteration 5: POLISH COMPLETE | Dark mode ✓ | CSV export ✓ | Ready for review!",
-          "completed": "2026-02-07T20:12:00Z"
-        },
-        {
-          "id": "activity-11",
-          "title": "✅ Iteration 3: ALL CRITERIA MET | 23/23 tests ✓ | <1s load ✓ | Mobile 100% ✓",
-          "completed": "2026-02-07T20:07:00Z"
-        },
-        {
-          "id": "activity-10",
-          "title": "🚀 CONTINUOUS ITERATION LOOP ACTIVE - Overnight push to perfection (all tests + <2s load + 100% mobile)",
-          "completed": "2026-02-07T20:00:00Z"
-        },
-        {
-          "id": "activity-9",
-          "title": "🎉 BUILD COMPLETE - Calculator production-ready (65.6KB gzipped)",
-          "completed": "2026-02-06T14:18:00Z"
-        },
-        {
-          "id": "activity-8",
-          "title": "Research findings delivered: 3 killer competitive advantages identified",
-          "completed": "2026-02-06T14:12:00Z"
-        },
-        {
-          "id": "activity-7",
-          "title": "Created Saturday briefing + iteration protocol",
-          "completed": "2026-02-06T14:25:00Z"
-        },
-        {
-          "id": "activity-6",
-          "title": "Built 8-document planning suite + deployment guides",
-          "completed": "2026-02-06T14:20:00Z"
-        },
-        {
-          "id": "activity-5",
-          "title": "Comprehensive competitive analysis complete",
-          "completed": "2026-02-06T14:15:00Z"
-        },
-        {
-          "id": "activity-4",
-          "title": "Sub-agents initialized: research + build both active",
-          "completed": "2026-02-06T14:12:00Z"
         }
       ]
     }

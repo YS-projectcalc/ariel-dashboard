@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-18T14:27:00Z",
+  "lastUpdated": "2026-02-18T14:29:00Z",
   "projects": [
     {
       "id": "spotlight-ai",
@@ -418,6 +418,14 @@
             "priority": "medium",
             "tags": ["branding"],
             "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-d3",
+            "title": "Final brand guidelines document",
+            "description": "Brand guidelines document completed.",
+            "priority": "medium",
+            "tags": ["branding", "foundation"],
+            "createdAt": "2026-02-18T14:29:00Z"
           }
         ]
       }

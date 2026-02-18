@@ -504,6 +504,135 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
   );
 }
 
+// ─── General Todo Item ──────────────────────────────────────────────
+
+function GeneralTodoItem({ todo, isDone, onToggle }) {
+  const priorityColors = {
+    high: { bg: '#451a03', text: '#fb923c', label: 'High' },
+    medium: { bg: '#1e1b4b', text: '#a78bfa', label: 'Medium' },
+    low: { bg: '#0f172a', text: '#64748b', label: 'Low' },
+  };
+  const p = priorityColors[todo.priority] || null;
+
+  return (
+    <div style={{
+      backgroundColor: '#0f172a',
+      borderRadius: '8px',
+      padding: '14px',
+      borderLeft: `3px solid ${isDone ? '#4ade80' : '#60a5fa'}`,
+      opacity: isDone ? 0.6 : 1,
+      transition: 'opacity 0.2s',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+        <div
+          onClick={() => onToggle(todo.id)}
+          style={{
+            width: '20px', height: '20px', minWidth: '20px',
+            borderRadius: '4px',
+            border: isDone ? '2px solid #4ade80' : '2px solid #475569',
+            backgroundColor: isDone ? '#4ade8020' : 'transparent',
+            cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            marginTop: '1px', transition: 'all 0.15s',
+          }}
+          onMouseEnter={e => { if (!isDone) e.currentTarget.style.borderColor = '#94a3b8'; }}
+          onMouseLeave={e => { if (!isDone) e.currentTarget.style.borderColor = '#475569'; }}
+        >
+          {isDone && (
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 6L5 9L10 3" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          )}
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{
+            fontWeight: 600, fontSize: '13px',
+            color: isDone ? '#64748b' : '#f8fafc',
+            marginBottom: '4px', lineHeight: 1.4,
+            textDecoration: isDone ? 'line-through' : 'none',
+          }}>
+            {todo.title}
+          </div>
+          {todo.description && !isDone && (
+            <div style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.4, marginBottom: '8px' }}>
+              {todo.description}
+            </div>
+          )}
+          {!isDone && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+              {p && (
+                <span style={{
+                  padding: '2px 6px', borderRadius: '3px',
+                  fontSize: '10px', fontWeight: 600,
+                  backgroundColor: p.bg, color: p.text,
+                }}>{p.label}</span>
+              )}
+              {todo.tags && todo.tags.map(tag => (
+                <span key={tag} style={{
+                  padding: '2px 6px', borderRadius: '3px',
+                  fontSize: '10px', backgroundColor: '#1e293b', color: '#94a3b8',
+                }}>{tag}</span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── General Todos Section ──────────────────────────────────────────
+
+function GeneralTodosSection({ todos, completedIds, onToggle }) {
+  if (!todos || todos.length === 0) return null;
+
+  const activeTodos = todos.filter(t => !completedIds.includes(t.id));
+  const doneTodos = todos.filter(t => completedIds.includes(t.id));
+
+  return (
+    <div style={{ marginTop: '32px' }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: '10px',
+        marginBottom: '16px',
+      }}>
+        <div style={{
+          width: '8px', height: '8px', borderRadius: '50%',
+          backgroundColor: '#60a5fa',
+        }} />
+        <span style={{
+          fontSize: '14px', fontWeight: 700, color: '#f8fafc',
+        }}>General To-Do</span>
+        <span style={{
+          fontSize: '11px', color: '#475569',
+          backgroundColor: '#1e293b',
+          padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
+        }}>{activeTodos.length}</span>
+      </div>
+      <div style={{
+        display: 'grid', gap: '8px',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+      }}>
+        {activeTodos.map(todo => (
+          <GeneralTodoItem
+            key={todo.id}
+            todo={todo}
+            isDone={false}
+            onToggle={onToggle}
+          />
+        ))}
+        {doneTodos.map(todo => (
+          <GeneralTodoItem
+            key={todo.id}
+            todo={todo}
+            isDone={true}
+            onToggle={onToggle}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main App ───────────────────────────────────────────────────────
 
 export default function Home() {
@@ -593,6 +722,7 @@ export default function Home() {
   }
 
   const projects = data.projects || [];
+  const todos = data.todos || [];
   const selected = selectedProject ? projects.find(p => p.id === selectedProject) : null;
 
   // One card per project — no splitting by assignee
@@ -617,7 +747,7 @@ export default function Home() {
       else totalTodo++;
     });
   });
-  const totalTasks = totalTodo + totalUpnext + totalDone;
+  const totalTasks = totalTodo + totalUpnext + totalDone + todos.length;
 
   return (
     <div style={{
@@ -696,6 +826,12 @@ export default function Home() {
                 />
               ))}
             </div>
+
+            <GeneralTodosSection
+              todos={todos}
+              completedIds={completedIds}
+              onToggle={toggleTask}
+            />
           </>
         )}
       </div>

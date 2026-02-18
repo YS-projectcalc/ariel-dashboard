@@ -857,7 +857,7 @@ export default function Home() {
 
   if (error) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#0f2e3d', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#143d4f', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#f87171', padding: '40px', textAlign: 'center' }}>
           Failed to load: {error}
         </div>
@@ -867,7 +867,7 @@ export default function Home() {
 
   if (!data) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#0f2e3d', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#143d4f', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#64748b', padding: '40px', textAlign: 'center' }}>
           Loading...
         </div>
@@ -905,7 +905,7 @@ export default function Home() {
 
   return (
     <div style={{
-      minHeight: '100vh', backgroundColor: '#0f2e3d', padding: '24px',
+      minHeight: '100vh', backgroundColor: '#143d4f', padding: '24px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
     }}>

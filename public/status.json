@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-18T14:36:00Z",
+  "lastUpdated": "2026-02-18T14:46:49.556Z",
   "projects": [
     {
       "id": "spotlight-ai",
@@ -9,8 +9,7 @@
       "status": "active",
       "description": "SEO Audit SaaS",
       "tasks": {
-        "upnext": [],
-        "todo": [
+        "upnext": [
           {
             "id": "sa-1",
             "title": "Switch Stripe to Live Mode",
@@ -21,7 +20,20 @@
               "payments"
             ],
             "assignee": "mordy",
-            "createdAt": "2026-02-18T14:25:00Z"
+            "createdAt": "2026-02-18T14:25:00Z",
+            "promotedAt": "2026-02-18T14:46:49.555Z"
+          },
+          {
+            "id": "sa-3",
+            "title": "Replace website scraping with Firecrawl",
+            "description": "Current fetch+Cheerio fails on JS-rendered/bot-blocked sites. Plan at ~/.claude/plans/sharded-wandering-meadow.md.",
+            "priority": "high",
+            "tags": [
+              "critical"
+            ],
+            "assignee": "mordy",
+            "createdAt": "2026-02-18T14:25:00Z",
+            "promotedAt": "2026-02-18T14:46:49.555Z"
           },
           {
             "id": "sa-2",
@@ -33,25 +45,41 @@
               "ux"
             ],
             "assignee": "yaakov",
-            "createdAt": "2026-02-18T14:25:00Z"
+            "createdAt": "2026-02-18T14:25:00Z",
+            "promotedAt": "2026-02-18T14:46:49.555Z"
           },
           {
-            "id": "sa-3",
-            "title": "Replace website scraping with Firecrawl",
-            "description": "Current fetch+Cheerio fails on JS-rendered/bot-blocked sites. Plan at ~/.claude/plans/sharded-wandering-meadow.md.",
-            "priority": "high",
+            "id": "sa-16",
+            "title": "Analytics/tracking setup",
+            "description": "No GA4 or conversion tracking set up yet.",
+            "priority": "medium",
             "tags": [
-              "critical"
+              "operational"
             ],
-            "assignee": "mordy",
-            "createdAt": "2026-02-18T14:25:00Z"
+            "createdAt": "2026-02-18T14:25:00Z",
+            "promotedAt": "2026-02-18T14:46:49.555Z"
           },
+          {
+            "id": "sa-15",
+            "title": "Clear stale .next cache",
+            "description": "Delete .next and rebuild.",
+            "priority": "low",
+            "tags": [
+              "operational"
+            ],
+            "createdAt": "2026-02-18T14:25:00Z",
+            "promotedAt": "2026-02-18T14:46:49.555Z"
+          }
+        ],
+        "todo": [
           {
             "id": "sa-4",
             "title": "Verify Tier 2 Monitoring",
             "description": "Two customer journeys remain: Tier 0→2 and Tier 0→1→2.",
             "priority": "medium",
-            "tags": ["testing"],
+            "tags": [
+              "testing"
+            ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
@@ -60,7 +88,9 @@
             "title": "Dashboard UX review",
             "description": "Deferred until dashboard layout finalized.",
             "priority": "medium",
-            "tags": ["ux"],
+            "tags": [
+              "ux"
+            ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
@@ -69,7 +99,9 @@
             "title": "Validate query generation quality",
             "description": "Not started.",
             "priority": "medium",
-            "tags": ["quality"],
+            "tags": [
+              "quality"
+            ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
@@ -78,7 +110,9 @@
             "title": "Upgrade reminder email",
             "description": "Finalize copy + update CTA URLs with ?email= param.",
             "priority": "medium",
-            "tags": ["email"],
+            "tags": [
+              "email"
+            ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
@@ -87,7 +121,9 @@
             "title": "Edit all email copy",
             "description": "Final review of all Loops emails before launch.",
             "priority": "medium",
-            "tags": ["email"],
+            "tags": [
+              "email"
+            ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
@@ -96,7 +132,9 @@
             "title": "Transactional email templates",
             "description": "Create in Loops, wire up IDs.",
             "priority": "medium",
-            "tags": ["email"],
+            "tags": [
+              "email"
+            ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
@@ -105,7 +143,9 @@
             "title": "Login credentials email",
             "description": "Code done, awaiting Tier 2 test.",
             "priority": "medium",
-            "tags": ["email"],
+            "tags": [
+              "email"
+            ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
@@ -123,7 +163,9 @@
             "title": "Validate PDF generation",
             "description": "Test quality/performance post-fix.",
             "priority": "medium",
-            "tags": ["testing"],
+            "tags": [
+              "testing"
+            ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
@@ -132,7 +174,9 @@
             "title": "Branding — favicon & logo",
             "description": "Still needed.",
             "priority": "medium",
-            "tags": ["branding"],
+            "tags": [
+              "branding"
+            ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
@@ -141,28 +185,10 @@
             "title": "Cloudflare Turnstile",
             "description": "Bot protection for /api/scan.",
             "priority": "medium",
-            "tags": ["security"],
+            "tags": [
+              "security"
+            ],
             "assignee": "mordy",
-            "createdAt": "2026-02-18T14:25:00Z"
-          },
-          {
-            "id": "sa-15",
-            "title": "Clear stale .next cache",
-            "description": "Delete .next and rebuild.",
-            "priority": "low",
-            "tags": [
-              "operational"
-            ],
-            "createdAt": "2026-02-18T14:25:00Z"
-          },
-          {
-            "id": "sa-16",
-            "title": "Analytics/tracking setup",
-            "description": "No GA4 or conversion tracking set up yet.",
-            "priority": "medium",
-            "tags": [
-              "operational"
-            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -199,8 +225,7 @@
       "status": "active",
       "description": "AI Agency",
       "tasks": {
-        "upnext": [],
-        "todo": [
+        "upnext": [
           {
             "id": "eg-1",
             "title": "Pick agency name",
@@ -210,7 +235,8 @@
               "blocking",
               "foundation"
             ],
-            "createdAt": "2026-02-18T14:22:00Z"
+            "createdAt": "2026-02-18T14:22:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
           },
           {
             "id": "eg-2",
@@ -221,7 +247,8 @@
               "blocking",
               "foundation"
             ],
-            "createdAt": "2026-02-18T14:22:00Z"
+            "createdAt": "2026-02-18T14:22:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
           },
           {
             "id": "eg-3",
@@ -233,8 +260,11 @@
               "foundation",
               "branding"
             ],
-            "createdAt": "2026-02-18T14:22:00Z"
-          },
+            "createdAt": "2026-02-18T14:22:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
+          }
+        ],
+        "todo": [
           {
             "id": "eg-4",
             "title": "Create HubSpot account + configure pipeline",
@@ -540,8 +570,7 @@
       "status": "active",
       "description": "Shoe Deals & Comparison",
       "tasks": {
-        "upnext": [],
-        "todo": [
+        "upnext": [
           {
             "id": "ju-t1",
             "title": "Get 3 people to purchase",
@@ -551,7 +580,8 @@
               "sales",
               "validation"
             ],
-            "createdAt": "2026-02-18T14:26:00Z"
+            "createdAt": "2026-02-18T14:26:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
           },
           {
             "id": "ju-t2",
@@ -561,7 +591,8 @@
             "tags": [
               "product"
             ],
-            "createdAt": "2026-02-18T14:26:00Z"
+            "createdAt": "2026-02-18T14:26:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
           },
           {
             "id": "ju-t3",
@@ -571,8 +602,11 @@
             "tags": [
               "images"
             ],
-            "createdAt": "2026-02-18T14:26:00Z"
-          },
+            "createdAt": "2026-02-18T14:26:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
+          }
+        ],
+        "todo": [
           {
             "id": "ju-t4",
             "title": "Redo UI/UX on homepage",
@@ -1011,8 +1045,7 @@
       "status": "active",
       "description": "",
       "tasks": {
-        "upnext": [],
-        "todo": [
+        "upnext": [
           {
             "id": "bb-1",
             "title": "Switch to Aura",
@@ -1022,7 +1055,8 @@
               "platform",
               "migration"
             ],
-            "createdAt": "2026-02-18T14:27:00Z"
+            "createdAt": "2026-02-18T14:27:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
           },
           {
             "id": "bb-2",
@@ -1032,7 +1066,8 @@
             "tags": [
               "operations"
             ],
-            "createdAt": "2026-02-18T14:27:00Z"
+            "createdAt": "2026-02-18T14:27:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
           },
           {
             "id": "bb-3",
@@ -1043,9 +1078,11 @@
               "people",
               "discussion"
             ],
-            "createdAt": "2026-02-18T14:27:00Z"
+            "createdAt": "2026-02-18T14:27:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
           }
         ],
+        "todo": [],
         "in_progress": [],
         "done": []
       }

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-18T14:34:00Z",
+  "lastUpdated": "2026-02-18T14:36:00Z",
   "projects": [
     {
       "id": "spotlight-ai",
@@ -13,13 +13,13 @@
           {
             "id": "sa-1",
             "title": "Switch Stripe to Live Mode",
-            "description": "All 6 env vars + webhook registration + test transactions. Assigned to Mordy. CRITICAL pre-launch blocker.",
+            "description": "All 6 env vars + webhook registration + test transactions. CRITICAL pre-launch blocker.",
             "priority": "high",
             "tags": [
               "critical",
-              "mordy",
               "payments"
             ],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -29,9 +29,9 @@
             "priority": "high",
             "tags": [
               "critical",
-              "yaakov",
               "ux"
             ],
+            "assignee": "yaakov",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -40,9 +40,9 @@
             "description": "Current fetch+Cheerio fails on JS-rendered/bot-blocked sites. Plan at ~/.claude/plans/sharded-wandering-meadow.md.",
             "priority": "high",
             "tags": [
-              "critical",
-              "mordy"
+              "critical"
             ],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -50,10 +50,8 @@
             "title": "Verify Tier 2 Monitoring",
             "description": "Two customer journeys remain: Tier 0→2 and Tier 0→1→2.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "testing"
-            ],
+            "tags": ["testing"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -61,10 +59,8 @@
             "title": "Dashboard UX review",
             "description": "Deferred until dashboard layout finalized.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "ux"
-            ],
+            "tags": ["ux"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -72,10 +68,8 @@
             "title": "Validate query generation quality",
             "description": "Not started.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "quality"
-            ],
+            "tags": ["quality"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -83,10 +77,8 @@
             "title": "Upgrade reminder email",
             "description": "Finalize copy + update CTA URLs with ?email= param.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "email"
-            ],
+            "tags": ["email"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -94,10 +86,8 @@
             "title": "Edit all email copy",
             "description": "Final review of all Loops emails before launch.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "email"
-            ],
+            "tags": ["email"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -105,10 +95,8 @@
             "title": "Transactional email templates",
             "description": "Create in Loops, wire up IDs.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "email"
-            ],
+            "tags": ["email"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -116,10 +104,8 @@
             "title": "Login credentials email",
             "description": "Code done, awaiting Tier 2 test.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "email"
-            ],
+            "tags": ["email"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -127,9 +113,8 @@
             "title": "Monthly re-scan reminder",
             "description": "Not started.",
             "priority": "medium",
-            "tags": [
-              "mordy"
-            ],
+            "tags": [],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -137,10 +122,8 @@
             "title": "Validate PDF generation",
             "description": "Test quality/performance post-fix.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "testing"
-            ],
+            "tags": ["testing"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -148,10 +131,8 @@
             "title": "Branding — favicon & logo",
             "description": "Still needed.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "branding"
-            ],
+            "tags": ["branding"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -159,10 +140,8 @@
             "title": "Cloudflare Turnstile",
             "description": "Bot protection for /api/scan.",
             "priority": "medium",
-            "tags": [
-              "mordy",
-              "security"
-            ],
+            "tags": ["security"],
+            "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {

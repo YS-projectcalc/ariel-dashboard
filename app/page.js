@@ -325,16 +325,32 @@ function ChangeRequestPopout({ onClose }) {
 
 // ─── Due Date Picker (Feature 2) ────────────────────────────────────
 
-function DueDatePicker({ taskId, currentDueDate, onSetDueDate, onClose }) {
+function DueDatePicker({ taskId, currentDueDate, onSetDueDate, onClose, anchorRect }) {
   const [date, setDate] = useState(currentDueDate || '');
+  const pickerRef = useRef(null);
+
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === 'Escape') { e.stopPropagation(); onClose(); } };
+    const handleClick = (e) => { if (pickerRef.current && !pickerRef.current.contains(e.target)) onClose(); };
+    window.addEventListener('keydown', handleKey);
+    window.addEventListener('mousedown', handleClick);
+    return () => { window.removeEventListener('keydown', handleKey); window.removeEventListener('mousedown', handleClick); };
+  }, [onClose]);
+
+  const style = anchorRect ? {
+    position: 'fixed', top: anchorRect.bottom + 4, right: Math.max(8, window.innerWidth - anchorRect.right),
+    backgroundColor: '#163344', border: '1px solid #1e4258',
+    borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+    zIndex: 10000, padding: '12px', width: '220px',
+  } : {
+    position: 'absolute', top: '100%', right: 0, marginTop: '4px',
+    backgroundColor: '#163344', border: '1px solid #1e4258',
+    borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+    zIndex: 10000, padding: '12px', width: '220px',
+  };
 
   return (
-    <div style={{
-      position: 'absolute', top: '100%', left: 0, marginTop: '4px',
-      backgroundColor: '#163344', border: '1px solid #1e4258',
-      borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-      zIndex: 100, padding: '12px', width: '220px',
-    }} onClick={e => e.stopPropagation()}>
+    <div ref={pickerRef} style={style} onClick={e => e.stopPropagation()}>
       <div style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', marginBottom: '8px' }}>Set Due Date</div>
       <input
         type="date"
@@ -371,10 +387,19 @@ function DueDatePicker({ taskId, currentDueDate, onSetDueDate, onClose }) {
 
 // ─── Reminder Picker (Feature 3) ────────────────────────────────────
 
-function ReminderPicker({ taskId, taskTitle, onClose }) {
+function ReminderPicker({ taskId, taskTitle, onClose, anchorRect }) {
   const [date, setDate] = useState('');
   const [time, setTime] = useState('09:00');
   const [sent, setSent] = useState(false);
+  const pickerRef = useRef(null);
+
+  useEffect(() => {
+    const handleKey = (e) => { if (e.key === 'Escape') { e.stopPropagation(); onClose(); } };
+    const handleClick = (e) => { if (pickerRef.current && !pickerRef.current.contains(e.target)) onClose(); };
+    window.addEventListener('keydown', handleKey);
+    window.addEventListener('mousedown', handleClick);
+    return () => { window.removeEventListener('keydown', handleKey); window.removeEventListener('mousedown', handleClick); };
+  }, [onClose]);
 
   const handleSet = () => {
     if (!date || !time) return;
@@ -393,13 +418,20 @@ function ReminderPicker({ taskId, taskTitle, onClose }) {
     setTimeout(onClose, 1200);
   };
 
+  const style = anchorRect ? {
+    position: 'fixed', top: anchorRect.bottom + 4, right: Math.max(8, window.innerWidth - anchorRect.right),
+    backgroundColor: '#163344', border: '1px solid #1e4258',
+    borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+    zIndex: 10000, padding: '12px', width: '240px',
+  } : {
+    position: 'absolute', top: '100%', right: 0, marginTop: '4px',
+    backgroundColor: '#163344', border: '1px solid #1e4258',
+    borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+    zIndex: 10000, padding: '12px', width: '240px',
+  };
+
   return (
-    <div style={{
-      position: 'absolute', top: '100%', left: 0, marginTop: '4px',
-      backgroundColor: '#163344', border: '1px solid #1e4258',
-      borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
-      zIndex: 100, padding: '12px', width: '240px',
-    }} onClick={e => e.stopPropagation()}>
+    <div ref={pickerRef} style={style} onClick={e => e.stopPropagation()}>
       {sent ? (
         <div style={{ textAlign: 'center', padding: '12px', color: '#4ade80', fontSize: '13px' }}>
           Reminder set
@@ -829,6 +861,7 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, us
 function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate, onEdit, index, onReorder }) {
   const [showDuePicker, setShowDuePicker] = useState(false);
   const [showReminder, setShowReminder] = useState(false);
+  const [pickerAnchor, setPickerAnchor] = useState(null);
 
   const priorityColors = {
     high: { bg: '#451a03', text: '#fb923c', label: 'High' },
@@ -852,6 +885,11 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
         e.currentTarget.style.opacity = isDone ? '0.6' : '1';
       }}
       onDragOver={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.dataTransfer.dropEffect = 'move';
+      }}
+      onDragEnter={(e) => {
         e.preventDefault();
         e.stopPropagation();
       }}
@@ -968,7 +1006,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
               </svg>
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); setShowDuePicker(!showDuePicker); setShowReminder(false); }}
+              onClick={(e) => { e.stopPropagation(); const rect = e.currentTarget.getBoundingClientRect(); setPickerAnchor(rect); setShowDuePicker(!showDuePicker); setShowReminder(false); }}
               title="Set due date"
               style={{
                 width: '24px', height: '24px', borderRadius: '4px',
@@ -985,7 +1023,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
               </svg>
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); setShowReminder(!showReminder); setShowDuePicker(false); }}
+              onClick={(e) => { e.stopPropagation(); const rect = e.currentTarget.getBoundingClientRect(); setPickerAnchor(rect); setShowReminder(!showReminder); setShowDuePicker(false); }}
               title="Set reminder"
               style={{
                 width: '24px', height: '24px', borderRadius: '4px',
@@ -1007,6 +1045,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
                 currentDueDate={dueDate}
                 onSetDueDate={onSetDueDate}
                 onClose={() => setShowDuePicker(false)}
+                anchorRect={pickerAnchor}
               />
             )}
             {showReminder && (
@@ -1014,6 +1053,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
                 taskId={task.id}
                 taskTitle={task.title}
                 onClose={() => setShowReminder(false)}
+                anchorRect={pickerAnchor}
               />
             )}
           </div>
@@ -1052,11 +1092,11 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
         )}
       </div>
       <div
-        onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; if (!dragOver) setDragOver(true); }}
-        onDragEnter={(e) => { e.preventDefault(); setDragOver(true); }}
+        onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }}
+        onDragEnter={(e) => { e.preventDefault(); if (e.currentTarget === e.target || !e.currentTarget.contains(e.relatedTarget)) setDragOver(true); }}
         onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}
         onDrop={(e) => {
-          e.preventDefault(); e.stopPropagation(); setDragOver(false);
+          e.preventDefault(); setDragOver(false);
           const taskId = e.dataTransfer.getData('text/plain');
           if (taskId && onDrop) onDrop(taskId, columnId);
         }}
@@ -1589,65 +1629,172 @@ function PotentialIdeaCard({ biz }) {
 }
 
 function PotentialIdeasSection({ businesses }) {
-  if (!businesses || businesses.length === 0) {
-    return (
-      <div style={{ marginTop: '32px' }}>
-        <div style={{
-          display: 'flex', alignItems: 'center', gap: '10px',
-          marginBottom: '16px',
-        }}>
-          <div style={{
-            width: '8px', height: '8px', borderRadius: '50%',
-            backgroundColor: '#f59e0b',
-          }} />
-          <span style={{
-            fontSize: '14px', fontWeight: 700, color: '#f8fafc',
-          }}>Potential Ideas</span>
-          <span style={{
-            fontSize: '11px', color: '#475569',
-            backgroundColor: '#163344',
-            padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
-          }}>0</span>
-        </div>
-        <div style={{
-          backgroundColor: '#163344', borderRadius: '10px',
-          border: '1px solid #1e4258', padding: '24px',
-          textAlign: 'center', fontSize: '13px', color: '#475569',
-          fontStyle: 'italic',
-        }}>
-          No ideas yet
-        </div>
-      </div>
-    );
-  }
+  const [expanded, setExpanded] = useState(false);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newTitle, setNewTitle] = useState('');
+  const [newIdea, setNewIdea] = useState('');
+
+  const handleAddIdea = () => {
+    if (!newTitle.trim()) return;
+    const ideas = JSON.parse(localStorage.getItem('cc_potential_ideas') || '[]');
+    ideas.push({
+      id: 'idea-' + Date.now().toString(36),
+      title: newTitle.trim(),
+      idea: newIdea.trim() || undefined,
+      tags: [],
+      createdAt: new Date().toISOString(),
+    });
+    localStorage.setItem('cc_potential_ideas', JSON.stringify(ideas));
+    setNewTitle('');
+    setNewIdea('');
+    setShowAddForm(false);
+    window.dispatchEvent(new Event('ideas-updated'));
+  };
+
+  const localIdeas = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('cc_potential_ideas') || '[]') : [];
+  const allIdeas = [...(businesses || []), ...localIdeas];
 
   return (
     <div style={{ marginTop: '32px' }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: '10px',
-        marginBottom: '16px',
-      }}>
-        <div style={{
-          width: '8px', height: '8px', borderRadius: '50%',
-          backgroundColor: '#f59e0b',
-        }} />
-        <span style={{
-          fontSize: '14px', fontWeight: 700, color: '#f8fafc',
-        }}>Potential Ideas</span>
-        <span style={{
-          fontSize: '11px', color: '#475569',
+      {/* Overview card — like a project card */}
+      <div
+        onClick={() => setExpanded(!expanded)}
+        style={{
           backgroundColor: '#163344',
-          padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
-        }}>{businesses.length}</span>
-      </div>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-        gap: '16px',
-      }}>
-        {businesses.map(biz => (
-          <PotentialIdeaCard key={biz.id} biz={biz} />
-        ))}
+          borderRadius: '12px',
+          border: '1px solid #1e4258',
+          padding: '24px',
+          cursor: 'pointer',
+          transition: 'border-color 0.15s, transform 0.15s',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.borderColor = '#f59e0b';
+          e.currentTarget.style.transform = 'translateY(-2px)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.borderColor = '#1e4258';
+          e.currentTarget.style.transform = 'translateY(0)';
+        }}
+      >
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0,
+          height: '3px', backgroundColor: '#f59e0b',
+        }} />
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: expanded ? '16px' : '0' }}>
+          <div style={{
+            width: '40px', height: '40px', borderRadius: '10px',
+            backgroundColor: '#f59e0b20', color: '#f59e0b',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '18px', fontWeight: 700, flexShrink: 0,
+          }}>{'\u2728'}</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 700, fontSize: '16px', color: '#f8fafc' }}>
+              Potential Ideas
+            </div>
+            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+              {allIdeas.length} idea{allIdeas.length !== 1 ? 's' : ''} — click to {expanded ? 'collapse' : 'expand'}
+            </div>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{
+              fontSize: '24px', fontWeight: 700, color: '#f59e0b',
+            }}>{allIdeas.length}</span>
+            <span style={{
+              fontSize: '14px', color: '#475569',
+              transition: 'transform 0.2s',
+              transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+              display: 'inline-block',
+            }}>{'\u25BC'}</span>
+          </div>
+        </div>
+
+        {expanded && (
+          <div onClick={e => e.stopPropagation()}>
+            {/* Add idea button */}
+            <div style={{ marginBottom: '16px' }}>
+              {!showAddForm ? (
+                <button
+                  onClick={() => setShowAddForm(true)}
+                  style={{
+                    background: 'none', border: '1px dashed #f59e0b40',
+                    borderRadius: '8px', padding: '10px', width: '100%',
+                    color: '#f59e0b', cursor: 'pointer', fontSize: '13px',
+                    transition: 'border-color 0.15s',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.borderColor = '#f59e0b'}
+                  onMouseLeave={e => e.currentTarget.style.borderColor = '#f59e0b40'}
+                >+ Add Idea</button>
+              ) : (
+                <div style={{
+                  backgroundColor: '#0a2233', borderRadius: '8px', padding: '12px',
+                  border: '1px solid #f59e0b40',
+                }}>
+                  <input
+                    autoFocus
+                    value={newTitle}
+                    onChange={e => setNewTitle(e.target.value)}
+                    placeholder="Idea title..."
+                    style={{
+                      width: '100%', boxSizing: 'border-box',
+                      backgroundColor: '#163344', border: '1px solid #334155',
+                      borderRadius: '6px', padding: '8px',
+                      color: '#f8fafc', fontSize: '13px', fontFamily: 'inherit',
+                      outline: 'none', marginBottom: '6px',
+                    }}
+                    onKeyDown={e => { if (e.key === 'Escape') setShowAddForm(false); if (e.key === 'Enter' && newTitle.trim()) handleAddIdea(); }}
+                  />
+                  <textarea
+                    value={newIdea}
+                    onChange={e => setNewIdea(e.target.value)}
+                    placeholder="Brief description (optional)..."
+                    rows={2}
+                    style={{
+                      width: '100%', boxSizing: 'border-box',
+                      backgroundColor: '#163344', border: '1px solid #334155',
+                      borderRadius: '6px', padding: '8px',
+                      color: '#f8fafc', fontSize: '13px', fontFamily: 'inherit',
+                      outline: 'none', resize: 'vertical', marginBottom: '8px',
+                    }}
+                  />
+                  <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
+                    <button onClick={() => setShowAddForm(false)} style={{
+                      background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '12px', padding: '4px 8px',
+                    }}>Cancel</button>
+                    <button onClick={handleAddIdea} disabled={!newTitle.trim()} style={{
+                      backgroundColor: newTitle.trim() ? '#f59e0b' : '#334155',
+                      color: newTitle.trim() ? '#fff' : '#64748b',
+                      border: 'none', borderRadius: '6px', padding: '4px 12px',
+                      fontSize: '12px', fontWeight: 600, cursor: newTitle.trim() ? 'pointer' : 'default',
+                    }}>Add</button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Ideas grid */}
+            {allIdeas.length > 0 ? (
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+                gap: '12px',
+              }}>
+                {allIdeas.map(biz => (
+                  <PotentialIdeaCard key={biz.id} biz={biz} />
+                ))}
+              </div>
+            ) : (
+              <div style={{
+                padding: '20px', textAlign: 'center', fontSize: '13px',
+                color: '#475569', fontStyle: 'italic',
+              }}>
+                No ideas yet — add your first one above
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1684,13 +1831,13 @@ function ArielSidebar({ isOpen, onToggle }) {
       <button
         onClick={onToggle}
         style={{
-          position: 'fixed', right: isOpen ? '340px' : '0', top: '50%',
+          position: 'fixed', right: isOpen ? 'min(340px, 90vw)' : '0', top: '50%',
           transform: 'translateY(-50%)',
           width: '32px', height: '64px',
           backgroundColor: '#163344', border: '1px solid #1e4258',
           borderRight: isOpen ? 'none' : '1px solid #1e4258',
           borderLeft: isOpen ? '1px solid #1e4258' : 'none',
-          borderRadius: isOpen ? '8px 0 0 8px' : '8px 0 0 8px',
+          borderRadius: '8px 0 0 8px',
           color: '#94a3b8', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '14px', zIndex: 101,
@@ -1704,10 +1851,10 @@ function ArielSidebar({ isOpen, onToggle }) {
       {/* Sidebar panel */}
       <div style={{
         position: 'fixed', right: isOpen ? 0 : '-340px', top: 0, bottom: 0,
-        width: '340px', backgroundColor: '#0f2233',
+        width: '340px', maxWidth: '90vw', backgroundColor: '#0f2233',
         borderLeft: '1px solid #1e4258',
         zIndex: 100, transition: 'right 0.2s',
-        overflowY: 'auto', padding: '24px',
+        overflowY: 'auto', padding: '24px', boxSizing: 'border-box',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
           <span style={{ fontSize: '24px' }}>{'\uD83E\uDD81'}</span>
@@ -2030,7 +2177,7 @@ export default function Home() {
       minHeight: '100vh', backgroundColor: '#143d4f', padding: '24px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
-      marginRight: sidebarOpen ? '340px' : '0',
+      marginRight: sidebarOpen ? 'min(340px, 90vw)' : '0',
       transition: 'margin-right 0.2s',
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>

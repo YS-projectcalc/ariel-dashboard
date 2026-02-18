@@ -584,10 +584,9 @@ function GeneralTodoItem({ todo, isDone, onToggle }) {
 // ─── General Todos Section ──────────────────────────────────────────
 
 function GeneralTodosSection({ todos, completedIds, onToggle }) {
-  if (!todos || todos.length === 0) return null;
-
-  const activeTodos = todos.filter(t => !completedIds.includes(t.id));
-  const doneTodos = todos.filter(t => completedIds.includes(t.id));
+  const todoList = todos || [];
+  const activeTodos = todoList.filter(t => !completedIds.includes(t.id));
+  const doneTodos = todoList.filter(t => completedIds.includes(t.id));
 
   return (
     <div style={{ marginTop: '32px' }}>
@@ -608,27 +607,38 @@ function GeneralTodosSection({ todos, completedIds, onToggle }) {
           padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
         }}>{activeTodos.length}</span>
       </div>
-      <div style={{
-        display: 'grid', gap: '8px',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-      }}>
-        {activeTodos.map(todo => (
-          <GeneralTodoItem
-            key={todo.id}
-            todo={todo}
-            isDone={false}
-            onToggle={onToggle}
-          />
-        ))}
-        {doneTodos.map(todo => (
-          <GeneralTodoItem
-            key={todo.id}
-            todo={todo}
-            isDone={true}
-            onToggle={onToggle}
-          />
-        ))}
-      </div>
+      {todoList.length === 0 ? (
+        <div style={{
+          backgroundColor: '#163344', borderRadius: '10px',
+          border: '1px solid #1e4258', padding: '24px',
+          textAlign: 'center', fontSize: '13px', color: '#475569',
+          fontStyle: 'italic',
+        }}>
+          No general to-dos yet
+        </div>
+      ) : (
+        <div style={{
+          display: 'grid', gap: '8px',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
+        }}>
+          {activeTodos.map(todo => (
+            <GeneralTodoItem
+              key={todo.id}
+              todo={todo}
+              isDone={false}
+              onToggle={onToggle}
+            />
+          ))}
+          {doneTodos.map(todo => (
+            <GeneralTodoItem
+              key={todo.id}
+              todo={todo}
+              isDone={true}
+              onToggle={onToggle}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

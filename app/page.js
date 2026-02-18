@@ -23,22 +23,51 @@ function getCompletedIds() {
     return JSON.parse(localStorage.getItem('cc_done') || '[]');
   } catch { return []; }
 }
-function setCompletedIds(ids) {
-  localStorage.setItem('cc_done', JSON.stringify(ids));
+
+// Helper: get all tasks from a project as flat array
+function getAllTasks(project) {
+  const tasks = project.tasks || { todo: [], in_progress: [], done: [] };
+  return [...tasks.todo, ...(tasks.in_progress || []), ...(tasks.done || [])];
 }
 
-// ─── Overview: Bird's-eye project cards ─────────────────────────────
+// Helper: is a task done (either in completedIds or in the done array)
+function isTaskDone(task, project, completedIds) {
+  if (completedIds.includes(task.id)) return true;
+  const doneTasks = (project.tasks || {}).done || [];
+  return doneTasks.some(d => d.id === task.id);
+}
 
-function ProjectOverviewCard({ project, completedIds, onClick }) {
-  const tasks = project.tasks || { todo: [], in_progress: [], done: [] };
-  // Merge all tasks, then split by completedIds
-  const allTasks = [...tasks.todo, ...(tasks.in_progress || []), ...(tasks.done || [])];
-  const upNextCount = allTasks.filter(t => !completedIds.includes(t.id)).length;
-  const doneCount = allTasks.filter(t => completedIds.includes(t.id)).length;
-  // Also count tasks already in done that might not be in completedIds
-  const serverDone = (tasks.done || []).filter(t => !completedIds.includes(t.id));
-  const totalDone = doneCount + serverDone.length;
-  const totalUpNext = upNextCount - serverDone.length;
+// Helper: check if a project has assignee-based splitting
+function hasAssignees(project) {
+  const all = getAllTasks(project);
+  return all.some(t => t.assignee);
+}
+
+// Helper: get unique assignees from a project
+function getAssignees(project) {
+  const all = getAllTasks(project);
+  const assignees = new Set();
+  all.forEach(t => { if (t.assignee) assignees.add(t.assignee); });
+  return Array.from(assignees);
+}
+
+const priorityOrder = { high: 0, medium: 1, low: 2 };
+function sortByPriority(tasks) {
+  return [...tasks].sort((a, b) => (priorityOrder[a.priority] ?? 1) - (priorityOrder[b.priority] ?? 1));
+}
+
+// ─── Overview: Bird's-eye project card ──────────────────────────────
+
+function ProjectOverviewCard({ project, completedIds, onClick, subtitle, filterAssignee }) {
+  const allTasks = getAllTasks(project);
+  // If filterAssignee is set, only count tasks for that assignee
+  // If filterAssignee is null, count tasks with NO assignee (or all if project has no assignees)
+  const relevantTasks = filterAssignee !== undefined
+    ? allTasks.filter(t => filterAssignee ? t.assignee === filterAssignee : !t.assignee)
+    : allTasks;
+
+  const doneCount = relevantTasks.filter(t => isTaskDone(t, project, completedIds)).length;
+  const upNextCount = relevantTasks.length - doneCount;
 
   return (
     <div
@@ -84,24 +113,29 @@ function ProjectOverviewCard({ project, completedIds, onClick }) {
         </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: '16px', color: '#f8fafc' }}>
-            {project.name}
+            {subtitle || project.name}
           </div>
-          {project.description && (
+          {project.description && !subtitle && (
             <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
               {project.description}
+            </div>
+          )}
+          {subtitle && (
+            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+              {project.description || project.name}
             </div>
           )}
         </div>
       </div>
 
-      {/* Task count chips — just Up Next and Done */}
+      {/* Task count chips */}
       <div style={{ display: 'flex', gap: '8px' }}>
         <div style={{
           flex: 1, textAlign: 'center',
           padding: '8px 4px', borderRadius: '8px',
           backgroundColor: '#0f172a',
         }}>
-          <div style={{ fontSize: '20px', fontWeight: 700, color: '#94a3b8' }}>{totalUpNext < 0 ? 0 : totalUpNext}</div>
+          <div style={{ fontSize: '20px', fontWeight: 700, color: '#94a3b8' }}>{upNextCount}</div>
           <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>Up Next</div>
         </div>
         <div style={{
@@ -109,7 +143,7 @@ function ProjectOverviewCard({ project, completedIds, onClick }) {
           padding: '8px 4px', borderRadius: '8px',
           backgroundColor: '#0f172a',
         }}>
-          <div style={{ fontSize: '20px', fontWeight: 700, color: '#4ade80' }}>{totalDone}</div>
+          <div style={{ fontSize: '20px', fontWeight: 700, color: '#4ade80' }}>{doneCount}</div>
           <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>Done</div>
         </div>
       </div>
@@ -205,9 +239,9 @@ function TaskCard({ task, accentColor, isDone, onToggle }) {
 
 // ─── Task column ────────────────────────────────────────────────────
 
-function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle }) {
+function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project }) {
   return (
-    <div style={{ flex: 1, minWidth: '280px' }}>
+    <div style={{ flex: 1, minWidth: '240px' }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: '8px',
         marginBottom: '12px', padding: '0 4px',
@@ -252,7 +286,7 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
               key={task.id || i}
               task={task}
               accentColor={accentColor}
-              isDone={completedIds.includes(task.id)}
+              isDone={isTaskDone(task, project, completedIds)}
               onToggle={onToggle}
             />
           ))
@@ -262,71 +296,87 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
   );
 }
 
-// ─── Project detail view (two columns: Up Next + Done) ──────────────
+// ─── Project detail view ────────────────────────────────────────────
 
 function ProjectDetailView({ project, onBack, completedIds, onToggle }) {
-  const tasks = project.tasks || { todo: [], in_progress: [], done: [] };
+  const allTasks = getAllTasks(project);
+  const assignees = getAssignees(project);
+  const hasSplit = assignees.length > 0;
 
-  // Merge all tasks from all columns
-  const allTasks = [...tasks.todo, ...(tasks.in_progress || []), ...(tasks.done || [])];
+  // Separate done from not-done
+  const doneTasks = allTasks.filter(t => isTaskDone(t, project, completedIds));
 
-  // Split into up next vs done based on completedIds + original done status
-  const upNext = allTasks.filter(t => !completedIds.includes(t.id) && !(tasks.done || []).some(d => d.id === t.id));
-  const done = allTasks.filter(t => completedIds.includes(t.id) || (tasks.done || []).some(d => d.id === t.id));
+  if (hasSplit) {
+    // Split: Up Next (no assignee or owner tasks), one column per assignee, Done
+    const upNext = sortByPriority(
+      allTasks.filter(t => !isTaskDone(t, project, completedIds) && !t.assignee)
+    );
+    const assigneeCols = assignees.map(a => ({
+      name: a,
+      tasks: sortByPriority(
+        allTasks.filter(t => !isTaskDone(t, project, completedIds) && t.assignee === a)
+      ),
+    }));
 
-  // Sort up next: high priority first
-  const priorityOrder = { high: 0, medium: 1, low: 2 };
-  upNext.sort((a, b) => (priorityOrder[a.priority] ?? 1) - (priorityOrder[b.priority] ?? 1));
+    // Assignee colors
+    const assigneeColors = {
+      mordy: '#f97316',
+      yaakov: '#8b5cf6',
+    };
+
+    return (
+      <div>
+        <DetailHeader project={project} onBack={onBack} />
+        <div style={{
+          display: 'flex', gap: '16px',
+          overflowX: 'auto', paddingBottom: '8px',
+        }}>
+          <TaskColumn
+            title="Up Next"
+            tasks={upNext}
+            accentColor="#94a3b8"
+            dotColor="#94a3b8"
+            emptyText="All assigned!"
+            completedIds={completedIds}
+            onToggle={onToggle}
+            project={project}
+          />
+          {assigneeCols.map(col => (
+            <TaskColumn
+              key={col.name}
+              title={col.name.charAt(0).toUpperCase() + col.name.slice(1)}
+              tasks={col.tasks}
+              accentColor={assigneeColors[col.name] || '#60a5fa'}
+              dotColor={assigneeColors[col.name] || '#60a5fa'}
+              emptyText={`Nothing for ${col.name}`}
+              completedIds={completedIds}
+              onToggle={onToggle}
+              project={project}
+            />
+          ))}
+          <TaskColumn
+            title="Done"
+            tasks={doneTasks}
+            accentColor="#4ade80"
+            dotColor="#4ade80"
+            emptyText="Nothing completed yet"
+            completedIds={completedIds}
+            onToggle={onToggle}
+            project={project}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Standard two-column: Up Next + Done
+  const upNext = sortByPriority(
+    allTasks.filter(t => !isTaskDone(t, project, completedIds))
+  );
 
   return (
     <div>
-      {/* Back button + project header */}
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: '16px',
-        marginBottom: '24px',
-      }}>
-        <button
-          onClick={onBack}
-          style={{
-            background: 'none',
-            border: '1px solid #334155',
-            borderRadius: '8px',
-            color: '#94a3b8',
-            padding: '8px 14px',
-            cursor: 'pointer',
-            fontSize: '13px',
-            display: 'flex', alignItems: 'center', gap: '6px',
-            transition: 'border-color 0.15s',
-          }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = '#64748b'}
-          onMouseLeave={e => e.currentTarget.style.borderColor = '#334155'}
-        >
-          <span style={{ fontSize: '16px' }}>&larr;</span> All Projects
-        </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '36px', height: '36px', borderRadius: '8px',
-            backgroundColor: project.color + '20',
-            color: project.color,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '16px', fontWeight: 700,
-          }}>
-            {project.icon || project.name.charAt(0)}
-          </div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: '20px', color: '#f8fafc' }}>
-              {project.name}
-            </div>
-            {project.description && (
-              <div style={{ fontSize: '13px', color: '#64748b' }}>
-                {project.description}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Two columns: Up Next + Done */}
+      <DetailHeader project={project} onBack={onBack} />
       <div style={{
         display: 'flex', gap: '16px',
         overflowX: 'auto', paddingBottom: '8px',
@@ -339,16 +389,67 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle }) {
           emptyText="All done!"
           completedIds={completedIds}
           onToggle={onToggle}
+          project={project}
         />
         <TaskColumn
           title="Done"
-          tasks={done}
+          tasks={doneTasks}
           accentColor="#4ade80"
           dotColor="#4ade80"
           emptyText="Nothing completed yet"
           completedIds={completedIds}
           onToggle={onToggle}
+          project={project}
         />
+      </div>
+    </div>
+  );
+}
+
+function DetailHeader({ project, onBack }) {
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: '16px',
+      marginBottom: '24px',
+    }}>
+      <button
+        onClick={onBack}
+        style={{
+          background: 'none',
+          border: '1px solid #334155',
+          borderRadius: '8px',
+          color: '#94a3b8',
+          padding: '8px 14px',
+          cursor: 'pointer',
+          fontSize: '13px',
+          display: 'flex', alignItems: 'center', gap: '6px',
+          transition: 'border-color 0.15s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.borderColor = '#64748b'}
+        onMouseLeave={e => e.currentTarget.style.borderColor = '#334155'}
+      >
+        <span style={{ fontSize: '16px' }}>&larr;</span> All Projects
+      </button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{
+          width: '36px', height: '36px', borderRadius: '8px',
+          backgroundColor: project.color + '20',
+          color: project.color,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '16px', fontWeight: 700,
+        }}>
+          {project.icon || project.name.charAt(0)}
+        </div>
+        <div>
+          <div style={{ fontWeight: 700, fontSize: '20px', color: '#f8fafc' }}>
+            {project.name}
+          </div>
+          {project.description && (
+            <div style={{ fontSize: '13px', color: '#64748b' }}>
+              {project.description}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -397,7 +498,7 @@ export default function Home() {
   if (error) {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#0f172a', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto', color: '#f87171', padding: '40px', textAlign: 'center' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#f87171', padding: '40px', textAlign: 'center' }}>
           Failed to load: {error}
         </div>
       </div>
@@ -407,7 +508,7 @@ export default function Home() {
   if (!data) {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#0f172a', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto', color: '#64748b', padding: '40px', textAlign: 'center' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#64748b', padding: '40px', textAlign: 'center' }}>
           Loading...
         </div>
       </div>
@@ -417,16 +518,45 @@ export default function Home() {
   const projects = data.projects || [];
   const selected = selectedProject ? projects.find(p => p.id === selectedProject) : null;
 
-  // Total counts using completedIds logic
+  // Build overview cards — split projects with assignees into separate cards
+  const overviewCards = [];
+  projects.forEach(project => {
+    const assignees = getAssignees(project);
+    if (assignees.length > 0) {
+      // Card for unassigned tasks (the "main" project card)
+      overviewCards.push({
+        project,
+        key: project.id,
+        subtitle: project.name,
+        filterAssignee: null,
+      });
+      // Separate card per assignee
+      assignees.forEach(a => {
+        overviewCards.push({
+          project,
+          key: `${project.id}-${a}`,
+          subtitle: `${project.name} — ${a.charAt(0).toUpperCase() + a.slice(1)}`,
+          filterAssignee: a,
+        });
+      });
+    } else {
+      overviewCards.push({
+        project,
+        key: project.id,
+        subtitle: null,
+        filterAssignee: undefined,
+      });
+    }
+  });
+
+  // Total counts
   const totalUpNext = projects.reduce((sum, p) => {
-    const tasks = p.tasks || { todo: [], in_progress: [], done: [] };
-    const all = [...tasks.todo, ...(tasks.in_progress || [])];
-    return sum + all.filter(t => !completedIds.includes(t.id)).length;
+    const all = getAllTasks(p);
+    return sum + all.filter(t => !isTaskDone(t, p, completedIds)).length;
   }, 0);
   const totalDone = projects.reduce((sum, p) => {
-    const tasks = p.tasks || { todo: [], in_progress: [], done: [] };
-    const all = [...tasks.todo, ...(tasks.in_progress || []), ...(tasks.done || [])];
-    return sum + all.filter(t => completedIds.includes(t.id) || (tasks.done || []).some(d => d.id === t.id)).length;
+    const all = getAllTasks(p);
+    return sum + all.filter(t => isTaskDone(t, p, completedIds)).length;
   }, 0);
   const totalTasks = totalUpNext + totalDone;
 
@@ -438,7 +568,7 @@ export default function Home() {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
     }}>
-      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         {/* Header */}
         <header style={{
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -480,7 +610,7 @@ export default function Home() {
           />
         ) : (
           <>
-            {/* Summary row — just Up Next and Done */}
+            {/* Summary row */}
             {totalTasks > 0 && (
               <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
                 {[
@@ -509,15 +639,17 @@ export default function Home() {
             {/* Project grid */}
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
               gap: '16px',
             }}>
-              {projects.map(project => (
+              {overviewCards.map(card => (
                 <ProjectOverviewCard
-                  key={project.id}
-                  project={project}
+                  key={card.key}
+                  project={card.project}
                   completedIds={completedIds}
-                  onClick={() => setSelectedProject(project.id)}
+                  onClick={() => setSelectedProject(card.project.id)}
+                  subtitle={card.subtitle}
+                  filterAssignee={card.filterAssignee}
                 />
               ))}
             </div>

@@ -1,6 +1,7 @@
 {
-  "lastUpdated": "2026-02-18T14:46:49.556Z",
+  "lastUpdated": "2026-02-18T19:27:00.000Z",
   "todos": [],
+  "potentialBusinesses": [],
   "projects": [
     {
       "id": "spotlight-ai",
@@ -191,6 +192,14 @@
             ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-19",
+            "title": "Mention: local business SEO optimization has major impact (low competition)",
+            "description": "When marketing/positioning Spotlight, emphasize that optimizing for local businesses has an outsized impact because competition is so low in local SEO.",
+            "priority": "medium",
+            "tags": ["marketing", "note"],
+            "createdAt": "2026-02-18T19:27:00Z"
           },
           {
             "id": "sa-17",
@@ -608,6 +617,14 @@
           }
         ],
         "todo": [
+          {
+            "id": "ju-t19",
+            "title": "Work out variations and pricing for unpopular items",
+            "description": "Figure out how to handle product variations (sizes, colors) and pricing strategy specifically for less popular items.",
+            "priority": "high",
+            "tags": ["product", "pricing"],
+            "createdAt": "2026-02-18T19:27:00Z"
+          },
           {
             "id": "ju-t4",
             "title": "Redo UI/UX on homepage",
@@ -1036,6 +1053,20 @@
             "createdAt": "2026-02-18T14:34:00Z"
           }
         ]
+      }
+    },
+    {
+      "id": "iluy",
+      "name": "Iluy",
+      "color": "#14b8a6",
+      "icon": "I",
+      "status": "active",
+      "description": "",
+      "tasks": {
+        "upnext": [],
+        "todo": [],
+        "in_progress": [],
+        "done": []
       }
     },
     {

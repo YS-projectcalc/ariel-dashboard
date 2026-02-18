@@ -165,7 +165,7 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick }) 
           <div key={item.label} style={{
             flex: 1, textAlign: 'center',
             padding: '8px 4px', borderRadius: '8px',
-            backgroundColor: '#0f172a',
+            backgroundColor: '#0d2b3e',
           }}>
             <div style={{ fontSize: '18px', fontWeight: 700, color: item.color }}>{item.count}</div>
             <div style={{ fontSize: '9px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>
@@ -200,7 +200,7 @@ function TaskCard({ task, accentColor, isDone, onToggle }) {
         e.currentTarget.style.opacity = isDone ? '0.6' : '1';
       }}
       style={{
-        backgroundColor: '#0f172a',
+        backgroundColor: '#0d2b3e',
         borderRadius: '8px',
         padding: '14px',
         borderLeft: `3px solid ${isDone ? '#4ade80' : accentColor}`,
@@ -297,7 +297,7 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
         }}>{title}</span>
         <span style={{
           fontSize: '11px', color: '#475569',
-          backgroundColor: '#0f172a',
+          backgroundColor: '#0d2b3e',
           padding: '1px 6px', borderRadius: '4px', fontWeight: 600,
         }}>{tasks.length}</span>
       </div>
@@ -516,7 +516,7 @@ function GeneralTodoItem({ todo, isDone, onToggle }) {
 
   return (
     <div style={{
-      backgroundColor: '#0f172a',
+      backgroundColor: '#0d2b3e',
       borderRadius: '8px',
       padding: '14px',
       borderLeft: `3px solid ${isDone ? '#4ade80' : '#60a5fa'}`,
@@ -633,6 +633,150 @@ function GeneralTodosSection({ todos, completedIds, onToggle }) {
   );
 }
 
+// ─── Potential Businesses Section ─────────────────────────────────────
+
+function PotentialBusinessRow({ biz, isExpanded, onToggle }) {
+  return (
+    <div style={{
+      backgroundColor: '#1e293b',
+      borderRadius: '10px',
+      border: '1px solid #334155',
+      overflow: 'hidden',
+      transition: 'border-color 0.15s',
+    }}>
+      <div
+        onClick={onToggle}
+        style={{
+          padding: '16px 20px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '14px',
+          transition: 'background-color 0.15s',
+        }}
+        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#253347'}
+        onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+      >
+        <span style={{
+          fontSize: '14px', color: '#64748b',
+          transition: 'transform 0.2s',
+          transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
+          display: 'inline-block',
+        }}>{'\u25B6'}</span>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 600, fontSize: '14px', color: '#f8fafc' }}>
+            {biz.title}
+          </div>
+          {biz.idea && !isExpanded && (
+            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px', lineHeight: 1.4 }}>
+              {biz.idea}
+            </div>
+          )}
+        </div>
+      </div>
+      {isExpanded && (
+        <div style={{
+          padding: '0 20px 16px 48px',
+          borderTop: '1px solid #334155',
+        }}>
+          {biz.idea && (
+            <div style={{ fontSize: '13px', color: '#94a3b8', marginTop: '12px', lineHeight: 1.5 }}>
+              {biz.idea}
+            </div>
+          )}
+          {biz.notes && (
+            <div style={{
+              marginTop: '12px', padding: '12px',
+              backgroundColor: '#0d2b3e', borderRadius: '8px',
+              fontSize: '13px', color: '#cbd5e1', lineHeight: 1.6,
+              whiteSpace: 'pre-wrap',
+            }}>
+              {biz.notes}
+            </div>
+          )}
+          {!biz.notes && (
+            <div style={{
+              marginTop: '12px', padding: '12px',
+              backgroundColor: '#0d2b3e', borderRadius: '8px',
+              fontSize: '12px', color: '#475569', fontStyle: 'italic',
+            }}>
+              No notes yet
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PotentialBusinessesSection({ businesses }) {
+  const [expandedId, setExpandedId] = useState(null);
+
+  if (!businesses || businesses.length === 0) {
+    return (
+      <div style={{ marginTop: '32px' }}>
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '10px',
+          marginBottom: '16px',
+        }}>
+          <div style={{
+            width: '8px', height: '8px', borderRadius: '50%',
+            backgroundColor: '#f59e0b',
+          }} />
+          <span style={{
+            fontSize: '14px', fontWeight: 700, color: '#f8fafc',
+          }}>Potential Businesses</span>
+          <span style={{
+            fontSize: '11px', color: '#475569',
+            backgroundColor: '#1e293b',
+            padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
+          }}>0</span>
+        </div>
+        <div style={{
+          backgroundColor: '#1e293b', borderRadius: '10px',
+          border: '1px solid #334155', padding: '24px',
+          textAlign: 'center', fontSize: '13px', color: '#475569',
+          fontStyle: 'italic',
+        }}>
+          No ideas yet — add them to status.json under potentialBusinesses
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ marginTop: '32px' }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: '10px',
+        marginBottom: '16px',
+      }}>
+        <div style={{
+          width: '8px', height: '8px', borderRadius: '50%',
+          backgroundColor: '#f59e0b',
+        }} />
+        <span style={{
+          fontSize: '14px', fontWeight: 700, color: '#f8fafc',
+        }}>Potential Businesses</span>
+        <span style={{
+          fontSize: '11px', color: '#475569',
+          backgroundColor: '#1e293b',
+          padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
+        }}>{businesses.length}</span>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {businesses.map(biz => (
+          <PotentialBusinessRow
+            key={biz.id}
+            biz={biz}
+            isExpanded={expandedId === biz.id}
+            onToggle={() => setExpandedId(expandedId === biz.id ? null : biz.id)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main App ───────────────────────────────────────────────────────
 
 export default function Home() {
@@ -703,7 +847,7 @@ export default function Home() {
 
   if (error) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#0f172a', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#0d2b3e', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#f87171', padding: '40px', textAlign: 'center' }}>
           Failed to load: {error}
         </div>
@@ -713,7 +857,7 @@ export default function Home() {
 
   if (!data) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#0f172a', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#0d2b3e', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#64748b', padding: '40px', textAlign: 'center' }}>
           Loading...
         </div>
@@ -751,7 +895,7 @@ export default function Home() {
 
   return (
     <div style={{
-      minHeight: '100vh', backgroundColor: '#0f172a', padding: '24px',
+      minHeight: '100vh', backgroundColor: '#0d2b3e', padding: '24px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
     }}>
@@ -831,6 +975,10 @@ export default function Home() {
               todos={todos}
               completedIds={completedIds}
               onToggle={toggleTask}
+            />
+
+            <PotentialBusinessesSection
+              businesses={data.potentialBusinesses || []}
             />
           </>
         )}

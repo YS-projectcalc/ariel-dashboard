@@ -9,6 +9,7 @@
       "status": "active",
       "description": "SEO Audit SaaS",
       "tasks": {
+        "upnext": [],
         "todo": [
           {
             "id": "sa-1",
@@ -198,6 +199,7 @@
       "status": "active",
       "description": "AI Agency",
       "tasks": {
+        "upnext": [],
         "todo": [
           {
             "id": "eg-1",
@@ -538,6 +540,7 @@
       "status": "active",
       "description": "Shoe Deals & Comparison",
       "tasks": {
+        "upnext": [],
         "todo": [
           {
             "id": "ju-t1",
@@ -1008,6 +1011,7 @@
       "status": "active",
       "description": "",
       "tasks": {
+        "upnext": [],
         "todo": [
           {
             "id": "bb-1",

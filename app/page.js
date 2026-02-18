@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 function timeAgo(dateString) {
   if (!dateString) return '';
@@ -17,47 +17,46 @@ function timeAgo(dateString) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-// localStorage helpers for completed tasks
+// localStorage helpers
 function getCompletedIds() {
-  try {
-    return JSON.parse(localStorage.getItem('cc_done') || '[]');
-  } catch { return []; }
+  try { return JSON.parse(localStorage.getItem('cc_done') || '[]'); } catch { return []; }
 }
-
-// localStorage helpers for task column assignments (drag overrides)
 function getDragOverrides() {
-  try {
-    return JSON.parse(localStorage.getItem('cc_drag') || '{}');
-  } catch { return {}; }
+  try { return JSON.parse(localStorage.getItem('cc_drag') || '{}'); } catch { return {}; }
 }
 function saveDragOverrides(overrides) {
   localStorage.setItem('cc_drag', JSON.stringify(overrides));
 }
 
-// Helper: get all tasks from a project as flat array
+// Get all tasks from a project as flat array
 function getAllTasks(project) {
-  const tasks = project.tasks || { todo: [], in_progress: [], done: [] };
-  return [...tasks.todo, ...(tasks.in_progress || []), ...(tasks.done || [])];
+  const t = project.tasks || {};
+  return [...(t.todo || []), ...(t.upnext || []), ...(t.in_progress || []), ...(t.done || [])];
 }
 
-// Helper: is a task done (either in completedIds or in the done array)
+// Check if task is in the done array from status.json
+function isInDoneArray(task, project) {
+  return ((project.tasks || {}).done || []).some(d => d.id === task.id);
+}
+
+// Check if task is in the upnext array from status.json
+function isInUpnextArray(task, project) {
+  return ((project.tasks || {}).upnext || []).some(d => d.id === task.id);
+}
+
+// Check if task is done (server-side done array OR client-side completedIds)
 function isTaskDone(task, project, completedIds) {
   if (completedIds.includes(task.id)) return true;
-  const doneTasks = (project.tasks || {}).done || [];
-  return doneTasks.some(d => d.id === task.id);
+  return isInDoneArray(task, project);
 }
 
-// Helper: check if a project has assignee-based splitting
 function hasAssignees(project) {
-  const all = getAllTasks(project);
-  return all.some(t => t.assignee);
+  return getAllTasks(project).some(t => t.assignee);
 }
 
-// Helper: get unique assignees from a project
 function getAssignees(project) {
-  const all = getAllTasks(project);
   const assignees = new Set();
-  all.forEach(t => { if (t.assignee) assignees.add(t.assignee); });
+  getAllTasks(project).forEach(t => { if (t.assignee) assignees.add(t.assignee); });
   return Array.from(assignees);
 }
 
@@ -68,16 +67,26 @@ function sortByPriority(tasks) {
 
 // ─── Overview: Bird's-eye project card ──────────────────────────────
 
-function ProjectOverviewCard({ project, completedIds, onClick, subtitle, filterAssignee }) {
+function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, subtitle, filterAssignee }) {
   const allTasks = getAllTasks(project);
-  // If filterAssignee is set, only count tasks for that assignee
-  // If filterAssignee is null, count tasks with NO assignee (or all if project has no assignees)
   const relevantTasks = filterAssignee !== undefined
     ? allTasks.filter(t => filterAssignee ? t.assignee === filterAssignee : !t.assignee)
     : allTasks;
 
-  const doneCount = relevantTasks.filter(t => isTaskDone(t, project, completedIds)).length;
-  const upNextCount = relevantTasks.length - doneCount;
+  // Determine effective column for each task
+  const getEffectiveColumn = (task) => {
+    const override = dragOverrides[task.id];
+    if (override === '__done__') return 'done';
+    if (override === '__upnext__') return 'upnext';
+    if (override === '__todo__') return 'todo';
+    if (isTaskDone(task, project, completedIds)) return 'done';
+    if (isInUpnextArray(task, project)) return 'upnext';
+    return 'todo';
+  };
+
+  const todoCount = relevantTasks.filter(t => getEffectiveColumn(t) === 'todo').length;
+  const upnextCount = relevantTasks.filter(t => getEffectiveColumn(t) === 'upnext').length;
+  const doneCount = relevantTasks.filter(t => getEffectiveColumn(t) === 'done').length;
 
   return (
     <div
@@ -101,21 +110,15 @@ function ProjectOverviewCard({ project, completedIds, onClick, subtitle, filterA
         e.currentTarget.style.transform = 'translateY(0)';
       }}
     >
-      {/* Color accent bar */}
       <div style={{
-        position: 'absolute',
-        top: 0, left: 0, right: 0,
-        height: '3px',
-        backgroundColor: project.color,
+        position: 'absolute', top: 0, left: 0, right: 0,
+        height: '3px', backgroundColor: project.color,
       }} />
 
-      {/* Project icon + name */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
         <div style={{
-          width: '40px', height: '40px',
-          borderRadius: '10px',
-          backgroundColor: project.color + '20',
-          color: project.color,
+          width: '40px', height: '40px', borderRadius: '10px',
+          backgroundColor: project.color + '20', color: project.color,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '18px', fontWeight: 700,
         }}>
@@ -138,32 +141,31 @@ function ProjectOverviewCard({ project, completedIds, onClick, subtitle, filterA
         </div>
       </div>
 
-      {/* Task count chips */}
-      <div style={{ display: 'flex', gap: '8px' }}>
-        <div style={{
-          flex: 1, textAlign: 'center',
-          padding: '8px 4px', borderRadius: '8px',
-          backgroundColor: '#0f172a',
-        }}>
-          <div style={{ fontSize: '20px', fontWeight: 700, color: '#94a3b8' }}>{upNextCount}</div>
-          <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>Up Next</div>
-        </div>
-        <div style={{
-          flex: 1, textAlign: 'center',
-          padding: '8px 4px', borderRadius: '8px',
-          backgroundColor: '#0f172a',
-        }}>
-          <div style={{ fontSize: '20px', fontWeight: 700, color: '#4ade80' }}>{doneCount}</div>
-          <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>Done</div>
-        </div>
+      <div style={{ display: 'flex', gap: '6px' }}>
+        {[
+          { label: 'To Do', count: todoCount, color: '#94a3b8' },
+          { label: 'Up Next', count: upnextCount, color: '#60a5fa' },
+          { label: 'Done', count: doneCount, color: '#4ade80' },
+        ].map(item => (
+          <div key={item.label} style={{
+            flex: 1, textAlign: 'center',
+            padding: '8px 4px', borderRadius: '8px',
+            backgroundColor: '#0f172a',
+          }}>
+            <div style={{ fontSize: '18px', fontWeight: 700, color: item.color }}>{item.count}</div>
+            <div style={{ fontSize: '9px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>
+              {item.label}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-// ─── Task card with checkbox ────────────────────────────────────────
+// ─── Task card ──────────────────────────────────────────────────────
 
-function TaskCard({ task, accentColor, isDone, onToggle, onDragStart, onDragEnd }) {
+function TaskCard({ task, accentColor, isDone, onToggle }) {
   const priorityColors = {
     high: { bg: '#451a03', text: '#fb923c', label: 'High' },
     medium: { bg: '#1e1b4b', text: '#a78bfa', label: 'Medium' },
@@ -178,11 +180,9 @@ function TaskCard({ task, accentColor, isDone, onToggle, onDragStart, onDragEnd 
         e.dataTransfer.setData('text/plain', task.id);
         e.dataTransfer.effectAllowed = 'move';
         e.currentTarget.style.opacity = '0.4';
-        if (onDragStart) onDragStart(task.id);
       }}
       onDragEnd={(e) => {
         e.currentTarget.style.opacity = isDone ? '0.6' : '1';
-        if (onDragEnd) onDragEnd();
       }}
       style={{
         backgroundColor: '#0f172a',
@@ -196,7 +196,6 @@ function TaskCard({ task, accentColor, isDone, onToggle, onDragStart, onDragEnd 
       }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-        {/* Checkbox */}
         <div
           onClick={(e) => { e.stopPropagation(); onToggle(task.id); }}
           style={{
@@ -206,8 +205,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, onDragStart, onDragEnd 
             backgroundColor: isDone ? '#4ade8020' : 'transparent',
             cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginTop: '1px',
-            transition: 'all 0.15s',
+            marginTop: '1px', transition: 'all 0.15s',
           }}
           onMouseEnter={e => { if (!isDone) e.currentTarget.style.borderColor = '#94a3b8'; }}
           onMouseLeave={e => { if (!isDone) e.currentTarget.style.borderColor = '#475569'; }}
@@ -218,7 +216,6 @@ function TaskCard({ task, accentColor, isDone, onToggle, onDragStart, onDragEnd 
             </svg>
           )}
         </div>
-
         <div style={{ flex: 1 }}>
           <div style={{
             fontWeight: 600, fontSize: '13px',
@@ -240,18 +237,21 @@ function TaskCard({ task, accentColor, isDone, onToggle, onDragStart, onDragEnd 
                   padding: '2px 6px', borderRadius: '3px',
                   fontSize: '10px', fontWeight: 600,
                   backgroundColor: p.bg, color: p.text,
-                }}>
-                  {p.label}
-                </span>
+                }}>{p.label}</span>
+              )}
+              {task.assignee && (
+                <span style={{
+                  padding: '2px 6px', borderRadius: '3px',
+                  fontSize: '10px', fontWeight: 600,
+                  backgroundColor: task.assignee === 'mordy' ? '#7c2d1220' : '#4c1d9520',
+                  color: task.assignee === 'mordy' ? '#f97316' : '#8b5cf6',
+                }}>{task.assignee}</span>
               )}
               {task.tags && task.tags.map(tag => (
                 <span key={tag} style={{
                   padding: '2px 6px', borderRadius: '3px',
-                  fontSize: '10px',
-                  backgroundColor: '#1e293b', color: '#94a3b8',
-                }}>
-                  {tag}
-                </span>
+                  fontSize: '10px', backgroundColor: '#1e293b', color: '#94a3b8',
+                }}>{tag}</span>
               ))}
             </div>
           )}
@@ -261,13 +261,13 @@ function TaskCard({ task, accentColor, isDone, onToggle, onDragStart, onDragEnd 
   );
 }
 
-// ─── Task column ────────────────────────────────────────────────────
+// ─── Task column (drop target) ──────────────────────────────────────
 
-function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop, draggingId }) {
+function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop }) {
   const [dragOver, setDragOver] = useState(false);
 
   return (
-    <div style={{ flex: 1, minWidth: '240px' }}>
+    <div style={{ flex: 1, minWidth: '220px' }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: '8px',
         marginBottom: '12px', padding: '0 4px',
@@ -279,56 +279,34 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
         <span style={{
           fontSize: '12px', fontWeight: 700, color: '#94a3b8',
           textTransform: 'uppercase', letterSpacing: '0.5px',
-        }}>
-          {title}
-        </span>
+        }}>{title}</span>
         <span style={{
           fontSize: '11px', color: '#475569',
           backgroundColor: '#0f172a',
           padding: '1px 6px', borderRadius: '4px', fontWeight: 600,
-        }}>
-          {tasks.length}
-        </span>
+        }}>{tasks.length}</span>
       </div>
       <div
-        onDragOver={(e) => {
-          e.preventDefault();
-          e.dataTransfer.dropEffect = 'move';
-          if (!dragOver) setDragOver(true);
-        }}
-        onDragEnter={(e) => {
-          e.preventDefault();
-          setDragOver(true);
-        }}
-        onDragLeave={(e) => {
-          // Only trigger if leaving the container itself
-          if (!e.currentTarget.contains(e.relatedTarget)) {
-            setDragOver(false);
-          }
-        }}
+        onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; if (!dragOver) setDragOver(true); }}
+        onDragEnter={(e) => { e.preventDefault(); setDragOver(true); }}
+        onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}
         onDrop={(e) => {
-          e.preventDefault();
-          setDragOver(false);
+          e.preventDefault(); setDragOver(false);
           const taskId = e.dataTransfer.getData('text/plain');
           if (taskId && onDrop) onDrop(taskId, columnId);
         }}
         style={{
-          backgroundColor: dragOver ? '#1e293b' : '#1e293b',
-          borderRadius: '10px',
-          padding: '10px',
-          minHeight: '120px',
+          backgroundColor: dragOver ? dotColor + '10' : '#1e293b',
+          borderRadius: '10px', padding: '10px', minHeight: '120px',
           border: dragOver ? `2px dashed ${dotColor}` : '1px solid #334155',
-          maxHeight: '70vh',
-          overflowY: 'auto',
+          maxHeight: '70vh', overflowY: 'auto',
           transition: 'border 0.15s, background-color 0.15s',
-          ...(dragOver ? { backgroundColor: dotColor + '10' } : {}),
         }}
       >
         {tasks.length === 0 ? (
           <div style={{
             padding: '20px', textAlign: 'center',
-            fontSize: '12px', color: dragOver ? dotColor : '#475569',
-            fontStyle: 'italic',
+            fontSize: '12px', color: dragOver ? dotColor : '#475569', fontStyle: 'italic',
           }}>
             {dragOver ? 'Drop here' : emptyText}
           </div>
@@ -340,8 +318,6 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
               accentColor={accentColor}
               isDone={isTaskDone(task, project, completedIds)}
               onToggle={onToggle}
-              onDragStart={() => {}}
-              onDragEnd={() => {}}
             />
           ))
         )}
@@ -350,167 +326,19 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
   );
 }
 
-// ─── Project detail view ────────────────────────────────────────────
-
-function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop }) {
-  const allTasks = getAllTasks(project);
-  const assignees = getAssignees(project);
-  const hasSplit = assignees.length > 0;
-  const [draggingId, setDraggingId] = useState(null);
-
-  // Apply drag overrides to determine effective column for each task
-  const getEffectiveAssignee = (task) => {
-    const override = dragOverrides[task.id];
-    if (override !== undefined) {
-      if (override === '__done__') return task.assignee; // handled by completedIds
-      if (override === '__upnext__') return null;
-      return override; // assignee name
-    }
-    return task.assignee;
-  };
-
-  const isEffectivelyDone = (task) => {
-    const override = dragOverrides[task.id];
-    if (override === '__done__') return true;
-    return isTaskDone(task, project, completedIds);
-  };
-
-  const handleDrop = (taskId, columnId) => {
-    if (onDragDrop) onDragDrop(taskId, columnId, project.id);
-    setDraggingId(null);
-  };
-
-  if (hasSplit) {
-    const upNext = sortByPriority(
-      allTasks.filter(t => !isEffectivelyDone(t) && !getEffectiveAssignee(t))
-    );
-    const assigneeCols = assignees.map(a => ({
-      name: a,
-      tasks: sortByPriority(
-        allTasks.filter(t => !isEffectivelyDone(t) && getEffectiveAssignee(t) === a)
-      ),
-    }));
-    const doneTasks = allTasks.filter(t => isEffectivelyDone(t));
-
-    const assigneeColors = {
-      mordy: '#f97316',
-      yaakov: '#8b5cf6',
-    };
-
-    return (
-      <div>
-        <DetailHeader project={project} onBack={onBack} />
-        <div style={{
-          display: 'flex', gap: '16px',
-          overflowX: 'auto', paddingBottom: '8px',
-        }}>
-          <TaskColumn
-            title="Up Next"
-            tasks={upNext}
-            accentColor="#94a3b8"
-            dotColor="#94a3b8"
-            emptyText="All assigned!"
-            completedIds={completedIds}
-            onToggle={onToggle}
-            project={project}
-            columnId="__upnext__"
-            onDrop={handleDrop}
-            draggingId={draggingId}
-          />
-          {assigneeCols.map(col => (
-            <TaskColumn
-              key={col.name}
-              title={col.name.charAt(0).toUpperCase() + col.name.slice(1)}
-              tasks={col.tasks}
-              accentColor={assigneeColors[col.name] || '#60a5fa'}
-              dotColor={assigneeColors[col.name] || '#60a5fa'}
-              emptyText={`Nothing for ${col.name}`}
-              completedIds={completedIds}
-              onToggle={onToggle}
-              project={project}
-              columnId={col.name}
-              onDrop={handleDrop}
-              draggingId={draggingId}
-            />
-          ))}
-          <TaskColumn
-            title="Done"
-            tasks={doneTasks}
-            accentColor="#4ade80"
-            dotColor="#4ade80"
-            emptyText="Nothing completed yet"
-            completedIds={completedIds}
-            onToggle={onToggle}
-            project={project}
-            columnId="__done__"
-            onDrop={handleDrop}
-            draggingId={draggingId}
-          />
-        </div>
-      </div>
-    );
-  }
-
-  // Standard two-column: Up Next + Done
-  const upNext = sortByPriority(
-    allTasks.filter(t => !isEffectivelyDone(t))
-  );
-  const doneTasks = allTasks.filter(t => isEffectivelyDone(t));
-
-  return (
-    <div>
-      <DetailHeader project={project} onBack={onBack} />
-      <div style={{
-        display: 'flex', gap: '16px',
-        overflowX: 'auto', paddingBottom: '8px',
-      }}>
-        <TaskColumn
-          title="Up Next"
-          tasks={upNext}
-          accentColor="#94a3b8"
-          dotColor="#94a3b8"
-          emptyText="All done!"
-          completedIds={completedIds}
-          onToggle={onToggle}
-          project={project}
-          columnId="__upnext__"
-          onDrop={handleDrop}
-          draggingId={draggingId}
-        />
-        <TaskColumn
-          title="Done"
-          tasks={doneTasks}
-          accentColor="#4ade80"
-          dotColor="#4ade80"
-          emptyText="Nothing completed yet"
-          completedIds={completedIds}
-          onToggle={onToggle}
-          project={project}
-          columnId="__done__"
-          onDrop={handleDrop}
-          draggingId={draggingId}
-        />
-      </div>
-    </div>
-  );
-}
+// ─── Detail header ──────────────────────────────────────────────────
 
 function DetailHeader({ project, onBack }) {
   return (
     <div style={{
-      display: 'flex', alignItems: 'center', gap: '16px',
-      marginBottom: '24px',
+      display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px',
     }}>
       <button
         onClick={onBack}
         style={{
-          background: 'none',
-          border: '1px solid #334155',
-          borderRadius: '8px',
-          color: '#94a3b8',
-          padding: '8px 14px',
-          cursor: 'pointer',
-          fontSize: '13px',
+          background: 'none', border: '1px solid #334155',
+          borderRadius: '8px', color: '#94a3b8',
+          padding: '8px 14px', cursor: 'pointer', fontSize: '13px',
           display: 'flex', alignItems: 'center', gap: '6px',
           transition: 'border-color 0.15s',
         }}
@@ -522,23 +350,148 @@ function DetailHeader({ project, onBack }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
         <div style={{
           width: '36px', height: '36px', borderRadius: '8px',
-          backgroundColor: project.color + '20',
-          color: project.color,
+          backgroundColor: project.color + '20', color: project.color,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '16px', fontWeight: 700,
         }}>
           {project.icon || project.name.charAt(0)}
         </div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: '20px', color: '#f8fafc' }}>
-            {project.name}
-          </div>
+          <div style={{ fontWeight: 700, fontSize: '20px', color: '#f8fafc' }}>{project.name}</div>
           {project.description && (
-            <div style={{ fontSize: '13px', color: '#64748b' }}>
-              {project.description}
-            </div>
+            <div style={{ fontSize: '13px', color: '#64748b' }}>{project.description}</div>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Project detail view ────────────────────────────────────────────
+
+function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop }) {
+  const allTasks = getAllTasks(project);
+  const assignees = getAssignees(project);
+  const hasSplit = assignees.length > 0;
+
+  // Determine effective column for each task, considering drag overrides
+  const getEffectiveColumn = (task) => {
+    const override = dragOverrides[task.id];
+    if (override === '__done__') return 'done';
+    if (override === '__upnext__') return 'upnext';
+    if (override === '__todo__') return 'todo';
+    // Assignee overrides (for Spotlight AI split)
+    if (override && override !== '__done__' && override !== '__upnext__' && override !== '__todo__') return 'assignee:' + override;
+    if (isTaskDone(task, project, completedIds)) return 'done';
+    if (isInUpnextArray(task, project)) return 'upnext';
+    return 'todo';
+  };
+
+  const getEffectiveAssignee = (task) => {
+    const override = dragOverrides[task.id];
+    if (override && !override.startsWith('__')) return override;
+    return task.assignee;
+  };
+
+  const handleDrop = (taskId, columnId) => {
+    if (onDragDrop) onDragDrop(taskId, columnId, project.id);
+  };
+
+  const assigneeColors = { mordy: '#f97316', yaakov: '#8b5cf6' };
+
+  if (hasSplit) {
+    // Spotlight AI style: To Do, Up Next (split by assignee), Done
+    const todoTasks = sortByPriority(allTasks.filter(t => getEffectiveColumn(t) === 'todo'));
+    const upnextTasks = allTasks.filter(t => getEffectiveColumn(t) === 'upnext' || getEffectiveColumn(t).startsWith('assignee:'));
+    const doneTasks = allTasks.filter(t => getEffectiveColumn(t) === 'done');
+
+    // Split upnext by assignee
+    const unassignedUpnext = sortByPriority(upnextTasks.filter(t => !getEffectiveAssignee(t)));
+    const assigneeCols = assignees.map(a => ({
+      name: a,
+      tasks: sortByPriority(upnextTasks.filter(t => getEffectiveAssignee(t) === a)),
+    }));
+
+    return (
+      <div>
+        <DetailHeader project={project} onBack={onBack} />
+        <div style={{
+          display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '8px',
+        }}>
+          <TaskColumn
+            title="To Do" tasks={todoTasks}
+            accentColor="#94a3b8" dotColor="#94a3b8"
+            emptyText="Backlog empty" completedIds={completedIds}
+            onToggle={onToggle} project={project}
+            columnId="__todo__" onDrop={handleDrop}
+          />
+          {/* Up Next columns split by assignee */}
+          {unassignedUpnext.length > 0 && (
+            <TaskColumn
+              title="Up Next" tasks={unassignedUpnext}
+              accentColor="#60a5fa" dotColor="#60a5fa"
+              emptyText="Nothing queued" completedIds={completedIds}
+              onToggle={onToggle} project={project}
+              columnId="__upnext__" onDrop={handleDrop}
+            />
+          )}
+          {assigneeCols.map(col => (
+            <TaskColumn
+              key={col.name}
+              title={`Up Next — ${col.name.charAt(0).toUpperCase() + col.name.slice(1)}`}
+              tasks={col.tasks}
+              accentColor={assigneeColors[col.name] || '#60a5fa'}
+              dotColor={assigneeColors[col.name] || '#60a5fa'}
+              emptyText={`Nothing for ${col.name}`}
+              completedIds={completedIds}
+              onToggle={onToggle} project={project}
+              columnId={col.name} onDrop={handleDrop}
+            />
+          ))}
+          <TaskColumn
+            title="Done" tasks={doneTasks}
+            accentColor="#4ade80" dotColor="#4ade80"
+            emptyText="Nothing completed yet" completedIds={completedIds}
+            onToggle={onToggle} project={project}
+            columnId="__done__" onDrop={handleDrop}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Standard three-column: To Do, Up Next, Done
+  const todoTasks = sortByPriority(allTasks.filter(t => getEffectiveColumn(t) === 'todo'));
+  const upnextTasks = sortByPriority(allTasks.filter(t => getEffectiveColumn(t) === 'upnext'));
+  const doneTasks = allTasks.filter(t => getEffectiveColumn(t) === 'done');
+
+  return (
+    <div>
+      <DetailHeader project={project} onBack={onBack} />
+      <div style={{
+        display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '8px',
+      }}>
+        <TaskColumn
+          title="To Do" tasks={todoTasks}
+          accentColor="#94a3b8" dotColor="#94a3b8"
+          emptyText="Backlog empty" completedIds={completedIds}
+          onToggle={onToggle} project={project}
+          columnId="__todo__" onDrop={handleDrop}
+        />
+        <TaskColumn
+          title="Up Next" tasks={upnextTasks}
+          accentColor="#60a5fa" dotColor="#60a5fa"
+          emptyText="Nothing queued" completedIds={completedIds}
+          onToggle={onToggle} project={project}
+          columnId="__upnext__" onDrop={handleDrop}
+        />
+        <TaskColumn
+          title="Done" tasks={doneTasks}
+          accentColor="#4ade80" dotColor="#4ade80"
+          emptyText="Nothing completed yet" completedIds={completedIds}
+          onToggle={onToggle} project={project}
+          columnId="__done__" onDrop={handleDrop}
+        />
       </div>
     </div>
   );
@@ -553,22 +506,17 @@ export default function Home() {
   const [completedIds, setCompletedIds] = useState([]);
   const [dragOverrides, setDragOverrides] = useState({});
 
-  // Load completed IDs and drag overrides from localStorage
   useEffect(() => {
     setCompletedIds(getCompletedIds());
     setDragOverrides(getDragOverrides());
   }, []);
 
-  // Toggle a task's done state
   const toggleTask = useCallback((taskId) => {
     setCompletedIds(prev => {
-      const next = prev.includes(taskId)
-        ? prev.filter(id => id !== taskId)
-        : [...prev, taskId];
+      const next = prev.includes(taskId) ? prev.filter(id => id !== taskId) : [...prev, taskId];
       localStorage.setItem('cc_done', JSON.stringify(next));
       return next;
     });
-    // Clear any drag override when checkbox is toggled
     setDragOverrides(prev => {
       const next = { ...prev };
       delete next[taskId];
@@ -577,10 +525,8 @@ export default function Home() {
     });
   }, []);
 
-  // Handle drag-and-drop between columns
   const handleDragDrop = useCallback((taskId, targetColumnId, projectId) => {
     if (targetColumnId === '__done__') {
-      // Move to done — add to completedIds
       setCompletedIds(prev => {
         if (prev.includes(taskId)) return prev;
         const next = [...prev, taskId];
@@ -594,16 +540,15 @@ export default function Home() {
         return next;
       });
     } else {
-      // Move to an Up Next or assignee column — remove from done if needed
+      // Move to To Do, Up Next, or an assignee column
       setCompletedIds(prev => {
         if (!prev.includes(taskId)) return prev;
         const next = prev.filter(id => id !== taskId);
         localStorage.setItem('cc_done', JSON.stringify(next));
         return next;
       });
-      // Store the column override
       setDragOverrides(prev => {
-        const next = { ...prev, [taskId]: targetColumnId === '__upnext__' ? '__upnext__' : targetColumnId };
+        const next = { ...prev, [taskId]: targetColumnId };
         saveDragOverrides(next);
         return next;
       });
@@ -615,11 +560,8 @@ export default function Home() {
       try {
         const res = await fetch('/status.json?t=' + Date.now());
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const json = await res.json();
-        setData(json);
-      } catch (e) {
-        setError(e.message);
-      }
+        setData(await res.json());
+      } catch (e) { setError(e.message); }
     };
     load();
     const interval = setInterval(load, 60000);
@@ -649,62 +591,55 @@ export default function Home() {
   const projects = data.projects || [];
   const selected = selectedProject ? projects.find(p => p.id === selectedProject) : null;
 
-  // Build overview cards — split projects with assignees into separate cards
+  // Build overview cards — split projects with assignees
   const overviewCards = [];
   projects.forEach(project => {
     const assignees = getAssignees(project);
     if (assignees.length > 0) {
-      // Card for unassigned tasks (the "main" project card)
-      overviewCards.push({
-        project,
-        key: project.id,
-        subtitle: project.name,
-        filterAssignee: null,
-      });
-      // Separate card per assignee
+      overviewCards.push({ project, key: project.id, subtitle: project.name, filterAssignee: null });
       assignees.forEach(a => {
         overviewCards.push({
-          project,
-          key: `${project.id}-${a}`,
+          project, key: `${project.id}-${a}`,
           subtitle: `${project.name} — ${a.charAt(0).toUpperCase() + a.slice(1)}`,
           filterAssignee: a,
         });
       });
     } else {
-      overviewCards.push({
-        project,
-        key: project.id,
-        subtitle: null,
-        filterAssignee: undefined,
-      });
+      overviewCards.push({ project, key: project.id, subtitle: null, filterAssignee: undefined });
     }
   });
 
   // Total counts
-  const totalUpNext = projects.reduce((sum, p) => {
-    const all = getAllTasks(p);
-    return sum + all.filter(t => !isTaskDone(t, p, completedIds)).length;
-  }, 0);
-  const totalDone = projects.reduce((sum, p) => {
-    const all = getAllTasks(p);
-    return sum + all.filter(t => isTaskDone(t, p, completedIds)).length;
-  }, 0);
-  const totalTasks = totalUpNext + totalDone;
+  const getEffCol = (task, project) => {
+    const override = dragOverrides[task.id];
+    if (override === '__done__') return 'done';
+    if (override === '__upnext__') return 'upnext';
+    if (override === '__todo__') return 'todo';
+    if (isTaskDone(task, project, completedIds)) return 'done';
+    if (isInUpnextArray(task, project)) return 'upnext';
+    return 'todo';
+  };
+  let totalTodo = 0, totalUpnext = 0, totalDone = 0;
+  projects.forEach(p => {
+    getAllTasks(p).forEach(t => {
+      const col = getEffCol(t, p);
+      if (col === 'done') totalDone++;
+      else if (col === 'upnext') totalUpnext++;
+      else totalTodo++;
+    });
+  });
+  const totalTasks = totalTodo + totalUpnext + totalDone;
 
   return (
     <div style={{
-      minHeight: '100vh',
-      backgroundColor: '#0f172a',
-      padding: '24px',
+      minHeight: '100vh', backgroundColor: '#0f172a', padding: '24px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        {/* Header */}
         <header style={{
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          marginBottom: '32px', paddingBottom: '16px',
-          borderBottom: '1px solid #1e293b',
+          marginBottom: '32px', paddingBottom: '16px', borderBottom: '1px solid #1e293b',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
@@ -712,26 +647,19 @@ export default function Home() {
               background: 'linear-gradient(135deg, #8b5cf6, #06b6d4)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: '16px', fontWeight: 800, color: '#fff',
-            }}>
-              CC
-            </div>
+            }}>CC</div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: '18px', color: '#f8fafc' }}>
-                Command Center
-              </div>
+              <div style={{ fontWeight: 700, fontSize: '18px', color: '#f8fafc' }}>Command Center</div>
               <div style={{ fontSize: '12px', color: '#64748b' }}>
                 {projects.length} projects &middot; {totalTasks} tasks
               </div>
             </div>
           </div>
           {data.lastUpdated && (
-            <div style={{ fontSize: '12px', color: '#64748b' }}>
-              Updated {timeAgo(data.lastUpdated)}
-            </div>
+            <div style={{ fontSize: '12px', color: '#64748b' }}>Updated {timeAgo(data.lastUpdated)}</div>
           )}
         </header>
 
-        {/* View toggle: Overview vs Detail */}
         {selected ? (
           <ProjectDetailView
             project={selected}
@@ -743,24 +671,19 @@ export default function Home() {
           />
         ) : (
           <>
-            {/* Summary row */}
             {totalTasks > 0 && (
               <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
                 {[
-                  { label: 'Up Next', count: totalUpNext, color: '#94a3b8' },
+                  { label: 'To Do', count: totalTodo, color: '#94a3b8' },
+                  { label: 'Up Next', count: totalUpnext, color: '#60a5fa' },
                   { label: 'Done', count: totalDone, color: '#4ade80' },
                 ].map(item => (
                   <div key={item.label} style={{
-                    flex: 1,
-                    backgroundColor: '#1e293b',
-                    borderRadius: '10px',
-                    border: '1px solid #334155',
-                    padding: '16px',
-                    textAlign: 'center',
+                    flex: 1, backgroundColor: '#1e293b',
+                    borderRadius: '10px', border: '1px solid #334155',
+                    padding: '16px', textAlign: 'center',
                   }}>
-                    <div style={{ fontSize: '28px', fontWeight: 700, color: item.color }}>
-                      {item.count}
-                    </div>
+                    <div style={{ fontSize: '28px', fontWeight: 700, color: item.color }}>{item.count}</div>
                     <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>
                       {item.label}
                     </div>
@@ -769,7 +692,6 @@ export default function Home() {
               </div>
             )}
 
-            {/* Project grid */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
@@ -780,6 +702,7 @@ export default function Home() {
                   key={card.key}
                   project={card.project}
                   completedIds={completedIds}
+                  dragOverrides={dragOverrides}
                   onClick={() => setSelectedProject(card.project.id)}
                   subtitle={card.subtitle}
                   filterAssignee={card.filterAssignee}

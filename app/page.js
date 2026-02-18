@@ -78,9 +78,13 @@ function AddTaskForm({ projectId, column, assignee, accentColor, onAdd, onCancel
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('medium');
 
-  const handleSubmit = (e) => {
+  const [saving, setSaving] = useState(false);
+  const [syncStatus, setSyncStatus] = useState(null); // null | 'syncing' | 'synced' | 'error'
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    if (!title.trim() || saving) return;
+    setSaving(true);
     const task = {
       id: 'u-' + Date.now().toString(36),
       title: title.trim(),
@@ -93,10 +97,33 @@ function AddTaskForm({ projectId, column, assignee, accentColor, onAdd, onCancel
       _projectId: projectId,
       _column: column,
     };
+    // Add to localStorage immediately for instant feedback
     onAdd(task);
     setTitle('');
     setDescription('');
     setPriority('medium');
+    setSaving(false);
+    // Persist to server (status.json via GitHub)
+    setSyncStatus('syncing');
+    try {
+      const res = await fetch('/api/tasks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ task, projectId, column }),
+      });
+      if (res.ok) {
+        setSyncStatus('synced');
+        // Remove from localStorage since it's now in status.json
+        // (will appear from server data on next refresh)
+        const stored = JSON.parse(localStorage.getItem('cc_user_tasks') || '[]');
+        const updated = stored.filter(t => t.id !== task.id);
+        localStorage.setItem('cc_user_tasks', JSON.stringify(updated));
+      } else {
+        setSyncStatus('error');
+      }
+    } catch {
+      setSyncStatus('error');
+    }
   };
 
   const inputStyle = {
@@ -145,13 +172,23 @@ function AddTaskForm({ projectId, column, assignee, accentColor, onAdd, onCancel
           background: 'none', border: 'none', color: '#64748b',
           cursor: 'pointer', fontSize: '12px', padding: '4px 8px',
         }}>Cancel</button>
-        <button type="submit" disabled={!title.trim()} style={{
-          backgroundColor: title.trim() ? accentColor : '#334155',
-          color: title.trim() ? '#fff' : '#64748b',
+        <button type="submit" disabled={!title.trim() || saving} style={{
+          backgroundColor: title.trim() && !saving ? accentColor : '#334155',
+          color: title.trim() && !saving ? '#fff' : '#64748b',
           border: 'none', borderRadius: '6px', padding: '5px 12px',
-          fontSize: '12px', fontWeight: 600, cursor: title.trim() ? 'pointer' : 'default',
-        }}>Add</button>
+          fontSize: '12px', fontWeight: 600, cursor: title.trim() && !saving ? 'pointer' : 'default',
+        }}>{saving ? 'Adding...' : 'Add'}</button>
       </div>
+      {syncStatus && (
+        <div style={{
+          fontSize: '11px', marginTop: '6px', textAlign: 'right',
+          color: syncStatus === 'synced' ? '#4ade80' : syncStatus === 'error' ? '#f87171' : '#94a3b8',
+        }}>
+          {syncStatus === 'syncing' ? 'Saving to server...' :
+           syncStatus === 'synced' ? 'Saved permanently' :
+           'Saved locally (server sync failed — will retry on next add)'}
+        </div>
+      )}
     </form>
   );
 }
@@ -983,7 +1020,29 @@ export default function Home() {
     });
   }, []);
 
+  // Fire-and-forget sync to server (Cloudflare Function → GitHub)
+  const syncToServer = useCallback((payload) => {
+    fetch('/api/tasks', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(() => {}); // silent fail — localStorage is the instant fallback
+  }, []);
+
+  // Find which project a task belongs to
+  const findProjectForTask = useCallback((taskId) => {
+    if (!data?.projects) return null;
+    for (const p of data.projects) {
+      const t = p.tasks || {};
+      for (const col of ['todo', 'upnext', 'in_progress', 'done']) {
+        if ((t[col] || []).some(task => task.id === taskId)) return p.id;
+      }
+    }
+    return null;
+  }, [data]);
+
   const toggleTask = useCallback((taskId) => {
+    const wasCompleted = getCompletedIds().includes(taskId);
     setCompletedIds(prev => {
       const next = prev.includes(taskId) ? prev.filter(id => id !== taskId) : [...prev, taskId];
       localStorage.setItem('cc_done', JSON.stringify(next));
@@ -995,7 +1054,12 @@ export default function Home() {
       saveDragOverrides(next);
       return next;
     });
-  }, []);
+    // Sync completion to server
+    const projectId = findProjectForTask(taskId);
+    if (projectId) {
+      syncToServer({ action: 'complete', taskId, projectId, completed: !wasCompleted });
+    }
+  }, [findProjectForTask, syncToServer]);
 
   const handleDragDrop = useCallback((taskId, targetColumnId, projectId) => {
     if (!taskId) return;
@@ -1022,7 +1086,12 @@ export default function Home() {
       saveDragOverrides(newOverrides);
       setDragOverrides(newOverrides);
     }
-  }, []);
+    // Sync move to server
+    const pid = projectId || findProjectForTask(taskId);
+    if (pid) {
+      syncToServer({ action: 'move', taskId, projectId: pid, targetColumn: targetColumnId });
+    }
+  }, [findProjectForTask, syncToServer]);
 
   useEffect(() => {
     const load = async () => {

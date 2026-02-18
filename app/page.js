@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
 function timeAgo(dateString) {
   if (!dateString) return '';
@@ -71,6 +71,362 @@ function sortByPriority(tasks) {
   return [...tasks].sort((a, b) => (priorityOrder[a.priority] ?? 1) - (priorityOrder[b.priority] ?? 1));
 }
 
+// ─── Omnisearch Bar (Feature 5) ─────────────────────────────────────
+
+function OmnisearchBar({ data, onNavigate, userTasks }) {
+  const [query, setQuery] = useState('');
+  const [focused, setFocused] = useState(false);
+  const inputRef = useRef(null);
+
+  // Build searchable index
+  const searchResults = useMemo(() => {
+    if (!query.trim() || !data) return [];
+    const q = query.toLowerCase().trim();
+    const results = [];
+
+    // Search projects
+    (data.projects || []).forEach(p => {
+      if (p.name.toLowerCase().includes(q) || (p.description || '').toLowerCase().includes(q)) {
+        results.push({ type: 'project', label: p.name, sub: p.description, id: p.id, color: p.color });
+      }
+      // Search tasks in projects
+      getAllTasks(p).forEach(t => {
+        if (t.title.toLowerCase().includes(q) || (t.description || '').toLowerCase().includes(q)) {
+          results.push({ type: 'task', label: t.title, sub: `${p.name}`, id: t.id, projectId: p.id, color: p.color });
+        }
+      });
+    });
+
+    // Search general todos
+    (data.todos || []).forEach(t => {
+      if (t.title.toLowerCase().includes(q) || (t.description || '').toLowerCase().includes(q)) {
+        results.push({ type: 'todo', label: t.title, sub: 'General To-Do', id: t.id, color: '#60a5fa' });
+      }
+    });
+
+    // Search potential businesses
+    (data.potentialBusinesses || []).forEach(b => {
+      if (b.title.toLowerCase().includes(q) || (b.idea || '').toLowerCase().includes(q) || (b.notes || '').toLowerCase().includes(q)) {
+        results.push({ type: 'idea', label: b.title, sub: b.idea ? b.idea.slice(0, 80) : 'Potential Idea', id: b.id, color: '#f59e0b' });
+      }
+    });
+
+    // Search user tasks
+    (userTasks || []).forEach(t => {
+      if (t.title.toLowerCase().includes(q) || (t.description || '').toLowerCase().includes(q)) {
+        results.push({ type: 'task', label: t.title, sub: t._projectId || 'User Task', id: t.id, color: '#60a5fa' });
+      }
+    });
+
+    return results.slice(0, 12);
+  }, [query, data, userTasks]);
+
+  const showResults = focused && query.trim().length > 0 && searchResults.length > 0;
+
+  // Keyboard shortcut: Ctrl+K or Cmd+K
+  useEffect(() => {
+    const handler = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        inputRef.current?.focus();
+      }
+      if (e.key === 'Escape') {
+        setFocused(false);
+        inputRef.current?.blur();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  const typeIcons = { project: 'P', task: 'T', todo: 'G', idea: 'I' };
+  const typeLabels = { project: 'Project', task: 'Task', todo: 'To-Do', idea: 'Idea' };
+
+  return (
+    <div style={{ position: 'relative', flex: 1, maxWidth: '480px' }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: '8px',
+        backgroundColor: '#163344', border: '1px solid ' + (focused ? '#60a5fa' : '#1e4258'),
+        borderRadius: '10px', padding: '8px 14px',
+        transition: 'border-color 0.15s',
+      }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round">
+          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input
+          ref={inputRef}
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          onFocus={() => setFocused(true)}
+          onBlur={() => setTimeout(() => setFocused(false), 150)}
+          placeholder="Search projects, tasks, ideas..."
+          style={{
+            flex: 1, background: 'none', border: 'none', outline: 'none',
+            color: '#f8fafc', fontSize: '13px', fontFamily: 'inherit',
+          }}
+        />
+        <kbd style={{
+          fontSize: '10px', color: '#475569', backgroundColor: '#0a2233',
+          padding: '2px 6px', borderRadius: '4px', border: '1px solid #334155',
+        }}>
+          {typeof navigator !== 'undefined' && navigator.platform?.includes('Mac') ? '\u2318' : 'Ctrl'}+K
+        </kbd>
+      </div>
+      {showResults && (
+        <div style={{
+          position: 'absolute', top: '100%', left: 0, right: 0, marginTop: '4px',
+          backgroundColor: '#163344', border: '1px solid #1e4258', borderRadius: '10px',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.4)', zIndex: 100,
+          maxHeight: '320px', overflowY: 'auto',
+        }}>
+          {searchResults.map((r, i) => (
+            <div
+              key={r.id + '-' + i}
+              onMouseDown={() => {
+                if (r.type === 'project') onNavigate('project', r.id);
+                else if (r.projectId) onNavigate('project', r.projectId);
+                else if (r.type === 'idea') onNavigate('ideas', r.id);
+                setQuery('');
+              }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '10px',
+                padding: '10px 14px', cursor: 'pointer',
+                borderBottom: i < searchResults.length - 1 ? '1px solid #1e4258' : 'none',
+                transition: 'background-color 0.1s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.backgroundColor = '#253347'}
+              onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
+            >
+              <div style={{
+                width: '24px', height: '24px', borderRadius: '6px',
+                backgroundColor: (r.color || '#64748b') + '20', color: r.color || '#64748b',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: '10px', fontWeight: 700, flexShrink: 0,
+              }}>{typeIcons[r.type]}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#f8fafc', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {r.label}
+                </div>
+                <div style={{ fontSize: '11px', color: '#64748b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {r.sub}
+                </div>
+              </div>
+              <span style={{
+                fontSize: '9px', color: '#475569', textTransform: 'uppercase',
+                fontWeight: 600, letterSpacing: '0.5px',
+              }}>{typeLabels[r.type]}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─── Change Request Popout (Feature 6) ──────────────────────────────
+
+function ChangeRequestPopout({ onClose }) {
+  const [request, setRequest] = useState('');
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!request.trim() || sending) return;
+    setSending(true);
+    try {
+      // Save change request to localStorage for Ariel to pick up
+      const requests = JSON.parse(localStorage.getItem('cc_change_requests') || '[]');
+      requests.push({
+        id: Date.now().toString(36),
+        text: request.trim(),
+        createdAt: new Date().toISOString(),
+        status: 'pending',
+      });
+      localStorage.setItem('cc_change_requests', JSON.stringify(requests));
+      setSent(true);
+      setTimeout(() => onClose(), 1500);
+    } catch {
+      setSending(false);
+    }
+  };
+
+  return (
+    <div style={{
+      position: 'absolute', top: '100%', right: 0, marginTop: '8px',
+      width: '340px', backgroundColor: '#163344', border: '1px solid #1e4258',
+      borderRadius: '12px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+      zIndex: 100, padding: '16px',
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <span style={{ fontWeight: 700, fontSize: '14px', color: '#f8fafc' }}>Request a Change</span>
+        <button onClick={onClose} style={{
+          background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '16px', padding: '4px',
+        }}>&times;</button>
+      </div>
+      {sent ? (
+        <div style={{ textAlign: 'center', padding: '20px', color: '#4ade80', fontSize: '13px' }}>
+          Request saved. Ariel will pick it up.
+        </div>
+      ) : (
+        <>
+          <textarea
+            autoFocus
+            value={request}
+            onChange={e => setRequest(e.target.value)}
+            placeholder="Describe the change you'd like to see on the dashboard..."
+            rows={4}
+            style={{
+              width: '100%', boxSizing: 'border-box',
+              backgroundColor: '#0a2233', border: '1px solid #334155',
+              borderRadius: '8px', padding: '10px',
+              color: '#f8fafc', fontSize: '13px', fontFamily: 'inherit',
+              outline: 'none', resize: 'vertical',
+            }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '10px' }}>
+            <button onClick={handleSubmit} disabled={!request.trim() || sending} style={{
+              backgroundColor: request.trim() && !sending ? '#8b5cf6' : '#334155',
+              color: request.trim() && !sending ? '#fff' : '#64748b',
+              border: 'none', borderRadius: '8px', padding: '8px 16px',
+              fontSize: '13px', fontWeight: 600, cursor: request.trim() && !sending ? 'pointer' : 'default',
+            }}>{sending ? 'Saving...' : 'Submit'}</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+// ─── Due Date Picker (Feature 2) ────────────────────────────────────
+
+function DueDatePicker({ taskId, currentDueDate, onSetDueDate, onClose }) {
+  const [date, setDate] = useState(currentDueDate || '');
+
+  return (
+    <div style={{
+      position: 'absolute', top: '100%', left: 0, marginTop: '4px',
+      backgroundColor: '#163344', border: '1px solid #1e4258',
+      borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+      zIndex: 100, padding: '12px', width: '220px',
+    }} onClick={e => e.stopPropagation()}>
+      <div style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', marginBottom: '8px' }}>Set Due Date</div>
+      <input
+        type="date"
+        value={date}
+        onChange={e => setDate(e.target.value)}
+        style={{
+          width: '100%', boxSizing: 'border-box',
+          backgroundColor: '#0a2233', border: '1px solid #334155',
+          borderRadius: '6px', padding: '8px',
+          color: '#f8fafc', fontSize: '13px', fontFamily: 'inherit',
+          outline: 'none', colorScheme: 'dark',
+        }}
+      />
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+        {date && (
+          <button onClick={() => { onSetDueDate(taskId, ''); onClose(); }} style={{
+            background: 'none', border: 'none', color: '#f87171', cursor: 'pointer', fontSize: '11px', padding: '4px',
+          }}>Clear</button>
+        )}
+        <div style={{ flex: 1 }} />
+        <button onClick={onClose} style={{
+          background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '12px', padding: '4px 8px',
+        }}>Cancel</button>
+        <button onClick={() => { onSetDueDate(taskId, date); onClose(); }} disabled={!date} style={{
+          backgroundColor: date ? '#60a5fa' : '#334155',
+          color: date ? '#fff' : '#64748b',
+          border: 'none', borderRadius: '6px', padding: '4px 12px',
+          fontSize: '12px', fontWeight: 600, cursor: date ? 'pointer' : 'default',
+        }}>Set</button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Reminder Picker (Feature 3) ────────────────────────────────────
+
+function ReminderPicker({ taskId, taskTitle, onClose }) {
+  const [date, setDate] = useState('');
+  const [time, setTime] = useState('09:00');
+  const [sent, setSent] = useState(false);
+
+  const handleSet = () => {
+    if (!date || !time) return;
+    // Save reminder to localStorage — Ariel's cron will pick it up
+    const reminders = JSON.parse(localStorage.getItem('cc_reminders') || '[]');
+    reminders.push({
+      id: Date.now().toString(36),
+      taskId,
+      taskTitle,
+      datetime: `${date}T${time}:00`,
+      createdAt: new Date().toISOString(),
+      status: 'pending',
+    });
+    localStorage.setItem('cc_reminders', JSON.stringify(reminders));
+    setSent(true);
+    setTimeout(onClose, 1200);
+  };
+
+  return (
+    <div style={{
+      position: 'absolute', top: '100%', left: 0, marginTop: '4px',
+      backgroundColor: '#163344', border: '1px solid #1e4258',
+      borderRadius: '10px', boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+      zIndex: 100, padding: '12px', width: '240px',
+    }} onClick={e => e.stopPropagation()}>
+      {sent ? (
+        <div style={{ textAlign: 'center', padding: '12px', color: '#4ade80', fontSize: '13px' }}>
+          Reminder set
+        </div>
+      ) : (
+        <>
+          <div style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', marginBottom: '8px' }}>
+            Set Reminder
+          </div>
+          <div style={{ fontSize: '11px', color: '#64748b', marginBottom: '8px' }}>
+            You'll get an email at the chosen time.
+          </div>
+          <input
+            type="date"
+            value={date}
+            onChange={e => setDate(e.target.value)}
+            style={{
+              width: '100%', boxSizing: 'border-box',
+              backgroundColor: '#0a2233', border: '1px solid #334155',
+              borderRadius: '6px', padding: '8px',
+              color: '#f8fafc', fontSize: '13px', fontFamily: 'inherit',
+              outline: 'none', colorScheme: 'dark', marginBottom: '6px',
+            }}
+          />
+          <input
+            type="time"
+            value={time}
+            onChange={e => setTime(e.target.value)}
+            style={{
+              width: '100%', boxSizing: 'border-box',
+              backgroundColor: '#0a2233', border: '1px solid #334155',
+              borderRadius: '6px', padding: '8px',
+              color: '#f8fafc', fontSize: '13px', fontFamily: 'inherit',
+              outline: 'none', colorScheme: 'dark',
+            }}
+          />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '6px', marginTop: '10px' }}>
+            <button onClick={onClose} style={{
+              background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '12px', padding: '4px 8px',
+            }}>Cancel</button>
+            <button onClick={handleSet} disabled={!date} style={{
+              backgroundColor: date ? '#f59e0b' : '#334155',
+              color: date ? '#fff' : '#64748b',
+              border: 'none', borderRadius: '6px', padding: '4px 12px',
+              fontSize: '12px', fontWeight: 600, cursor: date ? 'pointer' : 'default',
+            }}>Set Reminder</button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 // ─── Add Task Form (inline) ─────────────────────────────────────────
 
 function AddTaskForm({ projectId, column, assignee, accentColor, onAdd, onCancel }) {
@@ -79,7 +435,7 @@ function AddTaskForm({ projectId, column, assignee, accentColor, onAdd, onCancel
   const [priority, setPriority] = useState('medium');
 
   const [saving, setSaving] = useState(false);
-  const [syncStatus, setSyncStatus] = useState(null); // null | 'syncing' | 'synced' | 'error'
+  const [syncStatus, setSyncStatus] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,13 +453,11 @@ function AddTaskForm({ projectId, column, assignee, accentColor, onAdd, onCancel
       _projectId: projectId,
       _column: column,
     };
-    // Add to localStorage immediately for instant feedback
     onAdd(task);
     setTitle('');
     setDescription('');
     setPriority('medium');
     setSaving(false);
-    // Persist to server (status.json via GitHub)
     setSyncStatus('syncing');
     try {
       const res = await fetch('/api/tasks', {
@@ -113,8 +467,6 @@ function AddTaskForm({ projectId, column, assignee, accentColor, onAdd, onCancel
       });
       if (res.ok) {
         setSyncStatus('synced');
-        // Remove from localStorage since it's now in status.json
-        // (will appear from server data on next refresh)
         const stored = JSON.parse(localStorage.getItem('cc_user_tasks') || '[]');
         const updated = stored.filter(t => t.id !== task.id);
         localStorage.setItem('cc_user_tasks', JSON.stringify(updated));
@@ -221,7 +573,6 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, us
   const assignees = getAssignees(project);
   const hasSplit = assignees.length > 0;
 
-  // Determine effective column for each task
   const getEffectiveColumn = (task) => {
     const override = dragOverrides[task.id];
     if (override === '__done__') return 'done';
@@ -239,7 +590,6 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, us
   const doneCount = allTasks.filter(t => getEffectiveColumn(t) === 'done').length;
   const assigneeColors = { mordy: '#f97316', yaakov: '#8b5cf6' };
 
-  // For assignee-split projects (Spotlight AI): show per-assignee to-do counts + done
   let counters;
   if (hasSplit) {
     const activeTasks = allTasks.filter(t => getEffectiveColumn(t) !== 'done');
@@ -248,14 +598,12 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, us
       count: activeTasks.filter(t => (t.assignee || '') === a).length,
       color: assigneeColors[a] || '#60a5fa',
     }));
-    // Add any unassigned tasks
     const unassignedCount = activeTasks.filter(t => !t.assignee).length;
     if (unassignedCount > 0) {
       counters.unshift({ label: 'General', count: unassignedCount, color: '#94a3b8' });
     }
     counters.push({ label: 'Done', count: doneCount, color: '#4ade80' });
   } else {
-    // Standard: To Do, Up Next, Done
     const todoCount = allTasks.filter(t => getEffectiveColumn(t) === 'todo').length;
     const upnextCount = allTasks.filter(t => getEffectiveColumn(t) === 'upnext').length;
     counters = [
@@ -331,15 +679,20 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, us
   );
 }
 
-// ─── Task card ──────────────────────────────────────────────────────
+// ─── Task card (with due date + reminder buttons) ───────────────────
 
-function TaskCard({ task, accentColor, isDone, onToggle }) {
+function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate }) {
+  const [showDuePicker, setShowDuePicker] = useState(false);
+  const [showReminder, setShowReminder] = useState(false);
+
   const priorityColors = {
     high: { bg: '#451a03', text: '#fb923c', label: 'High' },
     medium: { bg: '#1e1b4b', text: '#a78bfa', label: 'Medium' },
     low: { bg: '#0f172a', text: '#64748b', label: 'Low' },
   };
   const p = priorityColors[task.priority] || null;
+  const dueDate = dueDates[task.id] || task.dueDate;
+  const isOverdue = dueDate && new Date(dueDate) < new Date() && !isDone;
 
   return (
     <div
@@ -356,11 +709,12 @@ function TaskCard({ task, accentColor, isDone, onToggle }) {
         backgroundColor: '#0a2233',
         borderRadius: '8px',
         padding: '14px',
-        borderLeft: `3px solid ${isDone ? '#4ade80' : accentColor}`,
+        borderLeft: `3px solid ${isDone ? '#4ade80' : isOverdue ? '#f87171' : accentColor}`,
         marginBottom: '8px',
         opacity: isDone ? 0.6 : 1,
         transition: 'opacity 0.2s',
         cursor: 'grab',
+        position: 'relative',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
@@ -421,9 +775,73 @@ function TaskCard({ task, accentColor, isDone, onToggle }) {
                   fontSize: '10px', backgroundColor: '#163344', color: '#94a3b8',
                 }}>{tag}</span>
               ))}
+              {dueDate && (
+                <span style={{
+                  padding: '2px 6px', borderRadius: '3px',
+                  fontSize: '10px', fontWeight: 600,
+                  backgroundColor: isOverdue ? '#7f1d1d' : '#1e3a5f',
+                  color: isOverdue ? '#f87171' : '#60a5fa',
+                }}>
+                  Due {new Date(dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </span>
+              )}
             </div>
           )}
         </div>
+        {/* Due date + Reminder buttons */}
+        {!isDone && (
+          <div style={{ display: 'flex', gap: '4px', flexShrink: 0, position: 'relative' }}>
+            <button
+              onClick={(e) => { e.stopPropagation(); setShowDuePicker(!showDuePicker); setShowReminder(false); }}
+              title="Set due date"
+              style={{
+                width: '24px', height: '24px', borderRadius: '4px',
+                border: '1px solid #334155', background: 'none',
+                color: dueDate ? '#60a5fa' : '#475569', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: 0, transition: 'all 0.15s', fontSize: '12px',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = '#60a5fa'; e.currentTarget.style.color = '#60a5fa'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#334155'; e.currentTarget.style.color = dueDate ? '#60a5fa' : '#475569'; }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+              </svg>
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); setShowReminder(!showReminder); setShowDuePicker(false); }}
+              title="Set reminder"
+              style={{
+                width: '24px', height: '24px', borderRadius: '4px',
+                border: '1px solid #334155', background: 'none',
+                color: '#475569', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: 0, transition: 'all 0.15s', fontSize: '12px',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = '#f59e0b'; e.currentTarget.style.color = '#f59e0b'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#334155'; e.currentTarget.style.color = '#475569'; }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+            </button>
+            {showDuePicker && (
+              <DueDatePicker
+                taskId={task.id}
+                currentDueDate={dueDate}
+                onSetDueDate={onSetDueDate}
+                onClose={() => setShowDuePicker(false)}
+              />
+            )}
+            {showReminder && (
+              <ReminderPicker
+                taskId={task.id}
+                taskTitle={task.title}
+                onClose={() => setShowReminder(false)}
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -431,7 +849,7 @@ function TaskCard({ task, accentColor, isDone, onToggle }) {
 
 // ─── Task column (drop target) ──────────────────────────────────────
 
-function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop, onAddTask, showAddForm, onToggleAddForm }) {
+function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop, onAddTask, showAddForm, onToggleAddForm, dueDates, onSetDueDate }) {
   const [dragOver, setDragOver] = useState(false);
 
   return (
@@ -499,6 +917,8 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
               accentColor={accentColor}
               isDone={isTaskDone(task, project, completedIds)}
               onToggle={onToggle}
+              dueDates={dueDates}
+              onSetDueDate={onSetDueDate}
             />
           ))
         )}
@@ -550,20 +970,17 @@ function DetailHeader({ project, onBack }) {
 
 // ─── Project detail view ────────────────────────────────────────────
 
-function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop, userTasks, onAddUserTask }) {
+function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop, userTasks, onAddUserTask, dueDates, onSetDueDate }) {
   const [addingToColumn, setAddingToColumn] = useState(null);
 
-  // Merge server tasks with user-added tasks for this project
   const projectUserTasks = userTasks.filter(t => t._projectId === project.id);
   const allServerTasks = getAllTasks(project);
   const allTasks = [...allServerTasks, ...projectUserTasks];
 
   const assignees = getAssignees(project);
-  // Also check user tasks for assignees
   projectUserTasks.forEach(t => { if (t.assignee && !assignees.includes(t.assignee)) assignees.push(t.assignee); });
   const hasSplit = assignees.length > 0;
 
-  // Determine effective column for each task, considering drag overrides
   const getEffectiveColumn = (task) => {
     const override = dragOverrides[task.id];
     if (override === '__done__') return 'done';
@@ -571,11 +988,9 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
     if (override === '__todo__') return 'todo';
     if (override && override !== '__done__' && override !== '__upnext__' && override !== '__todo__') return 'assignee:' + override;
     if (isTaskDone(task, project, completedIds)) return 'done';
-    // User-added tasks: use their _column
     if (task._userAdded) {
       if (task._column === '__upnext__') return 'upnext';
       if (task._column === '__done__') return 'done';
-      // Assignee column
       if (task._column && !task._column.startsWith('__')) return 'todo';
       return 'todo';
     }
@@ -631,6 +1046,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
               showAddForm={addingToColumn === col.name}
               onToggleAddForm={() => setAddingToColumn(addingToColumn === col.name ? null : col.name)}
               onAddTask={handleAddTask}
+              dueDates={dueDates}
+              onSetDueDate={onSetDueDate}
             />
           ))}
           {(unassignedTasks.length > 0 || addingToColumn === '__general__') && (
@@ -643,6 +1060,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
               showAddForm={addingToColumn === '__general__'}
               onToggleAddForm={() => setAddingToColumn(addingToColumn === '__general__' ? null : '__general__')}
               onAddTask={handleAddTask}
+              dueDates={dueDates}
+              onSetDueDate={onSetDueDate}
             />
           )}
           <TaskColumn
@@ -651,6 +1070,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
             emptyText="Nothing completed yet" completedIds={completedIds}
             onToggle={onToggle} project={project}
             columnId="__done__" onDrop={handleDrop}
+            dueDates={dueDates}
+            onSetDueDate={onSetDueDate}
           />
         </div>
       </div>
@@ -677,6 +1098,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           showAddForm={addingToColumn === '__todo__'}
           onToggleAddForm={() => setAddingToColumn(addingToColumn === '__todo__' ? null : '__todo__')}
           onAddTask={handleAddTask}
+          dueDates={dueDates}
+          onSetDueDate={onSetDueDate}
         />
         <TaskColumn
           title="Up Next" tasks={upnextTasks}
@@ -687,6 +1110,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           showAddForm={addingToColumn === '__upnext__'}
           onToggleAddForm={() => setAddingToColumn(addingToColumn === '__upnext__' ? null : '__upnext__')}
           onAddTask={handleAddTask}
+          dueDates={dueDates}
+          onSetDueDate={onSetDueDate}
         />
         <TaskColumn
           title="Done" tasks={doneTasks}
@@ -694,6 +1119,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           emptyText="Nothing completed yet" completedIds={completedIds}
           onToggle={onToggle} project={project}
           columnId="__done__" onDrop={handleDrop}
+          dueDates={dueDates}
+          onSetDueDate={onSetDueDate}
         />
       </div>
     </div>
@@ -852,74 +1279,97 @@ function GeneralTodosSection({ todos, completedIds, onToggle, userTasks, onAddUs
   );
 }
 
-// ─── Potential Businesses Section ─────────────────────────────────────
+// ─── Potential Ideas Cards (Feature 1) ──────────────────────────────
 
-function PotentialBusinessRow({ biz, isExpanded, onToggle }) {
+function PotentialIdeaCard({ biz }) {
+  const [expanded, setExpanded] = useState(false);
+
   return (
-    <div style={{
-      backgroundColor: '#163344',
-      borderRadius: '10px',
-      border: '1px solid #1e4258',
-      overflow: 'hidden',
-      transition: 'border-color 0.15s',
-    }}>
-      <div
-        onClick={onToggle}
-        style={{
-          padding: '16px 20px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '14px',
-          transition: 'background-color 0.15s',
-        }}
-        onMouseEnter={e => e.currentTarget.style.backgroundColor = '#253347'}
-        onMouseLeave={e => e.currentTarget.style.backgroundColor = 'transparent'}
-      >
-        <span style={{
-          fontSize: '14px', color: '#64748b',
-          transition: 'transform 0.2s',
-          transform: isExpanded ? 'rotate(90deg)' : 'rotate(0deg)',
-          display: 'inline-block',
-        }}>{'\u25B6'}</span>
+    <div
+      onClick={() => setExpanded(!expanded)}
+      style={{
+        backgroundColor: '#163344',
+        borderRadius: '12px',
+        border: '1px solid #1e4258',
+        padding: '24px',
+        cursor: 'pointer',
+        transition: 'border-color 0.15s, transform 0.15s',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = '#f59e0b';
+        e.currentTarget.style.transform = 'translateY(-2px)';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = '#1e4258';
+        e.currentTarget.style.transform = 'translateY(0)';
+      }}
+    >
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0,
+        height: '3px', backgroundColor: '#f59e0b',
+      }} />
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: expanded ? '12px' : '0' }}>
+        <div style={{
+          width: '40px', height: '40px', borderRadius: '10px',
+          backgroundColor: '#f59e0b20', color: '#f59e0b',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '18px', fontWeight: 700, flexShrink: 0,
+        }}>
+          {biz.icon || '\u2728'}
+        </div>
         <div style={{ flex: 1 }}>
-          <div style={{ fontWeight: 600, fontSize: '14px', color: '#f8fafc' }}>
+          <div style={{ fontWeight: 700, fontSize: '16px', color: '#f8fafc' }}>
             {biz.title}
           </div>
-          {biz.idea && !isExpanded && (
-            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px', lineHeight: 1.4 }}>
+          {biz.idea && !expanded && (
+            <div style={{
+              fontSize: '12px', color: '#64748b', marginTop: '2px',
+              overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+            }}>
               {biz.idea}
             </div>
           )}
         </div>
+        <span style={{
+          fontSize: '14px', color: '#475569',
+          transition: 'transform 0.2s',
+          transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+          display: 'inline-block', flexShrink: 0,
+        }}>{'\u25BC'}</span>
       </div>
-      {isExpanded && (
-        <div style={{
-          padding: '0 20px 16px 48px',
-          borderTop: '1px solid #334155',
-        }}>
+
+      {expanded && (
+        <div style={{ borderTop: '1px solid #1e4258', paddingTop: '12px' }}>
           {biz.idea && (
-            <div style={{ fontSize: '13px', color: '#94a3b8', marginTop: '12px', lineHeight: 1.5 }}>
+            <div style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1.5, marginBottom: '8px' }}>
               {biz.idea}
             </div>
           )}
           {biz.notes && (
             <div style={{
-              marginTop: '12px', padding: '12px',
-              backgroundColor: '#0a2233', borderRadius: '8px',
-              fontSize: '13px', color: '#cbd5e1', lineHeight: 1.6,
-              whiteSpace: 'pre-wrap',
+              padding: '12px', backgroundColor: '#0a2233', borderRadius: '8px',
+              fontSize: '13px', color: '#cbd5e1', lineHeight: 1.6, whiteSpace: 'pre-wrap',
             }}>
               {biz.notes}
             </div>
           )}
-          {!biz.notes && (
-            <div style={{
-              marginTop: '12px', padding: '12px',
-              backgroundColor: '#0a2233', borderRadius: '8px',
-              fontSize: '12px', color: '#475569', fontStyle: 'italic',
-            }}>
-              No notes yet
+          {biz.tags && biz.tags.length > 0 && (
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '8px' }}>
+              {biz.tags.map(tag => (
+                <span key={tag} style={{
+                  padding: '2px 8px', borderRadius: '4px',
+                  fontSize: '10px', fontWeight: 600,
+                  backgroundColor: '#f59e0b20', color: '#f59e0b',
+                }}>{tag}</span>
+              ))}
+            </div>
+          )}
+          {!biz.notes && !biz.idea && (
+            <div style={{ fontSize: '12px', color: '#475569', fontStyle: 'italic' }}>
+              No details yet
             </div>
           )}
         </div>
@@ -928,9 +1378,7 @@ function PotentialBusinessRow({ biz, isExpanded, onToggle }) {
   );
 }
 
-function PotentialBusinessesSection({ businesses }) {
-  const [expandedId, setExpandedId] = useState(null);
-
+function PotentialIdeasSection({ businesses }) {
   if (!businesses || businesses.length === 0) {
     return (
       <div style={{ marginTop: '32px' }}>
@@ -944,7 +1392,7 @@ function PotentialBusinessesSection({ businesses }) {
           }} />
           <span style={{
             fontSize: '14px', fontWeight: 700, color: '#f8fafc',
-          }}>Potential Businesses</span>
+          }}>Potential Ideas</span>
           <span style={{
             fontSize: '11px', color: '#475569',
             backgroundColor: '#163344',
@@ -957,7 +1405,7 @@ function PotentialBusinessesSection({ businesses }) {
           textAlign: 'center', fontSize: '13px', color: '#475569',
           fontStyle: 'italic',
         }}>
-          No ideas yet — add them to status.json under potentialBusinesses
+          No ideas yet
         </div>
       </div>
     );
@@ -975,24 +1423,168 @@ function PotentialBusinessesSection({ businesses }) {
         }} />
         <span style={{
           fontSize: '14px', fontWeight: 700, color: '#f8fafc',
-        }}>Potential Businesses</span>
+        }}>Potential Ideas</span>
         <span style={{
           fontSize: '11px', color: '#475569',
           backgroundColor: '#163344',
           padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
         }}>{businesses.length}</span>
       </div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+        gap: '16px',
+      }}>
         {businesses.map(biz => (
-          <PotentialBusinessRow
-            key={biz.id}
-            biz={biz}
-            isExpanded={expandedId === biz.id}
-            onToggle={() => setExpandedId(expandedId === biz.id ? null : biz.id)}
-          />
+          <PotentialIdeaCard key={biz.id} biz={biz} />
         ))}
       </div>
     </div>
+  );
+}
+
+// ─── Ariel Sidebar (Feature 4) ──────────────────────────────────────
+
+function ArielSidebar({ isOpen, onToggle }) {
+  const [cronJobs, setCronJobs] = useState([]);
+  const [changeRequests, setChangeRequests] = useState([]);
+  const [reminders, setReminders] = useState([]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    // Load change requests from localStorage
+    try {
+      setChangeRequests(JSON.parse(localStorage.getItem('cc_change_requests') || '[]'));
+    } catch { setChangeRequests([]); }
+    // Load reminders from localStorage
+    try {
+      setReminders(JSON.parse(localStorage.getItem('cc_reminders') || '[]'));
+    } catch { setReminders([]); }
+    // Cron jobs are static/known
+    setCronJobs([
+      { id: 'heartbeat', name: 'Heartbeat Check', schedule: 'Every 30m', status: 'active' },
+      { id: 'email-poll', name: 'Email Polling', schedule: 'Every 30m', status: 'active' },
+      { id: 'memory-flush', name: 'Memory Flush', schedule: 'On compaction', status: 'active' },
+    ]);
+  }, [isOpen]);
+
+  return (
+    <>
+      {/* Toggle button */}
+      <button
+        onClick={onToggle}
+        style={{
+          position: 'fixed', right: isOpen ? '340px' : '0', top: '50%',
+          transform: 'translateY(-50%)',
+          width: '32px', height: '64px',
+          backgroundColor: '#163344', border: '1px solid #1e4258',
+          borderRight: isOpen ? 'none' : '1px solid #1e4258',
+          borderLeft: isOpen ? '1px solid #1e4258' : 'none',
+          borderRadius: isOpen ? '8px 0 0 8px' : '8px 0 0 8px',
+          color: '#94a3b8', cursor: 'pointer',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: '14px', zIndex: 101,
+          transition: 'right 0.2s',
+        }}
+        title="Ariel Panel"
+      >
+        {isOpen ? '\u25B6' : '\uD83E\uDD81'}
+      </button>
+
+      {/* Sidebar panel */}
+      <div style={{
+        position: 'fixed', right: isOpen ? 0 : '-340px', top: 0, bottom: 0,
+        width: '340px', backgroundColor: '#0f2233',
+        borderLeft: '1px solid #1e4258',
+        zIndex: 100, transition: 'right 0.2s',
+        overflowY: 'auto', padding: '24px',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
+          <span style={{ fontSize: '24px' }}>{'\uD83E\uDD81'}</span>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: '16px', color: '#f8fafc' }}>Ariel</div>
+            <div style={{ fontSize: '11px', color: '#4ade80' }}>Online</div>
+          </div>
+        </div>
+
+        {/* Cron Jobs */}
+        <div style={{ marginBottom: '24px' }}>
+          <div style={{
+            fontSize: '11px', fontWeight: 700, color: '#64748b',
+            textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px',
+          }}>Scheduled Jobs</div>
+          {cronJobs.map(job => (
+            <div key={job.id} style={{
+              display: 'flex', alignItems: 'center', gap: '10px',
+              padding: '10px', backgroundColor: '#163344', borderRadius: '8px',
+              marginBottom: '6px',
+            }}>
+              <div style={{
+                width: '8px', height: '8px', borderRadius: '50%',
+                backgroundColor: job.status === 'active' ? '#4ade80' : '#f87171',
+              }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#f8fafc' }}>{job.name}</div>
+                <div style={{ fontSize: '11px', color: '#64748b' }}>{job.schedule}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Pending Reminders */}
+        {reminders.filter(r => r.status === 'pending').length > 0 && (
+          <div style={{ marginBottom: '24px' }}>
+            <div style={{
+              fontSize: '11px', fontWeight: 700, color: '#64748b',
+              textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px',
+            }}>Pending Reminders</div>
+            {reminders.filter(r => r.status === 'pending').map(r => (
+              <div key={r.id} style={{
+                padding: '10px', backgroundColor: '#163344', borderRadius: '8px',
+                marginBottom: '6px', borderLeft: '3px solid #f59e0b',
+              }}>
+                <div style={{ fontSize: '13px', fontWeight: 600, color: '#f8fafc' }}>{r.taskTitle}</div>
+                <div style={{ fontSize: '11px', color: '#f59e0b' }}>
+                  {new Date(r.datetime).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Change Requests */}
+        {changeRequests.length > 0 && (
+          <div style={{ marginBottom: '24px' }}>
+            <div style={{
+              fontSize: '11px', fontWeight: 700, color: '#64748b',
+              textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px',
+            }}>Change Requests</div>
+            {changeRequests.map(cr => (
+              <div key={cr.id} style={{
+                padding: '10px', backgroundColor: '#163344', borderRadius: '8px',
+                marginBottom: '6px', borderLeft: '3px solid #8b5cf6',
+              }}>
+                <div style={{ fontSize: '13px', color: '#f8fafc', lineHeight: 1.4 }}>{cr.text}</div>
+                <div style={{ fontSize: '10px', color: '#475569', marginTop: '4px' }}>
+                  {cr.status} &middot; {timeAgo(cr.createdAt)}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Status */}
+        <div style={{
+          padding: '12px', backgroundColor: '#163344', borderRadius: '8px',
+          fontSize: '12px', color: '#64748b', lineHeight: 1.6,
+        }}>
+          <div style={{ fontWeight: 600, color: '#94a3b8', marginBottom: '4px' }}>System</div>
+          <div>Model: Claude Opus 4.6</div>
+          <div>Host: Clawdbot</div>
+          <div>Channel: Google Chat</div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -1005,11 +1597,25 @@ export default function Home() {
   const [completedIds, setCompletedIds] = useState([]);
   const [dragOverrides, setDragOverrides] = useState({});
   const [userTasks, setUserTasks] = useState([]);
+  const [showChangeRequest, setShowChangeRequest] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [dueDates, setDueDates] = useState({});
 
   useEffect(() => {
     setCompletedIds(getCompletedIds());
     setDragOverrides(getDragOverrides());
     setUserTasks(getUserTasks());
+    try { setDueDates(JSON.parse(localStorage.getItem('cc_due_dates') || '{}')); } catch { setDueDates({}); }
+  }, []);
+
+  const setDueDate = useCallback((taskId, date) => {
+    setDueDates(prev => {
+      const next = { ...prev };
+      if (date) next[taskId] = date;
+      else delete next[taskId];
+      localStorage.setItem('cc_due_dates', JSON.stringify(next));
+      return next;
+    });
   }, []);
 
   const addUserTask = useCallback((task) => {
@@ -1020,16 +1626,14 @@ export default function Home() {
     });
   }, []);
 
-  // Fire-and-forget sync to server (Cloudflare Function → GitHub)
   const syncToServer = useCallback((payload) => {
     fetch('/api/tasks', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
-    }).catch(() => {}); // silent fail — localStorage is the instant fallback
+    }).catch(() => {});
   }, []);
 
-  // Find which project a task belongs to
   const findProjectForTask = useCallback((taskId) => {
     if (!data?.projects) return null;
     for (const p of data.projects) {
@@ -1054,7 +1658,6 @@ export default function Home() {
       saveDragOverrides(next);
       return next;
     });
-    // Sync completion to server
     const projectId = findProjectForTask(taskId);
     if (projectId) {
       syncToServer({ action: 'complete', taskId, projectId, completed: !wasCompleted });
@@ -1077,21 +1680,34 @@ export default function Home() {
         return next;
       });
     } else {
-      // Move to To Do, Up Next, or an assignee column — always remove from done
       const newCompleted = getCompletedIds().filter(id => id !== taskId);
       localStorage.setItem('cc_done', JSON.stringify(newCompleted));
       setCompletedIds(newCompleted);
-      // Set the column override
       const newOverrides = { ...getDragOverrides(), [taskId]: targetColumnId };
       saveDragOverrides(newOverrides);
       setDragOverrides(newOverrides);
     }
-    // Sync move to server
     const pid = projectId || findProjectForTask(taskId);
     if (pid) {
       syncToServer({ action: 'move', taskId, projectId: pid, targetColumn: targetColumnId });
     }
   }, [findProjectForTask, syncToServer]);
+
+  // Navigation from search
+  const handleSearchNavigate = useCallback((type, id) => {
+    if (type === 'project') {
+      setSelectedProject(id);
+    }
+    // For ideas, just scroll to the section
+    if (type === 'ideas') {
+      setSelectedProject(null);
+      // Small delay to let render happen
+      setTimeout(() => {
+        const el = document.getElementById('potential-ideas-section');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, []);
 
   useEffect(() => {
     const load = async () => {
@@ -1130,7 +1746,6 @@ export default function Home() {
   const todos = data.todos || [];
   const selected = selectedProject ? projects.find(p => p.id === selectedProject) : null;
 
-  // One card per project — no splitting by assignee
   const overviewCards = projects.map(project => ({ project, key: project.id }));
 
   // Total counts
@@ -1152,7 +1767,6 @@ export default function Home() {
       else totalTodo++;
     });
   });
-  // Count user-added tasks
   userTasks.forEach(t => {
     if (completedIds.includes(t.id)) totalDone++;
     else if (t._column === '__upnext__') totalUpnext++;
@@ -1165,11 +1779,14 @@ export default function Home() {
       minHeight: '100vh', backgroundColor: '#143d4f', padding: '24px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
+      marginRight: sidebarOpen ? '340px' : '0',
+      transition: 'margin-right 0.2s',
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <header style={{
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           marginBottom: '32px', paddingBottom: '16px', borderBottom: '1px solid #1e4258',
+          gap: '16px', flexWrap: 'wrap',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
@@ -1185,9 +1802,36 @@ export default function Home() {
               </div>
             </div>
           </div>
-          {data.lastUpdated && (
-            <div style={{ fontSize: '12px', color: '#64748b' }}>Updated {timeAgo(data.lastUpdated)}</div>
-          )}
+
+          {/* Omnisearch Bar (Feature 5) */}
+          <OmnisearchBar data={data} onNavigate={handleSearchNavigate} userTasks={userTasks} />
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
+            {data.lastUpdated && (
+              <div style={{ fontSize: '12px', color: '#64748b' }}>Updated {timeAgo(data.lastUpdated)}</div>
+            )}
+            {/* Change Request Button (Feature 6) */}
+            <button
+              onClick={() => setShowChangeRequest(!showChangeRequest)}
+              title="Request a change"
+              style={{
+                width: '28px', height: '28px', borderRadius: '6px',
+                border: '1px solid #1e4258', background: 'none',
+                color: '#64748b', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                transition: 'all 0.15s', padding: 0,
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = '#8b5cf6'; e.currentTarget.style.color = '#8b5cf6'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#1e4258'; e.currentTarget.style.color = '#64748b'; }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
+            {showChangeRequest && (
+              <ChangeRequestPopout onClose={() => setShowChangeRequest(false)} />
+            )}
+          </div>
         </header>
 
         {selected ? (
@@ -1200,6 +1844,8 @@ export default function Home() {
             onDragDrop={handleDragDrop}
             userTasks={userTasks}
             onAddUserTask={addUserTask}
+            dueDates={dueDates}
+            onSetDueDate={setDueDate}
           />
         ) : (
           <>
@@ -1249,12 +1895,18 @@ export default function Home() {
               onAddUserTask={addUserTask}
             />
 
-            <PotentialBusinessesSection
-              businesses={data.potentialBusinesses || []}
-            />
+            {/* Feature 1: Potential Ideas as cards */}
+            <div id="potential-ideas-section">
+              <PotentialIdeasSection
+                businesses={data.potentialBusinesses || []}
+              />
+            </div>
           </>
         )}
       </div>
+
+      {/* Feature 4: Ariel Sidebar */}
+      <ArielSidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
     </div>
   );
 }

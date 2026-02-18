@@ -10,7 +10,6 @@ function timeAgo(dateString) {
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMs / 3600000);
   const diffDays = Math.floor(diffMs / 86400000);
-
   if (diffMins < 1) return 'just now';
   if (diffMins < 60) return `${diffMins}m ago`;
   if (diffHours < 24) return `${diffHours}h ago`;
@@ -18,340 +17,367 @@ function timeAgo(dateString) {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
-function StatusBadge({ status }) {
-  const colors = {
-    complete: { bg: '#052e16', text: '#4ade80', label: 'Complete' },
-    active: { bg: '#172554', text: '#60a5fa', label: 'Active' },
-    'awaiting-approval': { bg: '#422006', text: '#fbbf24', label: 'Needs Approval' },
-    pending: { bg: '#1e293b', text: '#64748b', label: 'Pending' },
-  };
-  const c = colors[status] || colors.pending;
-  return (
-    <span style={{
-      display: 'inline-block',
-      padding: '2px 8px',
-      borderRadius: '4px',
-      fontSize: '11px',
-      fontWeight: 600,
-      backgroundColor: c.bg,
-      color: c.text,
-    }}>
-      {c.label}
-    </span>
-  );
-}
+// ─── Overview: Bird's-eye project cards ─────────────────────────────
 
-function Header({ lastUpdated }) {
+function ProjectOverviewCard({ project, onClick }) {
+  const tasks = project.tasks || { todo: [], in_progress: [], done: [] };
+  const todoCount = tasks.todo.length;
+  const inProgressCount = tasks.in_progress.length;
+  const doneCount = tasks.done.length;
+  const totalCount = todoCount + inProgressCount + doneCount;
+  const progress = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+
   return (
-    <header style={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: '32px',
-      paddingBottom: '16px',
-      borderBottom: '1px solid #1e293b',
-    }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+    <div
+      onClick={onClick}
+      style={{
+        backgroundColor: '#1e293b',
+        borderRadius: '12px',
+        border: '1px solid #334155',
+        padding: '24px',
+        cursor: 'pointer',
+        transition: 'border-color 0.15s, transform 0.15s',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.borderColor = project.color;
+        e.currentTarget.style.transform = 'translateY(-2px)';
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.borderColor = '#334155';
+        e.currentTarget.style.transform = 'translateY(0)';
+      }}
+    >
+      {/* Color accent bar */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '3px',
+        backgroundColor: project.color,
+      }} />
+
+      {/* Project icon + name */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
         <div style={{
-          width: '36px',
-          height: '36px',
-          borderRadius: '8px',
-          backgroundColor: '#1e293b',
+          width: '40px',
+          height: '40px',
+          borderRadius: '10px',
+          backgroundColor: project.color + '20',
+          color: project.color,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '20px',
+          fontSize: '18px',
+          fontWeight: 700,
         }}>
-          A
+          {project.icon || project.name.charAt(0)}
         </div>
         <div>
-          <div style={{ fontWeight: 700, fontSize: '18px', color: '#f8fafc' }}>Ariel</div>
-          <div style={{ fontSize: '12px', color: '#64748b' }}>Status Board</div>
+          <div style={{ fontWeight: 700, fontSize: '16px', color: '#f8fafc' }}>
+            {project.name}
+          </div>
+          {project.description && (
+            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+              {project.description}
+            </div>
+          )}
         </div>
       </div>
-      {lastUpdated && (
-        <div style={{ fontSize: '12px', color: '#64748b' }}>
-          Updated {timeAgo(lastUpdated)}
+
+      {/* Task count chips */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+        <div style={{
+          flex: 1,
+          textAlign: 'center',
+          padding: '8px 4px',
+          borderRadius: '8px',
+          backgroundColor: '#0f172a',
+        }}>
+          <div style={{ fontSize: '20px', fontWeight: 700, color: '#94a3b8' }}>{todoCount}</div>
+          <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>To Do</div>
+        </div>
+        <div style={{
+          flex: 1,
+          textAlign: 'center',
+          padding: '8px 4px',
+          borderRadius: '8px',
+          backgroundColor: '#0f172a',
+        }}>
+          <div style={{ fontSize: '20px', fontWeight: 700, color: '#60a5fa' }}>{inProgressCount}</div>
+          <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>In Progress</div>
+        </div>
+        <div style={{
+          flex: 1,
+          textAlign: 'center',
+          padding: '8px 4px',
+          borderRadius: '8px',
+          backgroundColor: '#0f172a',
+        }}>
+          <div style={{ fontSize: '20px', fontWeight: 700, color: '#4ade80' }}>{doneCount}</div>
+          <div style={{ fontSize: '10px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>Done</div>
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div style={{
+        height: '4px',
+        borderRadius: '2px',
+        backgroundColor: '#0f172a',
+        overflow: 'hidden',
+      }}>
+        <div style={{
+          height: '100%',
+          width: `${progress}%`,
+          backgroundColor: project.color,
+          borderRadius: '2px',
+          transition: 'width 0.3s ease',
+        }} />
+      </div>
+      {totalCount > 0 && (
+        <div style={{ fontSize: '11px', color: '#64748b', marginTop: '6px', textAlign: 'right' }}>
+          {progress}% complete
         </div>
       )}
-    </header>
+      {totalCount === 0 && (
+        <div style={{ fontSize: '12px', color: '#475569', marginTop: '8px', textAlign: 'center', fontStyle: 'italic' }}>
+          No tasks yet
+        </div>
+      )}
+    </div>
   );
 }
 
-function ApprovalCard({ item }) {
+// ─── Kanban: Task card ──────────────────────────────────────────────
+
+function TaskCard({ task, accentColor }) {
+  const priorityColors = {
+    high: { bg: '#451a03', text: '#fb923c', label: 'High' },
+    medium: { bg: '#1e1b4b', text: '#a78bfa', label: 'Medium' },
+    low: { bg: '#0f172a', text: '#64748b', label: 'Low' },
+  };
+  const p = priorityColors[task.priority] || null;
+
   return (
     <div style={{
-      backgroundColor: '#1e293b',
+      backgroundColor: '#0f172a',
       borderRadius: '8px',
-      padding: '16px',
-      borderLeft: '3px solid #f59e0b',
+      padding: '14px',
+      borderLeft: `3px solid ${accentColor}`,
+      marginBottom: '8px',
     }}>
-      <div style={{ fontSize: '11px', color: '#f59e0b', fontWeight: 600, marginBottom: '6px', textTransform: 'uppercase' }}>
-        Needs your decision
+      <div style={{ fontWeight: 600, fontSize: '13px', color: '#f8fafc', marginBottom: '4px', lineHeight: 1.4 }}>
+        {task.title}
       </div>
-      <div style={{ fontWeight: 600, fontSize: '14px', color: '#f8fafc', marginBottom: '6px' }}>
-        {item.title}
-      </div>
-      {item.description && (
-        <div style={{ fontSize: '13px', color: '#94a3b8', lineHeight: 1.5, marginBottom: '10px' }}>
-          {item.description}
+      {task.description && (
+        <div style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.4, marginBottom: '8px' }}>
+          {task.description}
         </div>
       )}
-      {item.options && (
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '10px' }}>
-          {item.options.map((opt, i) => (
-            <span key={i} style={{
-              padding: '4px 10px',
-              borderRadius: '4px',
-              fontSize: '12px',
-              backgroundColor: '#334155',
-              color: '#cbd5e1',
-            }}>
-              {opt}
-            </span>
-          ))}
-        </div>
-      )}
-      {item.image && (
-        <a href={item.image} target="_blank" rel="noopener noreferrer">
-          <img src={item.image} alt={item.title} style={{
-            width: '100%',
-            maxWidth: '400px',
-            borderRadius: '6px',
-            border: '1px solid #334155',
-            marginTop: '8px',
-          }} />
-        </a>
-      )}
-      <div style={{ fontSize: '11px', color: '#64748b', marginTop: '10px' }}>
-        {timeAgo(item.created)}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+        {p && (
+          <span style={{
+            padding: '2px 6px',
+            borderRadius: '3px',
+            fontSize: '10px',
+            fontWeight: 600,
+            backgroundColor: p.bg,
+            color: p.text,
+          }}>
+            {p.label}
+          </span>
+        )}
+        {task.tags && task.tags.map(tag => (
+          <span key={tag} style={{
+            padding: '2px 6px',
+            borderRadius: '3px',
+            fontSize: '10px',
+            backgroundColor: '#1e293b',
+            color: '#94a3b8',
+          }}>
+            {tag}
+          </span>
+        ))}
+        {task.created && (
+          <span style={{ fontSize: '10px', color: '#475569', marginLeft: 'auto' }}>
+            {timeAgo(task.created)}
+          </span>
+        )}
       </div>
     </div>
   );
 }
 
-function ProjectCard({ project, data, isExpanded, onToggle }) {
-  const approvals = (data.approvals || []).filter(a => a.projectId === project.id);
-  const alternatives = (data.brandAlternatives || []).filter(b => b.projectId === project.id);
-  const waiting = (data.waitingItems || []).filter(w => w.projectId === project.id);
-  const activities = project.activityLog || [];
-  const pipeline = project.skillProgress || {};
+// ─── Kanban: Column ─────────────────────────────────────────────────
 
-  const statusColor = project.status === 'complete' ? '#4ade80'
-    : approvals.length > 0 ? '#fbbf24'
-    : '#60a5fa';
-
+function KanbanColumn({ title, tasks, accentColor, emptyText, dotColor }) {
   return (
     <div style={{
-      backgroundColor: '#1e293b',
-      borderRadius: '10px',
-      overflow: 'hidden',
-      border: '1px solid #334155',
+      flex: 1,
+      minWidth: '240px',
     }}>
-      {/* Project Header — always visible */}
-      <div
-        onClick={onToggle}
-        style={{
-          padding: '16px 20px',
-          cursor: 'pointer',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          userSelect: 'none',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{
-            width: '10px',
-            height: '10px',
-            borderRadius: '50%',
-            backgroundColor: statusColor,
-            flexShrink: 0,
-          }} />
-          <div>
-            <div style={{ fontWeight: 600, fontSize: '16px', color: '#f8fafc' }}>
-              {project.name}
-            </div>
-            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
-              {project.status === 'complete' ? 'Complete' : `Current: ${project.currentSkill}`}
-              {approvals.length > 0 && (
-                <span style={{ color: '#fbbf24', marginLeft: '8px' }}>
-                  {approvals.length} awaiting approval
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-        <span style={{ color: '#64748b', fontSize: '18px' }}>
-          {isExpanded ? '\u25B2' : '\u25BC'}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        marginBottom: '12px',
+        padding: '0 4px',
+      }}>
+        <div style={{
+          width: '8px',
+          height: '8px',
+          borderRadius: '50%',
+          backgroundColor: dotColor,
+        }} />
+        <span style={{
+          fontSize: '12px',
+          fontWeight: 700,
+          color: '#94a3b8',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+        }}>
+          {title}
+        </span>
+        <span style={{
+          fontSize: '11px',
+          color: '#475569',
+          backgroundColor: '#0f172a',
+          padding: '1px 6px',
+          borderRadius: '4px',
+          fontWeight: 600,
+        }}>
+          {tasks.length}
         </span>
       </div>
-
-      {isExpanded && (
-        <div style={{ padding: '0 20px 20px' }}>
-          {/* Pipeline */}
-          {Object.keys(pipeline).length > 0 && (
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
-                Pipeline
-              </div>
-              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                {Object.entries(pipeline).map(([skill, status]) => (
-                  <div key={skill} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    padding: '4px 10px',
-                    borderRadius: '4px',
-                    backgroundColor: '#0f172a',
-                    fontSize: '12px',
-                  }}>
-                    <span style={{ color: '#94a3b8' }}>{skill.replace(/-/g, ' ')}</span>
-                    <StatusBadge status={status} />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Approvals */}
-          {approvals.length > 0 && (
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
-                Awaiting Decision
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {approvals.map(a => <ApprovalCard key={a.id} item={a} />)}
-              </div>
-            </div>
-          )}
-
-          {/* Brand Alternatives */}
-          {alternatives.length > 0 && (
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
-                Design Alternatives
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '10px' }}>
-                {alternatives.map(v => (
-                  <div key={v.id} style={{
-                    backgroundColor: '#0f172a',
-                    borderRadius: '6px',
-                    padding: '12px',
-                    borderLeft: v.recommended ? '3px solid #4ade80' : '3px solid #334155',
-                  }}>
-                    {v.recommended && (
-                      <div style={{ color: '#4ade80', fontSize: '10px', fontWeight: 700, marginBottom: '4px' }}>RECOMMENDED</div>
-                    )}
-                    <div style={{ fontWeight: 600, fontSize: '13px', color: '#f8fafc', marginBottom: '4px' }}>{v.title}</div>
-                    <div style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '8px' }}>{v.description}</div>
-                    {v.image && (
-                      <a href={v.image} target="_blank" rel="noopener noreferrer">
-                        <img src={v.image} alt={v.title} style={{ width: '100%', borderRadius: '4px' }} />
-                      </a>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* In Progress */}
-          {waiting.length > 0 && (
-            <div style={{ marginBottom: '20px' }}>
-              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
-                In Progress
-              </div>
-              {waiting.map(w => (
-                <div key={w.id} style={{
-                  backgroundColor: '#0f172a',
-                  borderRadius: '6px',
-                  padding: '12px',
-                  borderLeft: '3px solid #60a5fa',
-                  marginBottom: '8px',
-                }}>
-                  <div style={{ fontWeight: 600, fontSize: '13px', color: '#f8fafc' }}>{w.title}</div>
-                  {w.description && (
-                    <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '4px' }}>{w.description}</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Activity Log */}
-          {activities.length > 0 && (
-            <div>
-              <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '8px' }}>
-                Activity
-              </div>
-              <div style={{ backgroundColor: '#0f172a', borderRadius: '6px', padding: '4px 12px' }}>
-                {activities.slice(0, 8).map((a, i) => (
-                  <div key={a.id || i} style={{
-                    padding: '10px 0',
-                    borderBottom: i < Math.min(activities.length, 8) - 1 ? '1px solid #1e293b' : 'none',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    gap: '12px',
-                  }}>
-                    <div style={{ fontSize: '13px', color: '#cbd5e1', lineHeight: 1.4 }}>
-                      {a.title}
-                    </div>
-                    <div style={{ fontSize: '11px', color: '#64748b', whiteSpace: 'nowrap', flexShrink: 0 }}>
-                      {timeAgo(a.completed)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      <div style={{
+        backgroundColor: '#1e293b',
+        borderRadius: '10px',
+        padding: '10px',
+        minHeight: '120px',
+        border: '1px solid #334155',
+      }}>
+        {tasks.length === 0 ? (
+          <div style={{
+            padding: '20px',
+            textAlign: 'center',
+            fontSize: '12px',
+            color: '#475569',
+            fontStyle: 'italic',
+          }}>
+            {emptyText}
+          </div>
+        ) : (
+          tasks.map((task, i) => (
+            <TaskCard key={task.id || i} task={task} accentColor={accentColor} />
+          ))
+        )}
+      </div>
     </div>
   );
 }
 
-function CompletedSection({ data }) {
-  const items = data.completedItems || [];
-  if (items.length === 0) return null;
+// ─── Kanban: Project detail view ────────────────────────────────────
+
+function ProjectKanbanView({ project, onBack }) {
+  const tasks = project.tasks || { todo: [], in_progress: [], done: [] };
 
   return (
-    <div style={{
-      backgroundColor: '#1e293b',
-      borderRadius: '10px',
-      border: '1px solid #334155',
-      padding: '16px 20px',
-    }}>
-      <div style={{ fontSize: '11px', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', marginBottom: '12px' }}>
-        Recently Completed
-      </div>
-      {items.slice(0, 6).map((item, i) => (
-        <div key={item.id} style={{
-          padding: '10px 0',
-          borderBottom: i < Math.min(items.length, 6) - 1 ? '1px solid #0f172a' : 'none',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-            <span style={{ color: '#4ade80', flexShrink: 0, marginTop: '1px' }}>&#10003;</span>
-            <div>
-              <div style={{ fontSize: '13px', color: '#cbd5e1' }}>{item.title}</div>
-              {item.projectId && (
-                <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
-                  {data.projects?.find(p => p.id === item.projectId)?.name || item.projectId}
-                  {item.completed && ` \u00B7 ${timeAgo(item.completed)}`}
-                </div>
-              )}
+    <div>
+      {/* Back button + project header */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+        marginBottom: '24px',
+      }}>
+        <button
+          onClick={onBack}
+          style={{
+            background: 'none',
+            border: '1px solid #334155',
+            borderRadius: '8px',
+            color: '#94a3b8',
+            padding: '8px 14px',
+            cursor: 'pointer',
+            fontSize: '13px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            transition: 'border-color 0.15s',
+          }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = '#64748b'}
+          onMouseLeave={e => e.currentTarget.style.borderColor = '#334155'}
+        >
+          <span style={{ fontSize: '16px' }}>&larr;</span> All Projects
+        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '8px',
+            backgroundColor: project.color + '20',
+            color: project.color,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '16px',
+            fontWeight: 700,
+          }}>
+            {project.icon || project.name.charAt(0)}
+          </div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: '20px', color: '#f8fafc' }}>
+              {project.name}
             </div>
+            {project.description && (
+              <div style={{ fontSize: '13px', color: '#64748b' }}>
+                {project.description}
+              </div>
+            )}
           </div>
         </div>
-      ))}
+      </div>
+
+      {/* Kanban columns */}
+      <div style={{
+        display: 'flex',
+        gap: '16px',
+        overflowX: 'auto',
+        paddingBottom: '8px',
+      }}>
+        <KanbanColumn
+          title="To Do"
+          tasks={tasks.todo}
+          accentColor="#94a3b8"
+          dotColor="#94a3b8"
+          emptyText="No tasks"
+        />
+        <KanbanColumn
+          title="In Progress"
+          tasks={tasks.in_progress}
+          accentColor="#60a5fa"
+          dotColor="#60a5fa"
+          emptyText="Nothing in progress"
+        />
+        <KanbanColumn
+          title="Done"
+          tasks={tasks.done}
+          accentColor="#4ade80"
+          dotColor="#4ade80"
+          emptyText="Nothing completed yet"
+        />
+      </div>
     </div>
   );
 }
+
+// ─── Main App ───────────────────────────────────────────────────────
 
 export default function Home() {
   const [data, setData] = useState(null);
-  const [expandedProjects, setExpandedProjects] = useState({});
+  const [selectedProject, setSelectedProject] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -361,12 +387,6 @@ export default function Home() {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const json = await res.json();
         setData(json);
-        // Auto-expand active projects, collapse complete ones
-        const expanded = {};
-        (json.projects || []).forEach(p => {
-          expanded[p.id] = p.status !== 'complete';
-        });
-        setExpandedProjects(expanded);
       } catch (e) {
         setError(e.message);
       }
@@ -376,14 +396,10 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  const toggleProject = (id) => {
-    setExpandedProjects(prev => ({ ...prev, [id]: !prev[id] }));
-  };
-
   if (error) {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#0f172a', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', color: '#f87171', padding: '40px', textAlign: 'center' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', color: '#f87171', padding: '40px', textAlign: 'center' }}>
           Failed to load: {error}
         </div>
       </div>
@@ -393,19 +409,21 @@ export default function Home() {
   if (!data) {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: '#0f172a', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto', color: '#64748b', padding: '40px', textAlign: 'center' }}>
+        <div style={{ maxWidth: '1000px', margin: '0 auto', color: '#64748b', padding: '40px', textAlign: 'center' }}>
           Loading...
         </div>
       </div>
     );
   }
 
-  // Sort: active projects first, then complete
-  const sortedProjects = [...(data.projects || [])].sort((a, b) => {
-    if (a.status === 'complete' && b.status !== 'complete') return 1;
-    if (a.status !== 'complete' && b.status === 'complete') return -1;
-    return 0;
-  });
+  const projects = data.projects || [];
+  const selected = selectedProject ? projects.find(p => p.id === selectedProject) : null;
+
+  // Total task counts across all projects
+  const totalTodo = projects.reduce((sum, p) => sum + (p.tasks?.todo?.length || 0), 0);
+  const totalInProgress = projects.reduce((sum, p) => sum + (p.tasks?.in_progress?.length || 0), 0);
+  const totalDone = projects.reduce((sum, p) => sum + (p.tasks?.done?.length || 0), 0);
+  const totalTasks = totalTodo + totalInProgress + totalDone;
 
   return (
     <div style={{
@@ -415,24 +433,102 @@ export default function Home() {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
     }}>
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <Header lastUpdated={data.lastUpdated} />
+      <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        {/* Header */}
+        <header style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '32px',
+          paddingBottom: '16px',
+          borderBottom: '1px solid #1e293b',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              background: 'linear-gradient(135deg, #8b5cf6, #06b6d4)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '16px',
+              fontWeight: 800,
+              color: '#fff',
+            }}>
+              CC
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: '18px', color: '#f8fafc' }}>
+                Command Center
+              </div>
+              <div style={{ fontSize: '12px', color: '#64748b' }}>
+                {projects.length} projects &middot; {totalTasks} tasks
+              </div>
+            </div>
+          </div>
+          {data.lastUpdated && (
+            <div style={{ fontSize: '12px', color: '#64748b' }}>
+              Updated {timeAgo(data.lastUpdated)}
+            </div>
+          )}
+        </header>
 
-        {/* Projects */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
-          {sortedProjects.map(project => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              data={data}
-              isExpanded={expandedProjects[project.id]}
-              onToggle={() => toggleProject(project.id)}
-            />
-          ))}
-        </div>
+        {/* View toggle: Overview vs Kanban detail */}
+        {selected ? (
+          <ProjectKanbanView
+            project={selected}
+            onBack={() => setSelectedProject(null)}
+          />
+        ) : (
+          <>
+            {/* Summary row */}
+            {totalTasks > 0 && (
+              <div style={{
+                display: 'flex',
+                gap: '12px',
+                marginBottom: '24px',
+              }}>
+                {[
+                  { label: 'To Do', count: totalTodo, color: '#94a3b8' },
+                  { label: 'In Progress', count: totalInProgress, color: '#60a5fa' },
+                  { label: 'Done', count: totalDone, color: '#4ade80' },
+                ].map(item => (
+                  <div key={item.label} style={{
+                    flex: 1,
+                    backgroundColor: '#1e293b',
+                    borderRadius: '10px',
+                    border: '1px solid #334155',
+                    padding: '16px',
+                    textAlign: 'center',
+                  }}>
+                    <div style={{ fontSize: '28px', fontWeight: 700, color: item.color }}>
+                      {item.count}
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>
+                      {item.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
-        {/* Completed Items */}
-        <CompletedSection data={data} />
+            {/* Project grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
+              gap: '16px',
+            }}>
+              {projects.map(project => (
+                <ProjectOverviewCard
+                  key={project.id}
+                  project={project}
+                  onClick={() => setSelectedProject(project.id)}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Ariel Status Board',
-  description: 'Kanban-style task tracking',
+  title: 'Command Center',
+  description: 'Project command center with Kanban task tracking',
 }
 
 export default function RootLayout({ children }) {

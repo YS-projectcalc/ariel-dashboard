@@ -1,170 +1,57 @@
 {
-  "lastUpdated": "2026-02-10T20:18:00Z",
-  "approvals": [
-    {
-      "id": "brand-cover-v5-premium",
-      "projectId": "credit-card-debt",
-      "type": "book-cover",
-      "title": "Cover v5 - Premium Redesign (White-Black-White Layout)",
-      "description": "Premium covers with exact white-black-white color scheme and professional typography. Version A: Classic Business (serif). Version B: Swiss Minimal (sans-serif). Both use proper premium fonts and clean layouts.",
-      "image": "/assets/the-debt-code/cover-v5-comparison.png",
-      "options": ["Version A (Classic Business)", "Version B (Swiss Minimal)", "Combine elements", "Iterate further"],
-      "created": "2026-02-08T13:36:00Z"
-    }
-  ],
-  "brandAlternatives": [
-    {
-      "id": "nb_A_pure_minimal",
-      "projectId": "credit-card-debt",
-      "title": "Pure Minimal (Nano Banana)",
-      "description": "Clean flat cream, gold accent line, navy block. Zero texture, pure Swiss design minimalism.",
-      "image": "/assets/the-debt-code/variants/nb_A_pure_minimal.png",
-      "created": "2026-02-05T19:40:00Z",
-      "recommended": true
-    },
-    {
-      "id": "nb_B_subtle_geometric",
-      "projectId": "credit-card-debt",
-      "title": "Subtle Geometric (Nano Banana)",
-      "description": "Faint intersecting lines in cream section. Gold accent, navy block. Premium stationery feel.",
-      "image": "/assets/the-debt-code/variants/nb_B_subtle_geometric.png",
-      "created": "2026-02-05T19:40:00Z",
-      "recommended": true
-    },
-    {
-      "id": "nb_C_soft_organic",
-      "projectId": "credit-card-debt",
-      "title": "Soft Organic (Nano Banana)",
-      "description": "Natural paper grain texture, warm organic feel. Gold accent, navy block.",
-      "image": "/assets/the-debt-code/variants/nb_C_soft_organic.png",
-      "created": "2026-02-05T19:40:00Z",
-      "recommended": true
-    }
-  ],
-  "waitingItems": [],
-  "completedItems": [
-    {
-      "id": "dashboard-deep-fixup",
-      "projectId": "meta",
-      "type": "[UI/UX]",
-      "title": "Dashboard Deep Fixup — Layout Rebuild",
-      "description": "Complete layout overhaul: removed broken tabs, replaced kanban with collapsible project cards, fixed data flow, updated status.json, auto-deploys on push.",
-      "completed": "2026-02-10T20:18:00Z"
-    },
-    {
-      "id": "gmail-oauth-fix",
-      "projectId": "meta",
-      "type": "[INFRASTRUCTURE]",
-      "title": "Gmail OAuth Token Fix",
-      "description": "Fixed expired OAuth token via manual auth flow. Token exchanged and imported. Recommended publishing OAuth app to production to prevent 7-day expiry.",
-      "completed": "2026-02-10T14:56:00Z"
-    },
-    {
-      "id": "cloudflare-github-integration",
-      "projectId": "meta",
-      "type": "[INFRASTRUCTURE]",
-      "title": "Cloudflare Pages GitHub Auto-Deploy Enabled",
-      "description": "Yaakov recreated Pages project with GitHub integration. Auto-builds enabled on push to main. No more manual wrangler deploys needed.",
-      "completed": "2026-02-10T15:17:00Z"
-    },
-    {
-      "id": "projectcalc-5hour-implementation",
-      "projectId": "projectcalc",
-      "type": "[IMPLEMENTATION]",
-      "title": "5-Hour Implementation Sprint Complete",
-      "description": "Above-fold input layout, time-based activity levels, email capture foundation, mobile optimization, SEO foundation.",
-      "completed": "2026-02-08T18:02:00Z"
-    },
-    {
-      "id": "build-protocol-skill-complete",
-      "projectId": "meta",
-      "type": "[SKILL CREATION]",
-      "title": "Build Protocol Skill Complete",
-      "description": "4-phase gated workflow: Discovery, PRD, Architecture, Build. Quality-scoped research, batched Q&A, diagnostic error recovery.",
-      "completed": "2026-02-08T12:57:00Z"
-    },
-    {
-      "id": "projectcalc-deep-research-feb8",
-      "projectId": "projectcalc",
-      "type": "[RESEARCH]",
-      "title": "ProjectCalc Competitive Deep Dive",
-      "description": "Analyzed Calculator.net, NerdWallet, Bankrate. Inputs above fold critical. Programmatic SEO drives 690k+/mo. Affiliate = $379M/yr.",
-      "completed": "2026-02-08T07:57:00Z"
-    }
-  ],
+  "lastUpdated": "2026-02-18T14:18:00Z",
   "projects": [
     {
-      "id": "credit-card-debt",
-      "name": "The Debt Code",
+      "id": "spotlight-ai",
+      "name": "Spotlight AI",
       "color": "#8b5cf6",
+      "icon": "S",
       "status": "active",
-      "currentSkill": "infoproduct-creation",
-      "skillProgress": {
-        "orchestrator": "complete",
-        "business-naming": "complete",
-        "brand-assets": "complete",
-        "infoproduct-creation": "active",
-        "funnel-builder": "pending",
-        "legal-templates": "pending"
-      },
-      "activityLog": [
-        {
-          "id": "activity-2-feb8",
-          "title": "Premium covers created — white-black-white layout, professional typography, two versions ready",
-          "completed": "2026-02-08T13:36:00Z"
-        },
-        {
-          "id": "activity-1",
-          "title": "Finalized book cover design (Nano Banana Pro)",
-          "completed": "2026-02-05T18:00:00Z"
-        },
-        {
-          "id": "activity-2",
-          "title": "Generated 3 design alternatives",
-          "completed": "2026-02-05T17:30:00Z"
-        },
-        {
-          "id": "activity-3",
-          "title": "Completed brand asset creation",
-          "completed": "2026-02-04T20:00:00Z"
-        }
-      ]
+      "description": "",
+      "tasks": {
+        "todo": [],
+        "in_progress": [],
+        "done": []
+      }
     },
     {
-      "id": "projectcalc",
-      "name": "ProjectCalc",
+      "id": "epiphany-guy",
+      "name": "Epiphany Guy",
+      "color": "#f59e0b",
+      "icon": "E",
+      "status": "active",
+      "description": "AI Agency",
+      "tasks": {
+        "todo": [],
+        "in_progress": [],
+        "done": []
+      }
+    },
+    {
+      "id": "the-juniform",
+      "name": "The Juniform",
       "color": "#06b6d4",
-      "status": "complete",
-      "currentSkill": "launch",
-      "skillProgress": {
-        "research": "complete",
-        "design": "complete",
-        "build": "complete",
-        "iterate": "complete",
-        "launch": "complete"
-      },
-      "activityLog": [
-        {
-          "id": "activity-16",
-          "title": "5-hour implementation complete — above-fold UX, email capture, mobile optimization, SEO foundation",
-          "completed": "2026-02-08T18:02:00Z"
-        },
-        {
-          "id": "activity-15",
-          "title": "Deep research sent — UX patterns, traffic strategy, monetization roadmap",
-          "completed": "2026-02-08T07:57:00Z"
-        },
-        {
-          "id": "activity-14",
-          "title": "Exercise descriptions implemented — time-based levels, activity quiz, above-fold layout",
-          "completed": "2026-02-07T20:40:00Z"
-        },
-        {
-          "id": "activity-13",
-          "title": "Deployed to Cloudflare Pages",
-          "completed": "2026-02-07T20:19:00Z"
-        }
-      ]
+      "icon": "J",
+      "status": "active",
+      "description": "",
+      "tasks": {
+        "todo": [],
+        "in_progress": [],
+        "done": []
+      }
+    },
+    {
+      "id": "bigbang",
+      "name": "BigBang",
+      "color": "#ef4444",
+      "icon": "B",
+      "status": "active",
+      "description": "",
+      "tasks": {
+        "todo": [],
+        "in_progress": [],
+        "done": []
+      }
     }
   ]
 }

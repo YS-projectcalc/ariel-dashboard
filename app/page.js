@@ -116,9 +116,9 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick }) 
     <div
       onClick={onClick}
       style={{
-        backgroundColor: '#1e293b',
+        backgroundColor: '#163344',
         borderRadius: '12px',
-        border: '1px solid #334155',
+        border: '1px solid #1e4258',
         padding: '24px',
         cursor: 'pointer',
         transition: 'border-color 0.15s, transform 0.15s',
@@ -130,7 +130,7 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick }) 
         e.currentTarget.style.transform = 'translateY(-2px)';
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.borderColor = '#334155';
+        e.currentTarget.style.borderColor = '#1e4258';
         e.currentTarget.style.transform = 'translateY(0)';
       }}
     >
@@ -165,7 +165,7 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick }) 
           <div key={item.label} style={{
             flex: 1, textAlign: 'center',
             padding: '8px 4px', borderRadius: '8px',
-            backgroundColor: '#0d2b3e',
+            backgroundColor: '#0a2233',
           }}>
             <div style={{ fontSize: '18px', fontWeight: 700, color: item.color }}>{item.count}</div>
             <div style={{ fontSize: '9px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>
@@ -200,7 +200,7 @@ function TaskCard({ task, accentColor, isDone, onToggle }) {
         e.currentTarget.style.opacity = isDone ? '0.6' : '1';
       }}
       style={{
-        backgroundColor: '#0d2b3e',
+        backgroundColor: '#0a2233',
         borderRadius: '8px',
         padding: '14px',
         borderLeft: `3px solid ${isDone ? '#4ade80' : accentColor}`,
@@ -265,7 +265,7 @@ function TaskCard({ task, accentColor, isDone, onToggle }) {
               {task.tags && task.tags.map(tag => (
                 <span key={tag} style={{
                   padding: '2px 6px', borderRadius: '3px',
-                  fontSize: '10px', backgroundColor: '#1e293b', color: '#94a3b8',
+                  fontSize: '10px', backgroundColor: '#163344', color: '#94a3b8',
                 }}>{tag}</span>
               ))}
             </div>
@@ -297,7 +297,7 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
         }}>{title}</span>
         <span style={{
           fontSize: '11px', color: '#475569',
-          backgroundColor: '#0d2b3e',
+          backgroundColor: '#0a2233',
           padding: '1px 6px', borderRadius: '4px', fontWeight: 600,
         }}>{tasks.length}</span>
       </div>
@@ -351,7 +351,7 @@ function DetailHeader({ project, onBack }) {
       <button
         onClick={onBack}
         style={{
-          background: 'none', border: '1px solid #334155',
+          background: 'none', border: '1px solid #1e4258',
           borderRadius: '8px', color: '#94a3b8',
           padding: '8px 14px', cursor: 'pointer', fontSize: '13px',
           display: 'flex', alignItems: 'center', gap: '6px',
@@ -516,7 +516,7 @@ function GeneralTodoItem({ todo, isDone, onToggle }) {
 
   return (
     <div style={{
-      backgroundColor: '#0d2b3e',
+      backgroundColor: '#0a2233',
       borderRadius: '8px',
       padding: '14px',
       borderLeft: `3px solid ${isDone ? '#4ade80' : '#60a5fa'}`,
@@ -570,7 +570,7 @@ function GeneralTodoItem({ todo, isDone, onToggle }) {
               {todo.tags && todo.tags.map(tag => (
                 <span key={tag} style={{
                   padding: '2px 6px', borderRadius: '3px',
-                  fontSize: '10px', backgroundColor: '#1e293b', color: '#94a3b8',
+                  fontSize: '10px', backgroundColor: '#163344', color: '#94a3b8',
                 }}>{tag}</span>
               ))}
             </div>
@@ -604,7 +604,7 @@ function GeneralTodosSection({ todos, completedIds, onToggle }) {
         }}>General To-Do</span>
         <span style={{
           fontSize: '11px', color: '#475569',
-          backgroundColor: '#1e293b',
+          backgroundColor: '#163344',
           padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
         }}>{activeTodos.length}</span>
       </div>
@@ -638,9 +638,9 @@ function GeneralTodosSection({ todos, completedIds, onToggle }) {
 function PotentialBusinessRow({ biz, isExpanded, onToggle }) {
   return (
     <div style={{
-      backgroundColor: '#1e293b',
+      backgroundColor: '#163344',
       borderRadius: '10px',
-      border: '1px solid #334155',
+      border: '1px solid #1e4258',
       overflow: 'hidden',
       transition: 'border-color 0.15s',
     }}>
@@ -687,7 +687,7 @@ function PotentialBusinessRow({ biz, isExpanded, onToggle }) {
           {biz.notes && (
             <div style={{
               marginTop: '12px', padding: '12px',
-              backgroundColor: '#0d2b3e', borderRadius: '8px',
+              backgroundColor: '#0a2233', borderRadius: '8px',
               fontSize: '13px', color: '#cbd5e1', lineHeight: 1.6,
               whiteSpace: 'pre-wrap',
             }}>
@@ -697,7 +697,7 @@ function PotentialBusinessRow({ biz, isExpanded, onToggle }) {
           {!biz.notes && (
             <div style={{
               marginTop: '12px', padding: '12px',
-              backgroundColor: '#0d2b3e', borderRadius: '8px',
+              backgroundColor: '#0a2233', borderRadius: '8px',
               fontSize: '12px', color: '#475569', fontStyle: 'italic',
             }}>
               No notes yet
@@ -728,13 +728,13 @@ function PotentialBusinessesSection({ businesses }) {
           }}>Potential Businesses</span>
           <span style={{
             fontSize: '11px', color: '#475569',
-            backgroundColor: '#1e293b',
+            backgroundColor: '#163344',
             padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
           }}>0</span>
         </div>
         <div style={{
-          backgroundColor: '#1e293b', borderRadius: '10px',
-          border: '1px solid #334155', padding: '24px',
+          backgroundColor: '#163344', borderRadius: '10px',
+          border: '1px solid #1e4258', padding: '24px',
           textAlign: 'center', fontSize: '13px', color: '#475569',
           fontStyle: 'italic',
         }}>
@@ -759,7 +759,7 @@ function PotentialBusinessesSection({ businesses }) {
         }}>Potential Businesses</span>
         <span style={{
           fontSize: '11px', color: '#475569',
-          backgroundColor: '#1e293b',
+          backgroundColor: '#163344',
           padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
         }}>{businesses.length}</span>
       </div>
@@ -847,7 +847,7 @@ export default function Home() {
 
   if (error) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#0d2b3e', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#0f2e3d', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#f87171', padding: '40px', textAlign: 'center' }}>
           Failed to load: {error}
         </div>
@@ -857,7 +857,7 @@ export default function Home() {
 
   if (!data) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: '#0d2b3e', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: '#0f2e3d', padding: '24px', fontFamily: 'system-ui, sans-serif' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', color: '#64748b', padding: '40px', textAlign: 'center' }}>
           Loading...
         </div>
@@ -895,14 +895,14 @@ export default function Home() {
 
   return (
     <div style={{
-      minHeight: '100vh', backgroundColor: '#0d2b3e', padding: '24px',
+      minHeight: '100vh', backgroundColor: '#0f2e3d', padding: '24px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <header style={{
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          marginBottom: '32px', paddingBottom: '16px', borderBottom: '1px solid #1e293b',
+          marginBottom: '32px', paddingBottom: '16px', borderBottom: '1px solid #1e4258',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{
@@ -942,8 +942,8 @@ export default function Home() {
                   { label: 'Done', count: totalDone, color: '#4ade80' },
                 ].map(item => (
                   <div key={item.label} style={{
-                    flex: 1, backgroundColor: '#1e293b',
-                    borderRadius: '10px', border: '1px solid #334155',
+                    flex: 1, backgroundColor: '#163344',
+                    borderRadius: '10px', border: '1px solid #1e4258',
                     padding: '16px', textAlign: 'center',
                   }}>
                     <div style={{ fontSize: '28px', fontWeight: 700, color: item.color }}>{item.count}</div>

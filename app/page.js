@@ -190,7 +190,7 @@ function TaskCard({ task, accentColor, isDone, onToggle }) {
 
   return (
     <div
-      draggable
+      draggable="true"
       onDragStart={(e) => {
         e.dataTransfer.setData('text/plain', task.id);
         e.dataTransfer.effectAllowed = 'move';
@@ -306,7 +306,7 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
         onDragEnter={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}
         onDrop={(e) => {
-          e.preventDefault(); setDragOver(false);
+          e.preventDefault(); e.stopPropagation(); setDragOver(false);
           const taskId = e.dataTransfer.getData('text/plain');
           if (taskId && onDrop) onDrop(taskId, columnId);
         }}
@@ -533,6 +533,7 @@ export default function Home() {
   }, []);
 
   const handleDragDrop = useCallback((taskId, targetColumnId, projectId) => {
+    if (!taskId) return;
     if (targetColumnId === '__done__') {
       setCompletedIds(prev => {
         if (prev.includes(taskId)) return prev;
@@ -542,23 +543,19 @@ export default function Home() {
       });
       setDragOverrides(prev => {
         const next = { ...prev };
-        delete next[taskId];
+        next[taskId] = '__done__';
         saveDragOverrides(next);
         return next;
       });
     } else {
-      // Move to To Do, Up Next, or an assignee column
-      setCompletedIds(prev => {
-        if (!prev.includes(taskId)) return prev;
-        const next = prev.filter(id => id !== taskId);
-        localStorage.setItem('cc_done', JSON.stringify(next));
-        return next;
-      });
-      setDragOverrides(prev => {
-        const next = { ...prev, [taskId]: targetColumnId };
-        saveDragOverrides(next);
-        return next;
-      });
+      // Move to To Do, Up Next, or an assignee column — always remove from done
+      const newCompleted = getCompletedIds().filter(id => id !== taskId);
+      localStorage.setItem('cc_done', JSON.stringify(newCompleted));
+      setCompletedIds(newCompleted);
+      // Set the column override
+      const newOverrides = { ...getDragOverrides(), [taskId]: targetColumnId };
+      saveDragOverrides(newOverrides);
+      setDragOverrides(newOverrides);
     }
   }, []);
 

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-18T14:29:00Z",
+  "lastUpdated": "2026-02-18T14:34:00Z",
   "projects": [
     {
       "id": "spotlight-ai",
@@ -15,7 +15,11 @@
             "title": "Switch Stripe to Live Mode",
             "description": "All 6 env vars + webhook registration + test transactions. Assigned to Mordy. CRITICAL pre-launch blocker.",
             "priority": "high",
-            "tags": ["critical", "mordy", "payments"],
+            "tags": [
+              "critical",
+              "mordy",
+              "payments"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -23,7 +27,11 @@
             "title": "Tier 1→2 Upgrade UX polish",
             "description": "Two bugs: PDF double-open on success page; /pricing?email= shows full pricing page instead of streamlined upgrade flow.",
             "priority": "high",
-            "tags": ["critical", "yaakov", "ux"],
+            "tags": [
+              "critical",
+              "yaakov",
+              "ux"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -31,7 +39,10 @@
             "title": "Replace website scraping with Firecrawl",
             "description": "Current fetch+Cheerio fails on JS-rendered/bot-blocked sites. Plan at ~/.claude/plans/sharded-wandering-meadow.md.",
             "priority": "high",
-            "tags": ["critical", "mordy"],
+            "tags": [
+              "critical",
+              "mordy"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -39,7 +50,10 @@
             "title": "Verify Tier 2 Monitoring",
             "description": "Two customer journeys remain: Tier 0→2 and Tier 0→1→2.",
             "priority": "medium",
-            "tags": ["mordy", "testing"],
+            "tags": [
+              "mordy",
+              "testing"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -47,7 +61,10 @@
             "title": "Dashboard UX review",
             "description": "Deferred until dashboard layout finalized.",
             "priority": "medium",
-            "tags": ["mordy", "ux"],
+            "tags": [
+              "mordy",
+              "ux"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -55,7 +72,10 @@
             "title": "Validate query generation quality",
             "description": "Not started.",
             "priority": "medium",
-            "tags": ["mordy", "quality"],
+            "tags": [
+              "mordy",
+              "quality"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -63,7 +83,10 @@
             "title": "Upgrade reminder email",
             "description": "Finalize copy + update CTA URLs with ?email= param.",
             "priority": "medium",
-            "tags": ["mordy", "email"],
+            "tags": [
+              "mordy",
+              "email"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -71,7 +94,10 @@
             "title": "Edit all email copy",
             "description": "Final review of all Loops emails before launch.",
             "priority": "medium",
-            "tags": ["mordy", "email"],
+            "tags": [
+              "mordy",
+              "email"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -79,7 +105,10 @@
             "title": "Transactional email templates",
             "description": "Create in Loops, wire up IDs.",
             "priority": "medium",
-            "tags": ["mordy", "email"],
+            "tags": [
+              "mordy",
+              "email"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -87,7 +116,10 @@
             "title": "Login credentials email",
             "description": "Code done, awaiting Tier 2 test.",
             "priority": "medium",
-            "tags": ["mordy", "email"],
+            "tags": [
+              "mordy",
+              "email"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -95,7 +127,9 @@
             "title": "Monthly re-scan reminder",
             "description": "Not started.",
             "priority": "medium",
-            "tags": ["mordy"],
+            "tags": [
+              "mordy"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -103,7 +137,10 @@
             "title": "Validate PDF generation",
             "description": "Test quality/performance post-fix.",
             "priority": "medium",
-            "tags": ["mordy", "testing"],
+            "tags": [
+              "mordy",
+              "testing"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -111,7 +148,10 @@
             "title": "Branding — favicon & logo",
             "description": "Still needed.",
             "priority": "medium",
-            "tags": ["mordy", "branding"],
+            "tags": [
+              "mordy",
+              "branding"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -119,7 +159,10 @@
             "title": "Cloudflare Turnstile",
             "description": "Bot protection for /api/scan.",
             "priority": "medium",
-            "tags": ["mordy", "security"],
+            "tags": [
+              "mordy",
+              "security"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -127,7 +170,9 @@
             "title": "Clear stale .next cache",
             "description": "Delete .next and rebuild.",
             "priority": "low",
-            "tags": ["operational"],
+            "tags": [
+              "operational"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -135,7 +180,9 @@
             "title": "Analytics/tracking setup",
             "description": "No GA4 or conversion tracking set up yet.",
             "priority": "medium",
-            "tags": ["operational"],
+            "tags": [
+              "operational"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -143,7 +190,9 @@
             "title": "Agency white-label program",
             "description": "Growth opportunity — not started.",
             "priority": "low",
-            "tags": ["growth"],
+            "tags": [
+              "growth"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           },
           {
@@ -151,7 +200,10 @@
             "title": "Marketing funnels (10 ideas)",
             "description": "Competitor alerts, Facebook groups, cold email with pre-scan, embeddable widget, affiliate program, etc.",
             "priority": "low",
-            "tags": ["growth", "marketing"],
+            "tags": [
+              "growth",
+              "marketing"
+            ],
             "createdAt": "2026-02-18T14:25:00Z"
           }
         ],
@@ -173,7 +225,10 @@
             "title": "Pick agency name",
             "description": "Replaces {{AGENCY_NAME}} everywhere. Blocking all downstream work.",
             "priority": "high",
-            "tags": ["blocking", "foundation"],
+            "tags": [
+              "blocking",
+              "foundation"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -181,7 +236,10 @@
             "title": "Register domain",
             "description": "Depends on agency name decision.",
             "priority": "high",
-            "tags": ["blocking", "foundation"],
+            "tags": [
+              "blocking",
+              "foundation"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -189,7 +247,11 @@
             "title": "Finalize color palette & brand direction",
             "description": "6 palette variants explored in branding/references/. Need final pick + logo + typography specs.",
             "priority": "high",
-            "tags": ["blocking", "foundation", "branding"],
+            "tags": [
+              "blocking",
+              "foundation",
+              "branding"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -197,7 +259,9 @@
             "title": "Create HubSpot account + configure pipeline",
             "description": "7 stages + custom properties per operations.md.",
             "priority": "medium",
-            "tags": ["infrastructure"],
+            "tags": [
+              "infrastructure"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -205,7 +269,9 @@
             "title": "Create Brevo account + SPF/DKIM",
             "description": "Email sending infrastructure.",
             "priority": "medium",
-            "tags": ["infrastructure"],
+            "tags": [
+              "infrastructure"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -213,7 +279,9 @@
             "title": "Create Stripe account + products/prices",
             "description": "Payment processing setup.",
             "priority": "medium",
-            "tags": ["infrastructure"],
+            "tags": [
+              "infrastructure"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -221,7 +289,9 @@
             "title": "Set up DocuSeal (self-hosted on VPS)",
             "description": "Contract signing platform.",
             "priority": "medium",
-            "tags": ["infrastructure"],
+            "tags": [
+              "infrastructure"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -229,7 +299,9 @@
             "title": "Set up Twilio + provision phone number",
             "description": "For missed call text-back demo and client comms.",
             "priority": "medium",
-            "tags": ["infrastructure"],
+            "tags": [
+              "infrastructure"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -237,7 +309,9 @@
             "title": "Set up Cloudflare account (Pages + Workers)",
             "description": "Hosting for website and backend workers.",
             "priority": "medium",
-            "tags": ["infrastructure"],
+            "tags": [
+              "infrastructure"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -245,7 +319,9 @@
             "title": "Set up VPS for cron/webhooks",
             "description": "OpenClaw VPS for automation scripts.",
             "priority": "medium",
-            "tags": ["infrastructure"],
+            "tags": [
+              "infrastructure"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -253,7 +329,9 @@
             "title": "Populate .env with all live keys",
             "description": "After all accounts are created.",
             "priority": "medium",
-            "tags": ["infrastructure"],
+            "tags": [
+              "infrastructure"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -261,7 +339,9 @@
             "title": "Build client-enrichment skill",
             "description": "Perplexity + Firecrawl enrichment, tier detection (1/2/3).",
             "priority": "medium",
-            "tags": ["skills"],
+            "tags": [
+              "skills"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -269,7 +349,9 @@
             "title": "Build agency-positioning skill",
             "description": "Brand voice, services, anti-patterns. Needed for all outward content.",
             "priority": "medium",
-            "tags": ["skills"],
+            "tags": [
+              "skills"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -277,7 +359,9 @@
             "title": "Build crm-entry-generator skill",
             "description": "Deliverable → structured HubSpot JSON.",
             "priority": "medium",
-            "tags": ["skills"],
+            "tags": [
+              "skills"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -285,7 +369,9 @@
             "title": "Build follow-up-email-generator skill",
             "description": "Personalized emails per pipeline stage.",
             "priority": "medium",
-            "tags": ["skills"],
+            "tags": [
+              "skills"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -293,7 +379,9 @@
             "title": "Build contract-generator skill",
             "description": "MSA + SOW PDFs from templates.",
             "priority": "medium",
-            "tags": ["skills"],
+            "tags": [
+              "skills"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -301,7 +389,9 @@
             "title": "Build monthly-client-report skill",
             "description": "Metrics → one-page report + upsell rec.",
             "priority": "medium",
-            "tags": ["skills"],
+            "tags": [
+              "skills"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -309,7 +399,9 @@
             "title": "Build report-formatter skill",
             "description": "Raw analysis → branded HTML/PDF.",
             "priority": "medium",
-            "tags": ["skills"],
+            "tags": [
+              "skills"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -317,7 +409,9 @@
             "title": "Create MSA template",
             "description": "templates/msa-template.md",
             "priority": "medium",
-            "tags": ["contracts"],
+            "tags": [
+              "contracts"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -325,7 +419,9 @@
             "title": "Create SOW templates per product",
             "description": "templates/sow-templates/ — one per service offering.",
             "priority": "medium",
-            "tags": ["contracts"],
+            "tags": [
+              "contracts"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -333,7 +429,9 @@
             "title": "Build agency website",
             "description": "Cloudflare Pages: hero, 3 interactive demos, services, contact/intake form, social proof, SEO, analytics, branding pass, QC.",
             "priority": "high",
-            "tags": ["website"],
+            "tags": [
+              "website"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -341,7 +439,9 @@
             "title": "Build Cloudflare Workers backend",
             "description": "Twilio webhook, Claude API proxy, form→HubSpot+Brevo+Twilio, Stripe webhook→HubSpot→DocuSeal.",
             "priority": "high",
-            "tags": ["backend"],
+            "tags": [
+              "backend"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -349,7 +449,9 @@
             "title": "Build VPS automation scripts",
             "description": "Daily follow-up cron, webhook listeners (Stripe/HubSpot/DocuSeal), demo interaction tracking, holding pattern emails, monthly reports, Sentry.",
             "priority": "medium",
-            "tags": ["automation"],
+            "tags": [
+              "automation"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -357,7 +459,9 @@
             "title": "Build portfolio & proof",
             "description": "2-3 sample deliverables (mock clients), case study, before-after for demos.",
             "priority": "medium",
-            "tags": ["marketing"],
+            "tags": [
+              "marketing"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -365,7 +469,9 @@
             "title": "Set up Fiverr gig(s)",
             "description": "Copy, pricing, portfolio samples.",
             "priority": "low",
-            "tags": ["platforms"],
+            "tags": [
+              "platforms"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -373,7 +479,9 @@
             "title": "Set up Upwork profile",
             "description": "Headline, overview, portfolio.",
             "priority": "low",
-            "tags": ["platforms"],
+            "tags": [
+              "platforms"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -381,7 +489,9 @@
             "title": "Community outreach plan (frum market)",
             "description": "Local community targeting strategy.",
             "priority": "low",
-            "tags": ["platforms"],
+            "tags": [
+              "platforms"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -389,7 +499,9 @@
             "title": "End-to-end launch test",
             "description": "Fake client → enrichment → deliverable → CRM entry → follow-up. Full pipeline validation.",
             "priority": "high",
-            "tags": ["launch"],
+            "tags": [
+              "launch"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -397,7 +509,9 @@
             "title": "Deploy & go live",
             "description": "Deploy website, workers, VPS scripts. Go live on platforms.",
             "priority": "high",
-            "tags": ["launch"],
+            "tags": [
+              "launch"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           }
         ],
@@ -408,7 +522,9 @@
             "title": "Strategy & documentation",
             "description": "Git repo initialized, project structure, CLAUDE.md, execution-reference.md (5 playbooks), operations.md, master-reference.md, skills-reference.md, .env.example, CHECKLIST.md (14-phase framework).",
             "priority": "high",
-            "tags": ["foundation"],
+            "tags": [
+              "foundation"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -416,7 +532,9 @@
             "title": "Branding mood board",
             "description": "9 reference sites (Stripe, Linear, Vercel, etc.) + 6 color palette variants in branding/references/.",
             "priority": "medium",
-            "tags": ["branding"],
+            "tags": [
+              "branding"
+            ],
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
@@ -424,7 +542,10 @@
             "title": "Final brand guidelines document",
             "description": "Brand guidelines document completed.",
             "priority": "medium",
-            "tags": ["branding", "foundation"],
+            "tags": [
+              "branding",
+              "foundation"
+            ],
             "createdAt": "2026-02-18T14:29:00Z"
           }
         ]
@@ -436,52 +557,468 @@
       "color": "#06b6d4",
       "icon": "J",
       "status": "active",
-      "description": "Uniform Brand",
+      "description": "Shoe Deals & Comparison",
       "tasks": {
         "todo": [
           {
-            "id": "ju-1",
+            "id": "ju-t1",
             "title": "Get 3 people to purchase",
             "description": "First 3 paying customers — validation milestone.",
             "priority": "high",
-            "tags": ["sales", "validation"],
+            "tags": [
+              "sales",
+              "validation"
+            ],
             "createdAt": "2026-02-18T14:26:00Z"
           },
           {
-            "id": "ju-2",
+            "id": "ju-t2",
             "title": "Deal with variations",
             "description": "Handle product variations (sizes, colors, styles) properly.",
             "priority": "high",
-            "tags": ["product", "operations"],
+            "tags": [
+              "product"
+            ],
             "createdAt": "2026-02-18T14:26:00Z"
           },
           {
-            "id": "ju-3",
+            "id": "ju-t3",
             "title": "Make sure picture pipeline is clean",
             "description": "Ensure product photography workflow is clean and consistent.",
             "priority": "high",
-            "tags": ["product", "images"],
+            "tags": [
+              "images"
+            ],
             "createdAt": "2026-02-18T14:26:00Z"
           },
           {
-            "id": "ju-4",
+            "id": "ju-t4",
             "title": "Redo UI/UX on homepage",
             "description": "Redesign the homepage for better conversion and aesthetics.",
             "priority": "high",
-            "tags": ["website", "ux"],
+            "tags": [
+              "website",
+              "ux"
+            ],
             "createdAt": "2026-02-18T14:26:00Z"
           },
           {
-            "id": "ju-5",
+            "id": "ju-t5",
             "title": "Get Devora on real items",
             "description": "Get Devora photographed/modeling with actual product items.",
             "priority": "medium",
-            "tags": ["product", "images", "content"],
+            "tags": [
+              "content",
+              "images"
+            ],
             "createdAt": "2026-02-18T14:26:00Z"
+          },
+          {
+            "id": "ju-t6",
+            "title": "Wire live timestamps to scrape data",
+            "description": "\"Last updated X min ago\" timestamps from real scrape data.",
+            "priority": "medium",
+            "tags": [
+              "website"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t7",
+            "title": "Core Web Vitals performance audit",
+            "description": "Performance pass on the site.",
+            "priority": "medium",
+            "tags": [
+              "website"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t8",
+            "title": "Verify every product has working data source",
+            "description": "Ensure at least one working data source per product.",
+            "priority": "medium",
+            "tags": [
+              "operations"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t9",
+            "title": "DNS: thejuniform.com → CF Workers",
+            "description": "Custom domain setup on Cloudflare Workers.",
+            "priority": "medium",
+            "tags": [
+              "infrastructure"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t10",
+            "title": "Set all production secrets",
+            "description": "wrangler secret put for all prod keys.",
+            "priority": "medium",
+            "tags": [
+              "infrastructure"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t11",
+            "title": "Push CI/CD workflow files to GitHub",
+            "description": "Needs OAuth workflow scope.",
+            "priority": "medium",
+            "tags": [
+              "infrastructure"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t12",
+            "title": "Set GitHub Actions secrets",
+            "description": "CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID.",
+            "priority": "medium",
+            "tags": [
+              "infrastructure"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t13",
+            "title": "5 new coupon discovery sources",
+            "description": "Marie Claire, Forbes Vetted, etc.",
+            "priority": "medium",
+            "tags": [
+              "pipeline",
+              "in-progress"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t14",
+            "title": "Llama 3.2 Vision content classification",
+            "description": "For image pipeline classification.",
+            "priority": "medium",
+            "tags": [
+              "pipeline",
+              "in-progress"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t15",
+            "title": "Fill store coverage gaps",
+            "description": "On Running, Alo Yoga, Memoi.",
+            "priority": "medium",
+            "tags": [
+              "pipeline"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t16",
+            "title": "Email price drop notifications",
+            "description": "v1.1 feature.",
+            "priority": "low",
+            "tags": [
+              "post-launch"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t17",
+            "title": "Notify me when below $X alerts",
+            "description": "v1.1 feature.",
+            "priority": "low",
+            "tags": [
+              "post-launch"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-t18",
+            "title": "WhatsApp deal roundup blasts",
+            "description": "v1.1 feature.",
+            "priority": "low",
+            "tags": [
+              "post-launch"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
           }
         ],
         "in_progress": [],
-        "done": []
+        "done": [
+          {
+            "id": "ju-d1",
+            "title": "Next.js 15 + Cloudflare Workers stack",
+            "description": "Full stack configured and deployed.",
+            "priority": "high",
+            "tags": [
+              "infrastructure"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d2",
+            "title": "D1 database (14 tables, 809 rows)",
+            "description": "Products, retailers, mappings all seeded.",
+            "priority": "high",
+            "tags": [
+              "infrastructure"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d3",
+            "title": "R2 image storage + serving route",
+            "description": "/img/[...path] serving route working.",
+            "priority": "high",
+            "tags": [
+              "infrastructure"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d4",
+            "title": "Scraper infrastructure",
+            "description": "BrowserAutomation interface + Zod validation.",
+            "priority": "high",
+            "tags": [
+              "infrastructure"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d5",
+            "title": "30+ scrapers across 3 tiers",
+            "description": "Cole Haan, Ecco, Nike, Nordstrom, Macys, etc.",
+            "priority": "high",
+            "tags": [
+              "scrapers"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d6",
+            "title": "Coupon engine",
+            "description": "Discovery, verification, brand-wide mapping.",
+            "priority": "high",
+            "tags": [
+              "coupons"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d7",
+            "title": "Affiliate redirect system",
+            "description": "/go/[retailer] with click logging.",
+            "priority": "high",
+            "tags": [
+              "affiliate"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d8",
+            "title": "Cashback rate scrapers",
+            "description": "Rakuten, TopCashBack, BeFrugal.",
+            "priority": "medium",
+            "tags": [
+              "scrapers"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d9",
+            "title": "Amazon PA-API → Creators API migration",
+            "description": "Completed API migration.",
+            "priority": "medium",
+            "tags": [
+              "integrations"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d10",
+            "title": "Walmart, Sovrn, Zinc integrations",
+            "description": "All connected.",
+            "priority": "medium",
+            "tags": [
+              "integrations"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d11",
+            "title": "Full category pages",
+            "description": "Mens, Womens, Kids, Accessories.",
+            "priority": "high",
+            "tags": [
+              "ui"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d12",
+            "title": "Product cards + price comparison grid",
+            "description": "Amazon callout section.",
+            "priority": "high",
+            "tags": [
+              "ui"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d13",
+            "title": "Homepage (hero, Just Dropped, Popular)",
+            "description": "Full homepage with sections.",
+            "priority": "high",
+            "tags": [
+              "ui"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d14",
+            "title": "Mobile-first responsive + search",
+            "description": "Responsive design and search functionality.",
+            "priority": "high",
+            "tags": [
+              "ui"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d15",
+            "title": "Admin panel",
+            "description": "Product CRUD, deal management, CC offers, monitoring dashboard.",
+            "priority": "high",
+            "tags": [
+              "admin"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d16",
+            "title": "Client-side event tracking",
+            "description": "page_view, outbound_click, coupon_copy, etc.",
+            "priority": "medium",
+            "tags": [
+              "analytics"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d17",
+            "title": "Admin analytics dashboard",
+            "description": "Wired to real data.",
+            "priority": "medium",
+            "tags": [
+              "analytics"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d18",
+            "title": "SSR meta tags + JSON-LD structured data",
+            "description": "SEO fundamentals done.",
+            "priority": "medium",
+            "tags": [
+              "seo"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d19",
+            "title": "FTC disclosures",
+            "description": "Compliance complete.",
+            "priority": "medium",
+            "tags": [
+              "compliance"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d20",
+            "title": "CI/CD via GitHub Actions",
+            "description": "Live at thejuniform.yaakovscher.workers.dev.",
+            "priority": "high",
+            "tags": [
+              "deploy"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d21",
+            "title": "5 cron schedules in production",
+            "description": "Active and running.",
+            "priority": "medium",
+            "tags": [
+              "operations"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d22",
+            "title": "Self-healing URL repair + retailer discovery",
+            "description": "Weekly automated process.",
+            "priority": "medium",
+            "tags": [
+              "operations"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d23",
+            "title": "Broken URL repair (23 URLs fixed)",
+            "description": "Post-deploy cleanup.",
+            "priority": "medium",
+            "tags": [
+              "fixes"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d24",
+            "title": "Ghost mannequin image processing",
+            "description": "Image pipeline working.",
+            "priority": "medium",
+            "tags": [
+              "images"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d25",
+            "title": "Ingestion pipeline + review queue + pricing scheduler",
+            "description": "Full pipeline operational.",
+            "priority": "high",
+            "tags": [
+              "pipeline"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d26",
+            "title": "Two-track coupon verification",
+            "description": "Shopify AJAX + VPS Playwright.",
+            "priority": "medium",
+            "tags": [
+              "coupons"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          },
+          {
+            "id": "ju-d27",
+            "title": "Domain www→apex redirect",
+            "description": "DNS redirect configured.",
+            "priority": "low",
+            "tags": [
+              "infrastructure"
+            ],
+            "createdAt": "2026-02-18T14:34:00Z"
+          }
+        ]
       }
     },
     {
@@ -498,7 +1035,10 @@
             "title": "Switch to Aura",
             "description": "Migrate/switch BigBang to the Aura platform or system.",
             "priority": "high",
-            "tags": ["platform", "migration"],
+            "tags": [
+              "platform",
+              "migration"
+            ],
             "createdAt": "2026-02-18T14:27:00Z"
           },
           {
@@ -506,7 +1046,9 @@
             "title": "Figure out the Arlos",
             "description": "Resolve open questions or issues related to the Arlos.",
             "priority": "high",
-            "tags": ["operations"],
+            "tags": [
+              "operations"
+            ],
             "createdAt": "2026-02-18T14:27:00Z"
           },
           {
@@ -514,7 +1056,10 @@
             "title": "Discuss Joel with Mordy",
             "description": "Have conversation with Mordy about Joel's involvement or role.",
             "priority": "high",
-            "tags": ["people", "discussion"],
+            "tags": [
+              "people",
+              "discussion"
+            ],
             "createdAt": "2026-02-18T14:27:00Z"
           }
         ],

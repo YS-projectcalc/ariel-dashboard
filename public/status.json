@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-18T14:22:00Z",
+  "lastUpdated": "2026-02-18T14:27:00Z",
   "projects": [
     {
       "id": "spotlight-ai",
@@ -484,7 +484,32 @@
       "status": "active",
       "description": "",
       "tasks": {
-        "todo": [],
+        "todo": [
+          {
+            "id": "bb-1",
+            "title": "Switch to Aura",
+            "description": "Migrate/switch BigBang to the Aura platform or system.",
+            "priority": "high",
+            "tags": ["platform", "migration"],
+            "createdAt": "2026-02-18T14:27:00Z"
+          },
+          {
+            "id": "bb-2",
+            "title": "Figure out the Arlos",
+            "description": "Resolve open questions or issues related to the Arlos.",
+            "priority": "high",
+            "tags": ["operations"],
+            "createdAt": "2026-02-18T14:27:00Z"
+          },
+          {
+            "id": "bb-3",
+            "title": "Discuss Joel with Mordy",
+            "description": "Have conversation with Mordy about Joel's involvement or role.",
+            "priority": "high",
+            "tags": ["people", "discussion"],
+            "createdAt": "2026-02-18T14:27:00Z"
+          }
+        ],
         "in_progress": [],
         "done": []
       }

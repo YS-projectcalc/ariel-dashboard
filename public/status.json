@@ -428,9 +428,50 @@
       "color": "#06b6d4",
       "icon": "J",
       "status": "active",
-      "description": "",
+      "description": "Uniform Brand",
       "tasks": {
-        "todo": [],
+        "todo": [
+          {
+            "id": "ju-1",
+            "title": "Get 3 people to purchase",
+            "description": "First 3 paying customers — validation milestone.",
+            "priority": "high",
+            "tags": ["sales", "validation"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          },
+          {
+            "id": "ju-2",
+            "title": "Deal with variations",
+            "description": "Handle product variations (sizes, colors, styles) properly.",
+            "priority": "high",
+            "tags": ["product", "operations"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          },
+          {
+            "id": "ju-3",
+            "title": "Make sure picture pipeline is clean",
+            "description": "Ensure product photography workflow is clean and consistent.",
+            "priority": "high",
+            "tags": ["product", "images"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          },
+          {
+            "id": "ju-4",
+            "title": "Redo UI/UX on homepage",
+            "description": "Redesign the homepage for better conversion and aesthetics.",
+            "priority": "high",
+            "tags": ["website", "ux"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          },
+          {
+            "id": "ju-5",
+            "title": "Get Devora on real items",
+            "description": "Get Devora photographed/modeling with actual product items.",
+            "priority": "medium",
+            "tags": ["product", "images", "content"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          }
+        ],
         "in_progress": [],
         "done": []
       }

@@ -27,6 +27,12 @@ function getDragOverrides() {
 function saveDragOverrides(overrides) {
   localStorage.setItem('cc_drag', JSON.stringify(overrides));
 }
+function getUserTasks() {
+  try { return JSON.parse(localStorage.getItem('cc_user_tasks') || '[]'); } catch { return []; }
+}
+function saveUserTasks(tasks) {
+  localStorage.setItem('cc_user_tasks', JSON.stringify(tasks));
+}
 
 // Get all tasks from a project as flat array
 function getAllTasks(project) {
@@ -65,10 +71,116 @@ function sortByPriority(tasks) {
   return [...tasks].sort((a, b) => (priorityOrder[a.priority] ?? 1) - (priorityOrder[b.priority] ?? 1));
 }
 
+// ─── Add Task Form (inline) ─────────────────────────────────────────
+
+function AddTaskForm({ projectId, column, assignee, accentColor, onAdd, onCancel }) {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState('medium');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!title.trim()) return;
+    const task = {
+      id: 'u-' + Date.now().toString(36),
+      title: title.trim(),
+      description: description.trim() || undefined,
+      priority,
+      tags: ['user-added'],
+      assignee: assignee || undefined,
+      createdAt: new Date().toISOString(),
+      _userAdded: true,
+      _projectId: projectId,
+      _column: column,
+    };
+    onAdd(task);
+    setTitle('');
+    setDescription('');
+    setPriority('medium');
+  };
+
+  const inputStyle = {
+    width: '100%', boxSizing: 'border-box',
+    backgroundColor: '#163344', border: '1px solid #334155',
+    borderRadius: '6px', padding: '8px 10px',
+    color: '#f8fafc', fontSize: '13px',
+    outline: 'none', fontFamily: 'inherit',
+  };
+
+  return (
+    <form onSubmit={handleSubmit} style={{
+      backgroundColor: '#0a2233', borderRadius: '8px',
+      padding: '12px', marginBottom: '8px',
+      borderLeft: `3px solid ${accentColor}`,
+    }}>
+      <input
+        autoFocus
+        placeholder="Task title..."
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        style={inputStyle}
+      />
+      <textarea
+        placeholder="Description (optional)"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        rows={2}
+        style={{ ...inputStyle, marginTop: '6px', resize: 'vertical' }}
+      />
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '8px' }}>
+        {['high', 'medium', 'low'].map(p => (
+          <button key={p} type="button" onClick={() => setPriority(p)} style={{
+            padding: '3px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 600,
+            border: priority === p ? '1px solid' : '1px solid transparent',
+            borderColor: priority === p ? (p === 'high' ? '#fb923c' : p === 'medium' ? '#a78bfa' : '#64748b') : 'transparent',
+            backgroundColor: p === 'high' ? '#451a03' : p === 'medium' ? '#1e1b4b' : '#0f172a',
+            color: p === 'high' ? '#fb923c' : p === 'medium' ? '#a78bfa' : '#64748b',
+            cursor: 'pointer',
+          }}>
+            {p.charAt(0).toUpperCase() + p.slice(1)}
+          </button>
+        ))}
+        <div style={{ flex: 1 }} />
+        <button type="button" onClick={onCancel} style={{
+          background: 'none', border: 'none', color: '#64748b',
+          cursor: 'pointer', fontSize: '12px', padding: '4px 8px',
+        }}>Cancel</button>
+        <button type="submit" disabled={!title.trim()} style={{
+          backgroundColor: title.trim() ? accentColor : '#334155',
+          color: title.trim() ? '#fff' : '#64748b',
+          border: 'none', borderRadius: '6px', padding: '5px 12px',
+          fontSize: '12px', fontWeight: 600, cursor: title.trim() ? 'pointer' : 'default',
+        }}>Add</button>
+      </div>
+    </form>
+  );
+}
+
+// ─── Add button for column headers ──────────────────────────────────
+
+function AddButton({ onClick, color }) {
+  return (
+    <button
+      onClick={(e) => { e.stopPropagation(); onClick(); }}
+      style={{
+        width: '20px', height: '20px', borderRadius: '4px',
+        border: '1px solid #334155', background: 'none',
+        color: '#64748b', cursor: 'pointer', fontSize: '14px',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: 0, lineHeight: 1, transition: 'all 0.15s',
+      }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = color; e.currentTarget.style.color = color; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = '#334155'; e.currentTarget.style.color = '#64748b'; }}
+      title="Add task"
+    >+</button>
+  );
+}
+
 // ─── Overview: Bird's-eye project card ──────────────────────────────
 
-function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick }) {
-  const allTasks = getAllTasks(project);
+function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, userTasks }) {
+  const projectUserTasks = (userTasks || []).filter(t => t._projectId === project.id);
+  const allTasks = [...getAllTasks(project), ...projectUserTasks];
   const assignees = getAssignees(project);
   const hasSplit = assignees.length > 0;
 
@@ -79,6 +191,10 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick }) 
     if (override === '__upnext__') return 'upnext';
     if (override === '__todo__') return 'todo';
     if (isTaskDone(task, project, completedIds)) return 'done';
+    if (task._userAdded) {
+      if (task._column === '__upnext__') return 'upnext';
+      return 'todo';
+    }
     if (isInUpnextArray(task, project)) return 'upnext';
     return 'todo';
   };
@@ -278,7 +394,7 @@ function TaskCard({ task, accentColor, isDone, onToggle }) {
 
 // ─── Task column (drop target) ──────────────────────────────────────
 
-function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop }) {
+function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop, onAddTask, showAddForm, onToggleAddForm }) {
   const [dragOver, setDragOver] = useState(false);
 
   return (
@@ -300,6 +416,9 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
           backgroundColor: '#0a2233',
           padding: '1px 6px', borderRadius: '4px', fontWeight: 600,
         }}>{tasks.length}</span>
+        {onToggleAddForm && columnId !== '__done__' && (
+          <AddButton onClick={onToggleAddForm} color={dotColor} />
+        )}
       </div>
       <div
         onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; if (!dragOver) setDragOver(true); }}
@@ -318,7 +437,17 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
           transition: 'border 0.15s, background-color 0.15s',
         }}
       >
-        {tasks.length === 0 ? (
+        {showAddForm && (
+          <AddTaskForm
+            projectId={project.id}
+            column={columnId}
+            assignee={columnId !== '__todo__' && columnId !== '__upnext__' && columnId !== '__done__' ? columnId : undefined}
+            accentColor={accentColor}
+            onAdd={(task) => { if (onAddTask) onAddTask(task); }}
+            onCancel={onToggleAddForm}
+          />
+        )}
+        {tasks.length === 0 && !showAddForm ? (
           <div style={{
             padding: '20px', textAlign: 'center',
             fontSize: '12px', color: dragOver ? dotColor : '#475569', fontStyle: 'italic',
@@ -384,9 +513,17 @@ function DetailHeader({ project, onBack }) {
 
 // ─── Project detail view ────────────────────────────────────────────
 
-function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop }) {
-  const allTasks = getAllTasks(project);
+function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop, userTasks, onAddUserTask }) {
+  const [addingToColumn, setAddingToColumn] = useState(null);
+
+  // Merge server tasks with user-added tasks for this project
+  const projectUserTasks = userTasks.filter(t => t._projectId === project.id);
+  const allServerTasks = getAllTasks(project);
+  const allTasks = [...allServerTasks, ...projectUserTasks];
+
   const assignees = getAssignees(project);
+  // Also check user tasks for assignees
+  projectUserTasks.forEach(t => { if (t.assignee && !assignees.includes(t.assignee)) assignees.push(t.assignee); });
   const hasSplit = assignees.length > 0;
 
   // Determine effective column for each task, considering drag overrides
@@ -395,9 +532,16 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
     if (override === '__done__') return 'done';
     if (override === '__upnext__') return 'upnext';
     if (override === '__todo__') return 'todo';
-    // Assignee overrides (for Spotlight AI split)
     if (override && override !== '__done__' && override !== '__upnext__' && override !== '__todo__') return 'assignee:' + override;
     if (isTaskDone(task, project, completedIds)) return 'done';
+    // User-added tasks: use their _column
+    if (task._userAdded) {
+      if (task._column === '__upnext__') return 'upnext';
+      if (task._column === '__done__') return 'done';
+      // Assignee column
+      if (task._column && !task._column.startsWith('__')) return 'todo';
+      return 'todo';
+    }
     if (isInUpnextArray(task, project)) return 'upnext';
     return 'todo';
   };
@@ -412,10 +556,14 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
     if (onDragDrop) onDragDrop(taskId, columnId, project.id);
   };
 
+  const handleAddTask = (task) => {
+    onAddUserTask(task);
+    setAddingToColumn(null);
+  };
+
   const assigneeColors = { mordy: '#f97316', yaakov: '#8b5cf6' };
 
   if (hasSplit) {
-    // Assignee-split style (Spotlight AI): one column per assignee + Done
     const doneTasks = allTasks.filter(t => getEffectiveColumn(t) === 'done');
     const activeTasks = allTasks.filter(t => getEffectiveColumn(t) !== 'done');
 
@@ -424,7 +572,6 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
       tasks: sortByPriority(activeTasks.filter(t => (getEffectiveAssignee(t) || '') === a)),
     }));
 
-    // Any unassigned active tasks
     const unassignedTasks = sortByPriority(activeTasks.filter(t => !getEffectiveAssignee(t)));
 
     return (
@@ -444,15 +591,21 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
               completedIds={completedIds}
               onToggle={onToggle} project={project}
               columnId={col.name} onDrop={handleDrop}
+              showAddForm={addingToColumn === col.name}
+              onToggleAddForm={() => setAddingToColumn(addingToColumn === col.name ? null : col.name)}
+              onAddTask={handleAddTask}
             />
           ))}
-          {unassignedTasks.length > 0 && (
+          {(unassignedTasks.length > 0 || addingToColumn === '__general__') && (
             <TaskColumn
               title="General" tasks={unassignedTasks}
               accentColor="#94a3b8" dotColor="#94a3b8"
               emptyText="No general tasks" completedIds={completedIds}
               onToggle={onToggle} project={project}
               columnId="__todo__" onDrop={handleDrop}
+              showAddForm={addingToColumn === '__general__'}
+              onToggleAddForm={() => setAddingToColumn(addingToColumn === '__general__' ? null : '__general__')}
+              onAddTask={handleAddTask}
             />
           )}
           <TaskColumn
@@ -484,6 +637,9 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           emptyText="Backlog empty" completedIds={completedIds}
           onToggle={onToggle} project={project}
           columnId="__todo__" onDrop={handleDrop}
+          showAddForm={addingToColumn === '__todo__'}
+          onToggleAddForm={() => setAddingToColumn(addingToColumn === '__todo__' ? null : '__todo__')}
+          onAddTask={handleAddTask}
         />
         <TaskColumn
           title="Up Next" tasks={upnextTasks}
@@ -491,6 +647,9 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           emptyText="Nothing queued" completedIds={completedIds}
           onToggle={onToggle} project={project}
           columnId="__upnext__" onDrop={handleDrop}
+          showAddForm={addingToColumn === '__upnext__'}
+          onToggleAddForm={() => setAddingToColumn(addingToColumn === '__upnext__' ? null : '__upnext__')}
+          onAddTask={handleAddTask}
         />
         <TaskColumn
           title="Done" tasks={doneTasks}
@@ -583,10 +742,11 @@ function GeneralTodoItem({ todo, isDone, onToggle }) {
 
 // ─── General Todos Section ──────────────────────────────────────────
 
-function GeneralTodosSection({ todos, completedIds, onToggle }) {
-  const todoList = todos || [];
+function GeneralTodosSection({ todos, completedIds, onToggle, userTasks, onAddUserTask }) {
+  const todoList = [...(todos || []), ...(userTasks || []).filter(t => !t._projectId)];
   const activeTodos = todoList.filter(t => !completedIds.includes(t.id));
   const doneTodos = todoList.filter(t => completedIds.includes(t.id));
+  const [showAdd, setShowAdd] = useState(false);
 
   return (
     <div style={{ marginTop: '32px' }}>
@@ -606,8 +766,20 @@ function GeneralTodosSection({ todos, completedIds, onToggle }) {
           backgroundColor: '#163344',
           padding: '2px 8px', borderRadius: '4px', fontWeight: 600,
         }}>{activeTodos.length}</span>
+        <AddButton onClick={() => setShowAdd(!showAdd)} color="#60a5fa" />
       </div>
-      {todoList.length === 0 ? (
+      {showAdd && (
+        <div style={{ marginBottom: '12px', maxWidth: '400px' }}>
+          <AddTaskForm
+            projectId={null}
+            column="__todo__"
+            accentColor="#60a5fa"
+            onAdd={(task) => { onAddUserTask({ ...task, _projectId: null }); setShowAdd(false); }}
+            onCancel={() => setShowAdd(false)}
+          />
+        </div>
+      )}
+      {todoList.length === 0 && !showAdd ? (
         <div style={{
           backgroundColor: '#163344', borderRadius: '10px',
           border: '1px solid #1e4258', padding: '24px',
@@ -795,10 +967,20 @@ export default function Home() {
   const [error, setError] = useState(null);
   const [completedIds, setCompletedIds] = useState([]);
   const [dragOverrides, setDragOverrides] = useState({});
+  const [userTasks, setUserTasks] = useState([]);
 
   useEffect(() => {
     setCompletedIds(getCompletedIds());
     setDragOverrides(getDragOverrides());
+    setUserTasks(getUserTasks());
+  }, []);
+
+  const addUserTask = useCallback((task) => {
+    setUserTasks(prev => {
+      const next = [...prev, task];
+      saveUserTasks(next);
+      return next;
+    });
   }, []);
 
   const toggleTask = useCallback((taskId) => {
@@ -901,6 +1083,12 @@ export default function Home() {
       else totalTodo++;
     });
   });
+  // Count user-added tasks
+  userTasks.forEach(t => {
+    if (completedIds.includes(t.id)) totalDone++;
+    else if (t._column === '__upnext__') totalUpnext++;
+    else totalTodo++;
+  });
   const totalTasks = totalTodo + totalUpnext + totalDone + todos.length;
 
   return (
@@ -941,6 +1129,8 @@ export default function Home() {
             onToggle={toggleTask}
             dragOverrides={dragOverrides}
             onDragDrop={handleDragDrop}
+            userTasks={userTasks}
+            onAddUserTask={addUserTask}
           />
         ) : (
           <>
@@ -977,6 +1167,7 @@ export default function Home() {
                   completedIds={completedIds}
                   dragOverrides={dragOverrides}
                   onClick={() => setSelectedProject(card.project.id)}
+                  userTasks={userTasks}
                 />
               ))}
             </div>
@@ -985,6 +1176,8 @@ export default function Home() {
               todos={todos}
               completedIds={completedIds}
               onToggle={toggleTask}
+              userTasks={userTasks}
+              onAddUserTask={addUserTask}
             />
 
             <PotentialBusinessesSection

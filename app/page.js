@@ -33,6 +33,12 @@ function getUserTasks() {
 function saveUserTasks(tasks) {
   localStorage.setItem('cc_user_tasks', JSON.stringify(tasks));
 }
+function getColumnOrder() {
+  try { return JSON.parse(localStorage.getItem('cc_col_order') || '{}'); } catch { return {}; }
+}
+function saveColumnOrder(order) {
+  localStorage.setItem('cc_col_order', JSON.stringify(order));
+}
 
 // Get all tasks from a project as flat array
 function getAllTasks(project) {
@@ -69,6 +75,26 @@ function getAssignees(project) {
 const priorityOrder = { high: 0, medium: 1, low: 2 };
 function sortByPriority(tasks) {
   return [...tasks].sort((a, b) => (priorityOrder[a.priority] ?? 1) - (priorityOrder[b.priority] ?? 1));
+}
+
+// Apply user edits to tasks
+function applyEdits(tasks, taskEdits) {
+  if (!taskEdits || Object.keys(taskEdits).length === 0) return tasks;
+  return tasks.map(t => taskEdits[t.id] ? { ...t, ...taskEdits[t.id] } : t);
+}
+
+// Apply column ordering
+function applyColumnOrder(tasks, orderKey, columnOrder) {
+  const order = columnOrder[orderKey];
+  if (!order || order.length === 0) return tasks;
+  const orderMap = {};
+  order.forEach((id, i) => { orderMap[id] = i; });
+  return [...tasks].sort((a, b) => {
+    const aIdx = orderMap[a.id] ?? 999;
+    const bIdx = orderMap[b.id] ?? 999;
+    if (aIdx !== 999 || bIdx !== 999) return aIdx - bIdx;
+    return 0; // keep original order for unordered items
+  });
 }
 
 // ─── Omnisearch Bar (Feature 5) ─────────────────────────────────────
@@ -427,6 +453,125 @@ function ReminderPicker({ taskId, taskTitle, onClose }) {
   );
 }
 
+// ─── Edit Card Modal (Feature 7) ────────────────────────────────────
+
+function EditCardModal({ task, onSave, onClose }) {
+  const [title, setTitle] = useState(task.title || '');
+  const [description, setDescription] = useState(task.description || '');
+  const [priority, setPriority] = useState(task.priority || 'medium');
+  const [tags, setTags] = useState((task.tags || []).join(', '));
+
+  const handleSave = () => {
+    if (!title.trim()) return;
+    onSave({
+      ...task,
+      title: title.trim(),
+      description: description.trim() || undefined,
+      priority,
+      tags: tags.split(',').map(t => t.trim()).filter(Boolean),
+    });
+    onClose();
+  };
+
+  const inputStyle = {
+    width: '100%', boxSizing: 'border-box',
+    backgroundColor: '#0a2233', border: '1px solid #334155',
+    borderRadius: '8px', padding: '10px 12px',
+    color: '#f8fafc', fontSize: '14px', fontFamily: 'inherit',
+    outline: 'none',
+  };
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 200,
+        backgroundColor: 'rgba(0,0,0,0.6)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        padding: '24px',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          backgroundColor: '#163344', borderRadius: '14px',
+          border: '1px solid #1e4258', width: '100%', maxWidth: '440px',
+          boxShadow: '0 12px 40px rgba(0,0,0,0.5)', padding: '24px',
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <span style={{ fontWeight: 700, fontSize: '16px', color: '#f8fafc' }}>Edit Card</span>
+          <button onClick={onClose} style={{
+            background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: '20px', padding: '4px',
+          }}>&times;</button>
+        </div>
+
+        <div style={{ marginBottom: '14px' }}>
+          <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>Title</label>
+          <input
+            autoFocus
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            style={inputStyle}
+          />
+        </div>
+
+        <div style={{ marginBottom: '14px' }}>
+          <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>Description</label>
+          <textarea
+            value={description}
+            onChange={e => setDescription(e.target.value)}
+            rows={3}
+            style={{ ...inputStyle, resize: 'vertical' }}
+          />
+        </div>
+
+        <div style={{ marginBottom: '14px' }}>
+          <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>Priority</label>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {['high', 'medium', 'low'].map(p => (
+              <button key={p} type="button" onClick={() => setPriority(p)} style={{
+                padding: '6px 14px', borderRadius: '6px', fontSize: '12px', fontWeight: 600,
+                border: priority === p ? '2px solid' : '1px solid #334155',
+                borderColor: priority === p ? (p === 'high' ? '#fb923c' : p === 'medium' ? '#a78bfa' : '#64748b') : '#334155',
+                backgroundColor: p === 'high' ? '#451a03' : p === 'medium' ? '#1e1b4b' : '#0f172a',
+                color: p === 'high' ? '#fb923c' : p === 'medium' ? '#a78bfa' : '#64748b',
+                cursor: 'pointer',
+              }}>
+                {p.charAt(0).toUpperCase() + p.slice(1)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ fontSize: '12px', fontWeight: 600, color: '#94a3b8', display: 'block', marginBottom: '6px' }}>Tags (comma-separated)</label>
+          <input
+            value={tags}
+            onChange={e => setTags(e.target.value)}
+            placeholder="e.g. urgent, frontend, design"
+            style={inputStyle}
+          />
+        </div>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
+          <button onClick={onClose} style={{
+            background: 'none', border: '1px solid #334155', borderRadius: '8px',
+            color: '#94a3b8', cursor: 'pointer', fontSize: '13px', fontWeight: 600,
+            padding: '8px 16px',
+          }}>Cancel</button>
+          <button onClick={handleSave} disabled={!title.trim()} style={{
+            backgroundColor: title.trim() ? '#8b5cf6' : '#334155',
+            color: title.trim() ? '#fff' : '#64748b',
+            border: 'none', borderRadius: '8px', padding: '8px 20px',
+            fontSize: '13px', fontWeight: 600, cursor: title.trim() ? 'pointer' : 'default',
+          }}>Save</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Add Task Form (inline) ─────────────────────────────────────────
 
 function AddTaskForm({ projectId, column, assignee, accentColor, onAdd, onCancel }) {
@@ -681,7 +826,7 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, us
 
 // ─── Task card (with due date + reminder buttons) ───────────────────
 
-function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate }) {
+function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate, onEdit, index, onReorder }) {
   const [showDuePicker, setShowDuePicker] = useState(false);
   const [showReminder, setShowReminder] = useState(false);
 
@@ -699,12 +844,26 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate 
       draggable="true"
       onDragStart={(e) => {
         e.dataTransfer.setData('text/plain', task.id);
+        e.dataTransfer.setData('application/x-index', String(index));
         e.dataTransfer.effectAllowed = 'move';
         e.currentTarget.style.opacity = '0.4';
       }}
       onDragEnd={(e) => {
         e.currentTarget.style.opacity = isDone ? '0.6' : '1';
       }}
+      onDragOver={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onDrop={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const draggedId = e.dataTransfer.getData('text/plain');
+        if (draggedId && draggedId !== task.id && onReorder) {
+          onReorder(draggedId, task.id);
+        }
+      }}
+      onDoubleClick={() => { if (onEdit && !isDone) onEdit(task); }}
       style={{
         backgroundColor: '#0a2233',
         borderRadius: '8px',
@@ -788,9 +947,26 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate 
             </div>
           )}
         </div>
-        {/* Due date + Reminder buttons */}
+        {/* Edit + Due date + Reminder buttons */}
         {!isDone && (
           <div style={{ display: 'flex', gap: '4px', flexShrink: 0, position: 'relative' }}>
+            <button
+              onClick={(e) => { e.stopPropagation(); if (onEdit) onEdit(task); }}
+              title="Edit card"
+              style={{
+                width: '24px', height: '24px', borderRadius: '4px',
+                border: '1px solid #334155', background: 'none',
+                color: '#475569', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: 0, transition: 'all 0.15s', fontSize: '12px',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = '#8b5cf6'; e.currentTarget.style.color = '#8b5cf6'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#334155'; e.currentTarget.style.color = '#475569'; }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
             <button
               onClick={(e) => { e.stopPropagation(); setShowDuePicker(!showDuePicker); setShowReminder(false); }}
               title="Set due date"
@@ -849,7 +1025,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate 
 
 // ─── Task column (drop target) ──────────────────────────────────────
 
-function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop, onAddTask, showAddForm, onToggleAddForm, dueDates, onSetDueDate }) {
+function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop, onAddTask, showAddForm, onToggleAddForm, dueDates, onSetDueDate, onEdit, onReorder }) {
   const [dragOver, setDragOver] = useState(false);
 
   return (
@@ -914,11 +1090,14 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
             <TaskCard
               key={task.id || i}
               task={task}
+              index={i}
               accentColor={accentColor}
               isDone={isTaskDone(task, project, completedIds)}
               onToggle={onToggle}
               dueDates={dueDates}
               onSetDueDate={onSetDueDate}
+              onEdit={onEdit}
+              onReorder={onReorder}
             />
           ))
         )}
@@ -970,8 +1149,9 @@ function DetailHeader({ project, onBack }) {
 
 // ─── Project detail view ────────────────────────────────────────────
 
-function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop, userTasks, onAddUserTask, dueDates, onSetDueDate }) {
+function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop, userTasks, onAddUserTask, dueDates, onSetDueDate, onEditTask, columnOrder, onReorderInColumn, taskEdits: taskEditsFromParent }) {
   const [addingToColumn, setAddingToColumn] = useState(null);
+  const [editingTask, setEditingTask] = useState(null);
 
   const projectUserTasks = userTasks.filter(t => t._projectId === project.id);
   const allServerTasks = getAllTasks(project);
@@ -1013,18 +1193,29 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
     setAddingToColumn(null);
   };
 
+  const handleReorder = (columnId) => (draggedId, targetId) => {
+    if (onReorderInColumn) onReorderInColumn(project.id, columnId, draggedId, targetId);
+  };
+
+  const handleEdit = (task) => setEditingTask(task);
+  const handleSaveEdit = (updated) => {
+    if (onEditTask) onEditTask(updated);
+    setEditingTask(null);
+  };
+
   const assigneeColors = { mordy: '#f97316', yaakov: '#8b5cf6' };
 
   if (hasSplit) {
-    const doneTasks = allTasks.filter(t => getEffectiveColumn(t) === 'done');
-    const activeTasks = allTasks.filter(t => getEffectiveColumn(t) !== 'done');
+    const editedAllTasks = applyEdits(allTasks, taskEditsFromParent);
+    const doneTasks = applyColumnOrder(editedAllTasks.filter(t => getEffectiveColumn(t) === 'done'), `${project.id}:__done__`, columnOrder);
+    const activeTasks = editedAllTasks.filter(t => getEffectiveColumn(t) !== 'done');
 
     const assigneeCols = assignees.map(a => ({
       name: a,
-      tasks: sortByPriority(activeTasks.filter(t => (getEffectiveAssignee(t) || '') === a)),
+      tasks: applyColumnOrder(sortByPriority(activeTasks.filter(t => (getEffectiveAssignee(t) || '') === a)), `${project.id}:${a}`, columnOrder),
     }));
 
-    const unassignedTasks = sortByPriority(activeTasks.filter(t => !getEffectiveAssignee(t)));
+    const unassignedTasks = applyColumnOrder(sortByPriority(activeTasks.filter(t => !getEffectiveAssignee(t))), `${project.id}:__todo__`, columnOrder);
 
     return (
       <div>
@@ -1048,6 +1239,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
               onAddTask={handleAddTask}
               dueDates={dueDates}
               onSetDueDate={onSetDueDate}
+              onEdit={handleEdit}
+              onReorder={handleReorder(col.name)}
             />
           ))}
           {(unassignedTasks.length > 0 || addingToColumn === '__general__') && (
@@ -1062,6 +1255,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
               onAddTask={handleAddTask}
               dueDates={dueDates}
               onSetDueDate={onSetDueDate}
+              onEdit={handleEdit}
+              onReorder={handleReorder('__todo__')}
             />
           )}
           <TaskColumn
@@ -1072,16 +1267,22 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
             columnId="__done__" onDrop={handleDrop}
             dueDates={dueDates}
             onSetDueDate={onSetDueDate}
+            onEdit={handleEdit}
+            onReorder={handleReorder('__done__')}
           />
         </div>
+        {editingTask && (
+          <EditCardModal task={editingTask} onSave={handleSaveEdit} onClose={() => setEditingTask(null)} />
+        )}
       </div>
     );
   }
 
   // Standard three-column: To Do, Up Next, Done
-  const todoTasks = sortByPriority(allTasks.filter(t => getEffectiveColumn(t) === 'todo'));
-  const upnextTasks = sortByPriority(allTasks.filter(t => getEffectiveColumn(t) === 'upnext'));
-  const doneTasks = allTasks.filter(t => getEffectiveColumn(t) === 'done');
+  const editedTasks = applyEdits(allTasks, taskEditsFromParent);
+  const todoTasks = applyColumnOrder(sortByPriority(editedTasks.filter(t => getEffectiveColumn(t) === 'todo')), `${project.id}:__todo__`, columnOrder);
+  const upnextTasks = applyColumnOrder(sortByPriority(editedTasks.filter(t => getEffectiveColumn(t) === 'upnext')), `${project.id}:__upnext__`, columnOrder);
+  const doneTasks = applyColumnOrder(editedTasks.filter(t => getEffectiveColumn(t) === 'done'), `${project.id}:__done__`, columnOrder);
 
   return (
     <div>
@@ -1100,6 +1301,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           onAddTask={handleAddTask}
           dueDates={dueDates}
           onSetDueDate={onSetDueDate}
+          onEdit={handleEdit}
+          onReorder={handleReorder('__todo__')}
         />
         <TaskColumn
           title="Up Next" tasks={upnextTasks}
@@ -1112,6 +1315,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           onAddTask={handleAddTask}
           dueDates={dueDates}
           onSetDueDate={onSetDueDate}
+          onEdit={handleEdit}
+          onReorder={handleReorder('__upnext__')}
         />
         <TaskColumn
           title="Done" tasks={doneTasks}
@@ -1121,8 +1326,13 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           columnId="__done__" onDrop={handleDrop}
           dueDates={dueDates}
           onSetDueDate={onSetDueDate}
+          onEdit={handleEdit}
+          onReorder={handleReorder('__done__')}
         />
       </div>
+      {editingTask && (
+        <EditCardModal task={editingTask} onSave={handleSaveEdit} onClose={() => setEditingTask(null)} />
+      )}
     </div>
   );
 }
@@ -1600,12 +1810,16 @@ export default function Home() {
   const [showChangeRequest, setShowChangeRequest] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [dueDates, setDueDates] = useState({});
+  const [columnOrder, setColumnOrder] = useState({});
+  const [taskEdits, setTaskEdits] = useState({});
 
   useEffect(() => {
     setCompletedIds(getCompletedIds());
     setDragOverrides(getDragOverrides());
     setUserTasks(getUserTasks());
     try { setDueDates(JSON.parse(localStorage.getItem('cc_due_dates') || '{}')); } catch { setDueDates({}); }
+    setColumnOrder(getColumnOrder());
+    try { setTaskEdits(JSON.parse(localStorage.getItem('cc_task_edits') || '{}')); } catch { setTaskEdits({}); }
   }, []);
 
   const setDueDate = useCallback((taskId, date) => {
@@ -1692,6 +1906,43 @@ export default function Home() {
       syncToServer({ action: 'move', taskId, projectId: pid, targetColumn: targetColumnId });
     }
   }, [findProjectForTask, syncToServer]);
+
+  const editTask = useCallback((updatedTask) => {
+    setTaskEdits(prev => {
+      const next = { ...prev, [updatedTask.id]: updatedTask };
+      localStorage.setItem('cc_task_edits', JSON.stringify(next));
+      return next;
+    });
+    // Also update user tasks if it's a user-added task
+    setUserTasks(prev => {
+      const idx = prev.findIndex(t => t.id === updatedTask.id);
+      if (idx >= 0) {
+        const next = [...prev];
+        next[idx] = { ...next[idx], ...updatedTask };
+        saveUserTasks(next);
+        return next;
+      }
+      return prev;
+    });
+  }, []);
+
+  const reorderInColumn = useCallback((projectId, columnId, draggedId, targetId) => {
+    setColumnOrder(prev => {
+      const key = `${projectId}:${columnId}`;
+      const currentOrder = prev[key] || [];
+      // Remove draggedId from current position, insert before targetId
+      const filtered = currentOrder.filter(id => id !== draggedId);
+      const targetIdx = filtered.indexOf(targetId);
+      if (targetIdx >= 0) {
+        filtered.splice(targetIdx, 0, draggedId);
+      } else {
+        filtered.push(draggedId);
+      }
+      const next = { ...prev, [key]: filtered };
+      saveColumnOrder(next);
+      return next;
+    });
+  }, []);
 
   // Navigation from search
   const handleSearchNavigate = useCallback((type, id) => {
@@ -1846,6 +2097,10 @@ export default function Home() {
             onAddUserTask={addUserTask}
             dueDates={dueDates}
             onSetDueDate={setDueDate}
+            onEditTask={editTask}
+            columnOrder={columnOrder}
+            onReorderInColumn={reorderInColumn}
+            taskEdits={taskEdits}
           />
         ) : (
           <>

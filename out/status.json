@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-18T14:18:00Z",
+  "lastUpdated": "2026-02-18T14:29:00Z",
   "projects": [
     {
       "id": "spotlight-ai",
@@ -7,9 +7,154 @@
       "color": "#8b5cf6",
       "icon": "S",
       "status": "active",
-      "description": "",
+      "description": "SEO Audit SaaS",
       "tasks": {
-        "todo": [],
+        "todo": [
+          {
+            "id": "sa-1",
+            "title": "Switch Stripe to Live Mode",
+            "description": "All 6 env vars + webhook registration + test transactions. Assigned to Mordy. CRITICAL pre-launch blocker.",
+            "priority": "high",
+            "tags": ["critical", "mordy", "payments"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-2",
+            "title": "Tier 1→2 Upgrade UX polish",
+            "description": "Two bugs: PDF double-open on success page; /pricing?email= shows full pricing page instead of streamlined upgrade flow.",
+            "priority": "high",
+            "tags": ["critical", "yaakov", "ux"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-3",
+            "title": "Replace website scraping with Firecrawl",
+            "description": "Current fetch+Cheerio fails on JS-rendered/bot-blocked sites. Plan at ~/.claude/plans/sharded-wandering-meadow.md.",
+            "priority": "high",
+            "tags": ["critical", "mordy"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-4",
+            "title": "Verify Tier 2 Monitoring",
+            "description": "Two customer journeys remain: Tier 0→2 and Tier 0→1→2.",
+            "priority": "medium",
+            "tags": ["mordy", "testing"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-5",
+            "title": "Dashboard UX review",
+            "description": "Deferred until dashboard layout finalized.",
+            "priority": "medium",
+            "tags": ["mordy", "ux"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-6",
+            "title": "Validate query generation quality",
+            "description": "Not started.",
+            "priority": "medium",
+            "tags": ["mordy", "quality"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-7",
+            "title": "Upgrade reminder email",
+            "description": "Finalize copy + update CTA URLs with ?email= param.",
+            "priority": "medium",
+            "tags": ["mordy", "email"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-8",
+            "title": "Edit all email copy",
+            "description": "Final review of all Loops emails before launch.",
+            "priority": "medium",
+            "tags": ["mordy", "email"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-9",
+            "title": "Transactional email templates",
+            "description": "Create in Loops, wire up IDs.",
+            "priority": "medium",
+            "tags": ["mordy", "email"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-10",
+            "title": "Login credentials email",
+            "description": "Code done, awaiting Tier 2 test.",
+            "priority": "medium",
+            "tags": ["mordy", "email"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-11",
+            "title": "Monthly re-scan reminder",
+            "description": "Not started.",
+            "priority": "medium",
+            "tags": ["mordy"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-12",
+            "title": "Validate PDF generation",
+            "description": "Test quality/performance post-fix.",
+            "priority": "medium",
+            "tags": ["mordy", "testing"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-13",
+            "title": "Branding — favicon & logo",
+            "description": "Still needed.",
+            "priority": "medium",
+            "tags": ["mordy", "branding"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-14",
+            "title": "Cloudflare Turnstile",
+            "description": "Bot protection for /api/scan.",
+            "priority": "medium",
+            "tags": ["mordy", "security"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-15",
+            "title": "Clear stale .next cache",
+            "description": "Delete .next and rebuild.",
+            "priority": "low",
+            "tags": ["operational"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-16",
+            "title": "Analytics/tracking setup",
+            "description": "No GA4 or conversion tracking set up yet.",
+            "priority": "medium",
+            "tags": ["operational"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-17",
+            "title": "Agency white-label program",
+            "description": "Growth opportunity — not started.",
+            "priority": "low",
+            "tags": ["growth"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          },
+          {
+            "id": "sa-18",
+            "title": "Marketing funnels (10 ideas)",
+            "description": "Competitor alerts, Facebook groups, cold email with pre-scan, embeddable widget, affiliate program, etc.",
+            "priority": "low",
+            "tags": ["growth", "marketing"],
+            "createdAt": "2026-02-18T14:25:00Z"
+          }
+        ],
         "in_progress": [],
         "done": []
       }
@@ -22,9 +167,267 @@
       "status": "active",
       "description": "AI Agency",
       "tasks": {
-        "todo": [],
+        "todo": [
+          {
+            "id": "eg-1",
+            "title": "Pick agency name",
+            "description": "Replaces {{AGENCY_NAME}} everywhere. Blocking all downstream work.",
+            "priority": "high",
+            "tags": ["blocking", "foundation"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-2",
+            "title": "Register domain",
+            "description": "Depends on agency name decision.",
+            "priority": "high",
+            "tags": ["blocking", "foundation"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-3",
+            "title": "Finalize color palette & brand direction",
+            "description": "6 palette variants explored in branding/references/. Need final pick + logo + typography specs.",
+            "priority": "high",
+            "tags": ["blocking", "foundation", "branding"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-4",
+            "title": "Create HubSpot account + configure pipeline",
+            "description": "7 stages + custom properties per operations.md.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-5",
+            "title": "Create Brevo account + SPF/DKIM",
+            "description": "Email sending infrastructure.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-6",
+            "title": "Create Stripe account + products/prices",
+            "description": "Payment processing setup.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-7",
+            "title": "Set up DocuSeal (self-hosted on VPS)",
+            "description": "Contract signing platform.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-8",
+            "title": "Set up Twilio + provision phone number",
+            "description": "For missed call text-back demo and client comms.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-9",
+            "title": "Set up Cloudflare account (Pages + Workers)",
+            "description": "Hosting for website and backend workers.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-10",
+            "title": "Set up VPS for cron/webhooks",
+            "description": "OpenClaw VPS for automation scripts.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-11",
+            "title": "Populate .env with all live keys",
+            "description": "After all accounts are created.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-12",
+            "title": "Build client-enrichment skill",
+            "description": "Perplexity + Firecrawl enrichment, tier detection (1/2/3).",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-13",
+            "title": "Build agency-positioning skill",
+            "description": "Brand voice, services, anti-patterns. Needed for all outward content.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-14",
+            "title": "Build crm-entry-generator skill",
+            "description": "Deliverable → structured HubSpot JSON.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-15",
+            "title": "Build follow-up-email-generator skill",
+            "description": "Personalized emails per pipeline stage.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-16",
+            "title": "Build contract-generator skill",
+            "description": "MSA + SOW PDFs from templates.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-17",
+            "title": "Build monthly-client-report skill",
+            "description": "Metrics → one-page report + upsell rec.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-18",
+            "title": "Build report-formatter skill",
+            "description": "Raw analysis → branded HTML/PDF.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-19",
+            "title": "Create MSA template",
+            "description": "templates/msa-template.md",
+            "priority": "medium",
+            "tags": ["contracts"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-20",
+            "title": "Create SOW templates per product",
+            "description": "templates/sow-templates/ — one per service offering.",
+            "priority": "medium",
+            "tags": ["contracts"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-21",
+            "title": "Build agency website",
+            "description": "Cloudflare Pages: hero, 3 interactive demos, services, contact/intake form, social proof, SEO, analytics, branding pass, QC.",
+            "priority": "high",
+            "tags": ["website"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-22",
+            "title": "Build Cloudflare Workers backend",
+            "description": "Twilio webhook, Claude API proxy, form→HubSpot+Brevo+Twilio, Stripe webhook→HubSpot→DocuSeal.",
+            "priority": "high",
+            "tags": ["backend"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-23",
+            "title": "Build VPS automation scripts",
+            "description": "Daily follow-up cron, webhook listeners (Stripe/HubSpot/DocuSeal), demo interaction tracking, holding pattern emails, monthly reports, Sentry.",
+            "priority": "medium",
+            "tags": ["automation"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-24",
+            "title": "Build portfolio & proof",
+            "description": "2-3 sample deliverables (mock clients), case study, before-after for demos.",
+            "priority": "medium",
+            "tags": ["marketing"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-25",
+            "title": "Set up Fiverr gig(s)",
+            "description": "Copy, pricing, portfolio samples.",
+            "priority": "low",
+            "tags": ["platforms"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-26",
+            "title": "Set up Upwork profile",
+            "description": "Headline, overview, portfolio.",
+            "priority": "low",
+            "tags": ["platforms"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-27",
+            "title": "Community outreach plan (frum market)",
+            "description": "Local community targeting strategy.",
+            "priority": "low",
+            "tags": ["platforms"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-28",
+            "title": "End-to-end launch test",
+            "description": "Fake client → enrichment → deliverable → CRM entry → follow-up. Full pipeline validation.",
+            "priority": "high",
+            "tags": ["launch"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-29",
+            "title": "Deploy & go live",
+            "description": "Deploy website, workers, VPS scripts. Go live on platforms.",
+            "priority": "high",
+            "tags": ["launch"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          }
+        ],
         "in_progress": [],
-        "done": []
+        "done": [
+          {
+            "id": "eg-d1",
+            "title": "Strategy & documentation",
+            "description": "Git repo initialized, project structure, CLAUDE.md, execution-reference.md (5 playbooks), operations.md, master-reference.md, skills-reference.md, .env.example, CHECKLIST.md (14-phase framework).",
+            "priority": "high",
+            "tags": ["foundation"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-d2",
+            "title": "Branding mood board",
+            "description": "9 reference sites (Stripe, Linear, Vercel, etc.) + 6 color palette variants in branding/references/.",
+            "priority": "medium",
+            "tags": ["branding"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-d3",
+            "title": "Final brand guidelines document",
+            "description": "Brand guidelines document completed.",
+            "priority": "medium",
+            "tags": ["branding", "foundation"],
+            "createdAt": "2026-02-18T14:29:00Z"
+          }
+        ]
       }
     },
     {
@@ -33,9 +436,50 @@
       "color": "#06b6d4",
       "icon": "J",
       "status": "active",
-      "description": "",
+      "description": "Uniform Brand",
       "tasks": {
-        "todo": [],
+        "todo": [
+          {
+            "id": "ju-1",
+            "title": "Get 3 people to purchase",
+            "description": "First 3 paying customers — validation milestone.",
+            "priority": "high",
+            "tags": ["sales", "validation"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          },
+          {
+            "id": "ju-2",
+            "title": "Deal with variations",
+            "description": "Handle product variations (sizes, colors, styles) properly.",
+            "priority": "high",
+            "tags": ["product", "operations"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          },
+          {
+            "id": "ju-3",
+            "title": "Make sure picture pipeline is clean",
+            "description": "Ensure product photography workflow is clean and consistent.",
+            "priority": "high",
+            "tags": ["product", "images"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          },
+          {
+            "id": "ju-4",
+            "title": "Redo UI/UX on homepage",
+            "description": "Redesign the homepage for better conversion and aesthetics.",
+            "priority": "high",
+            "tags": ["website", "ux"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          },
+          {
+            "id": "ju-5",
+            "title": "Get Devora on real items",
+            "description": "Get Devora photographed/modeling with actual product items.",
+            "priority": "medium",
+            "tags": ["product", "images", "content"],
+            "createdAt": "2026-02-18T14:26:00Z"
+          }
+        ],
         "in_progress": [],
         "done": []
       }
@@ -48,7 +492,32 @@
       "status": "active",
       "description": "",
       "tasks": {
-        "todo": [],
+        "todo": [
+          {
+            "id": "bb-1",
+            "title": "Switch to Aura",
+            "description": "Migrate/switch BigBang to the Aura platform or system.",
+            "priority": "high",
+            "tags": ["platform", "migration"],
+            "createdAt": "2026-02-18T14:27:00Z"
+          },
+          {
+            "id": "bb-2",
+            "title": "Figure out the Arlos",
+            "description": "Resolve open questions or issues related to the Arlos.",
+            "priority": "high",
+            "tags": ["operations"],
+            "createdAt": "2026-02-18T14:27:00Z"
+          },
+          {
+            "id": "bb-3",
+            "title": "Discuss Joel with Mordy",
+            "description": "Have conversation with Mordy about Joel's involvement or role.",
+            "priority": "high",
+            "tags": ["people", "discussion"],
+            "createdAt": "2026-02-18T14:27:00Z"
+          }
+        ],
         "in_progress": [],
         "done": []
       }

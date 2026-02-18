@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-18T14:18:00Z",
+  "lastUpdated": "2026-02-18T14:22:00Z",
   "projects": [
     {
       "id": "spotlight-ai",
@@ -22,9 +22,259 @@
       "status": "active",
       "description": "AI Agency",
       "tasks": {
-        "todo": [],
+        "todo": [
+          {
+            "id": "eg-1",
+            "title": "Pick agency name",
+            "description": "Replaces {{AGENCY_NAME}} everywhere. Blocking all downstream work.",
+            "priority": "high",
+            "tags": ["blocking", "foundation"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-2",
+            "title": "Register domain",
+            "description": "Depends on agency name decision.",
+            "priority": "high",
+            "tags": ["blocking", "foundation"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-3",
+            "title": "Finalize color palette & brand direction",
+            "description": "6 palette variants explored in branding/references/. Need final pick + logo + typography specs.",
+            "priority": "high",
+            "tags": ["blocking", "foundation", "branding"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-4",
+            "title": "Create HubSpot account + configure pipeline",
+            "description": "7 stages + custom properties per operations.md.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-5",
+            "title": "Create Brevo account + SPF/DKIM",
+            "description": "Email sending infrastructure.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-6",
+            "title": "Create Stripe account + products/prices",
+            "description": "Payment processing setup.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-7",
+            "title": "Set up DocuSeal (self-hosted on VPS)",
+            "description": "Contract signing platform.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-8",
+            "title": "Set up Twilio + provision phone number",
+            "description": "For missed call text-back demo and client comms.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-9",
+            "title": "Set up Cloudflare account (Pages + Workers)",
+            "description": "Hosting for website and backend workers.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-10",
+            "title": "Set up VPS for cron/webhooks",
+            "description": "OpenClaw VPS for automation scripts.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-11",
+            "title": "Populate .env with all live keys",
+            "description": "After all accounts are created.",
+            "priority": "medium",
+            "tags": ["infrastructure"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-12",
+            "title": "Build client-enrichment skill",
+            "description": "Perplexity + Firecrawl enrichment, tier detection (1/2/3).",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-13",
+            "title": "Build agency-positioning skill",
+            "description": "Brand voice, services, anti-patterns. Needed for all outward content.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-14",
+            "title": "Build crm-entry-generator skill",
+            "description": "Deliverable → structured HubSpot JSON.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-15",
+            "title": "Build follow-up-email-generator skill",
+            "description": "Personalized emails per pipeline stage.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-16",
+            "title": "Build contract-generator skill",
+            "description": "MSA + SOW PDFs from templates.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-17",
+            "title": "Build monthly-client-report skill",
+            "description": "Metrics → one-page report + upsell rec.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-18",
+            "title": "Build report-formatter skill",
+            "description": "Raw analysis → branded HTML/PDF.",
+            "priority": "medium",
+            "tags": ["skills"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-19",
+            "title": "Create MSA template",
+            "description": "templates/msa-template.md",
+            "priority": "medium",
+            "tags": ["contracts"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-20",
+            "title": "Create SOW templates per product",
+            "description": "templates/sow-templates/ — one per service offering.",
+            "priority": "medium",
+            "tags": ["contracts"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-21",
+            "title": "Build agency website",
+            "description": "Cloudflare Pages: hero, 3 interactive demos, services, contact/intake form, social proof, SEO, analytics, branding pass, QC.",
+            "priority": "high",
+            "tags": ["website"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-22",
+            "title": "Build Cloudflare Workers backend",
+            "description": "Twilio webhook, Claude API proxy, form→HubSpot+Brevo+Twilio, Stripe webhook→HubSpot→DocuSeal.",
+            "priority": "high",
+            "tags": ["backend"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-23",
+            "title": "Build VPS automation scripts",
+            "description": "Daily follow-up cron, webhook listeners (Stripe/HubSpot/DocuSeal), demo interaction tracking, holding pattern emails, monthly reports, Sentry.",
+            "priority": "medium",
+            "tags": ["automation"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-24",
+            "title": "Build portfolio & proof",
+            "description": "2-3 sample deliverables (mock clients), case study, before-after for demos.",
+            "priority": "medium",
+            "tags": ["marketing"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-25",
+            "title": "Set up Fiverr gig(s)",
+            "description": "Copy, pricing, portfolio samples.",
+            "priority": "low",
+            "tags": ["platforms"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-26",
+            "title": "Set up Upwork profile",
+            "description": "Headline, overview, portfolio.",
+            "priority": "low",
+            "tags": ["platforms"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-27",
+            "title": "Community outreach plan (frum market)",
+            "description": "Local community targeting strategy.",
+            "priority": "low",
+            "tags": ["platforms"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-28",
+            "title": "End-to-end launch test",
+            "description": "Fake client → enrichment → deliverable → CRM entry → follow-up. Full pipeline validation.",
+            "priority": "high",
+            "tags": ["launch"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-29",
+            "title": "Deploy & go live",
+            "description": "Deploy website, workers, VPS scripts. Go live on platforms.",
+            "priority": "high",
+            "tags": ["launch"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          }
+        ],
         "in_progress": [],
-        "done": []
+        "done": [
+          {
+            "id": "eg-d1",
+            "title": "Strategy & documentation",
+            "description": "Git repo initialized, project structure, CLAUDE.md, execution-reference.md (5 playbooks), operations.md, master-reference.md, skills-reference.md, .env.example, CHECKLIST.md (14-phase framework).",
+            "priority": "high",
+            "tags": ["foundation"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-d2",
+            "title": "Branding mood board",
+            "description": "9 reference sites (Stripe, Linear, Vercel, etc.) + 6 color palette variants in branding/references/.",
+            "priority": "medium",
+            "tags": ["branding"],
+            "createdAt": "2026-02-18T14:22:00Z"
+          }
+        ]
       }
     },
     {

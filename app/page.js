@@ -67,11 +67,10 @@ function sortByPriority(tasks) {
 
 // ─── Overview: Bird's-eye project card ──────────────────────────────
 
-function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, subtitle, filterAssignee }) {
+function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick }) {
   const allTasks = getAllTasks(project);
-  const relevantTasks = filterAssignee !== undefined
-    ? allTasks.filter(t => filterAssignee ? t.assignee === filterAssignee : !t.assignee)
-    : allTasks;
+  const assignees = getAssignees(project);
+  const hasSplit = assignees.length > 0;
 
   // Determine effective column for each task
   const getEffectiveColumn = (task) => {
@@ -84,9 +83,34 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, su
     return 'todo';
   };
 
-  const todoCount = relevantTasks.filter(t => getEffectiveColumn(t) === 'todo').length;
-  const upnextCount = relevantTasks.filter(t => getEffectiveColumn(t) === 'upnext').length;
-  const doneCount = relevantTasks.filter(t => getEffectiveColumn(t) === 'done').length;
+  const doneCount = allTasks.filter(t => getEffectiveColumn(t) === 'done').length;
+  const assigneeColors = { mordy: '#f97316', yaakov: '#8b5cf6' };
+
+  // For assignee-split projects (Spotlight AI): show per-assignee to-do counts + done
+  let counters;
+  if (hasSplit) {
+    const activeTasks = allTasks.filter(t => getEffectiveColumn(t) !== 'done');
+    counters = assignees.map(a => ({
+      label: a.charAt(0).toUpperCase() + a.slice(1),
+      count: activeTasks.filter(t => (t.assignee || '') === a).length,
+      color: assigneeColors[a] || '#60a5fa',
+    }));
+    // Add any unassigned tasks
+    const unassignedCount = activeTasks.filter(t => !t.assignee).length;
+    if (unassignedCount > 0) {
+      counters.unshift({ label: 'General', count: unassignedCount, color: '#94a3b8' });
+    }
+    counters.push({ label: 'Done', count: doneCount, color: '#4ade80' });
+  } else {
+    // Standard: To Do, Up Next, Done
+    const todoCount = allTasks.filter(t => getEffectiveColumn(t) === 'todo').length;
+    const upnextCount = allTasks.filter(t => getEffectiveColumn(t) === 'upnext').length;
+    counters = [
+      { label: 'To Do', count: todoCount, color: '#94a3b8' },
+      { label: 'Up Next', count: upnextCount, color: '#60a5fa' },
+      { label: 'Done', count: doneCount, color: '#4ade80' },
+    ];
+  }
 
   return (
     <div
@@ -126,27 +150,18 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, su
         </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: '16px', color: '#f8fafc' }}>
-            {subtitle || project.name}
+            {project.name}
           </div>
-          {project.description && !subtitle && (
+          {project.description && (
             <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
               {project.description}
-            </div>
-          )}
-          {subtitle && (
-            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
-              {project.description || project.name}
             </div>
           )}
         </div>
       </div>
 
       <div style={{ display: 'flex', gap: '6px' }}>
-        {[
-          { label: 'To Do', count: todoCount, color: '#94a3b8' },
-          { label: 'Up Next', count: upnextCount, color: '#60a5fa' },
-          { label: 'Done', count: doneCount, color: '#4ade80' },
-        ].map(item => (
+        {counters.map(item => (
           <div key={item.label} style={{
             flex: 1, textAlign: 'center',
             padding: '8px 4px', borderRadius: '8px',
@@ -400,17 +415,17 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
   const assigneeColors = { mordy: '#f97316', yaakov: '#8b5cf6' };
 
   if (hasSplit) {
-    // Spotlight AI style: To Do, Up Next (split by assignee), Done
-    const todoTasks = sortByPriority(allTasks.filter(t => getEffectiveColumn(t) === 'todo'));
-    const upnextTasks = allTasks.filter(t => getEffectiveColumn(t) === 'upnext' || getEffectiveColumn(t).startsWith('assignee:'));
+    // Assignee-split style (Spotlight AI): one column per assignee + Done
     const doneTasks = allTasks.filter(t => getEffectiveColumn(t) === 'done');
+    const activeTasks = allTasks.filter(t => getEffectiveColumn(t) !== 'done');
 
-    // Split upnext by assignee
-    const unassignedUpnext = sortByPriority(upnextTasks.filter(t => !getEffectiveAssignee(t)));
     const assigneeCols = assignees.map(a => ({
       name: a,
-      tasks: sortByPriority(upnextTasks.filter(t => getEffectiveAssignee(t) === a)),
+      tasks: sortByPriority(activeTasks.filter(t => (getEffectiveAssignee(t) || '') === a)),
     }));
+
+    // Any unassigned active tasks
+    const unassignedTasks = sortByPriority(activeTasks.filter(t => !getEffectiveAssignee(t)));
 
     return (
       <div>
@@ -418,27 +433,10 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
         <div style={{
           display: 'flex', gap: '16px', overflowX: 'auto', paddingBottom: '8px',
         }}>
-          <TaskColumn
-            title="To Do" tasks={todoTasks}
-            accentColor="#94a3b8" dotColor="#94a3b8"
-            emptyText="Backlog empty" completedIds={completedIds}
-            onToggle={onToggle} project={project}
-            columnId="__todo__" onDrop={handleDrop}
-          />
-          {/* Up Next columns split by assignee */}
-          {unassignedUpnext.length > 0 && (
-            <TaskColumn
-              title="Up Next" tasks={unassignedUpnext}
-              accentColor="#60a5fa" dotColor="#60a5fa"
-              emptyText="Nothing queued" completedIds={completedIds}
-              onToggle={onToggle} project={project}
-              columnId="__upnext__" onDrop={handleDrop}
-            />
-          )}
           {assigneeCols.map(col => (
             <TaskColumn
               key={col.name}
-              title={`Up Next — ${col.name.charAt(0).toUpperCase() + col.name.slice(1)}`}
+              title={`${col.name.charAt(0).toUpperCase() + col.name.slice(1)} To-Do`}
               tasks={col.tasks}
               accentColor={assigneeColors[col.name] || '#60a5fa'}
               dotColor={assigneeColors[col.name] || '#60a5fa'}
@@ -448,6 +446,15 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
               columnId={col.name} onDrop={handleDrop}
             />
           ))}
+          {unassignedTasks.length > 0 && (
+            <TaskColumn
+              title="General" tasks={unassignedTasks}
+              accentColor="#94a3b8" dotColor="#94a3b8"
+              emptyText="No general tasks" completedIds={completedIds}
+              onToggle={onToggle} project={project}
+              columnId="__todo__" onDrop={handleDrop}
+            />
+          )}
           <TaskColumn
             title="Done" tasks={doneTasks}
             accentColor="#4ade80" dotColor="#4ade80"
@@ -591,23 +598,8 @@ export default function Home() {
   const projects = data.projects || [];
   const selected = selectedProject ? projects.find(p => p.id === selectedProject) : null;
 
-  // Build overview cards — split projects with assignees
-  const overviewCards = [];
-  projects.forEach(project => {
-    const assignees = getAssignees(project);
-    if (assignees.length > 0) {
-      overviewCards.push({ project, key: project.id, subtitle: project.name, filterAssignee: null });
-      assignees.forEach(a => {
-        overviewCards.push({
-          project, key: `${project.id}-${a}`,
-          subtitle: `${project.name} — ${a.charAt(0).toUpperCase() + a.slice(1)}`,
-          filterAssignee: a,
-        });
-      });
-    } else {
-      overviewCards.push({ project, key: project.id, subtitle: null, filterAssignee: undefined });
-    }
-  });
+  // One card per project — no splitting by assignee
+  const overviewCards = projects.map(project => ({ project, key: project.id }));
 
   // Total counts
   const getEffCol = (task, project) => {
@@ -704,8 +696,6 @@ export default function Home() {
                   completedIds={completedIds}
                   dragOverrides={dragOverrides}
                   onClick={() => setSelectedProject(card.project.id)}
-                  subtitle={card.subtitle}
-                  filterAssignee={card.filterAssignee}
                 />
               ))}
             </div>

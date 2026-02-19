@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T18:51:16.246Z",
+  "lastUpdated": "2026-02-19T18:51:31.285Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -246,6 +246,16 @@
             "priority": "high",
             "tags": [
               "website"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-29",
+            "title": "Deploy & go live",
+            "description": "Deploy website, workers, VPS scripts. Go live on platforms.",
+            "priority": "high",
+            "tags": [
+              "launch"
             ],
             "createdAt": "2026-02-18T14:22:00Z"
           }
@@ -507,16 +517,6 @@
             "id": "eg-28",
             "title": "End-to-end launch test",
             "description": "Fake client → enrichment → deliverable → CRM entry → follow-up. Full pipeline validation.",
-            "priority": "high",
-            "tags": [
-              "launch"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z"
-          },
-          {
-            "id": "eg-29",
-            "title": "Deploy & go live",
-            "description": "Deploy website, workers, VPS scripts. Go live on platforms.",
             "priority": "high",
             "tags": [
               "launch"

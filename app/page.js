@@ -1083,6 +1083,13 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
   const [dragOver, setDragOver] = useState(false);
   const dragCounterRef = useRef(0);
 
+  // Reset drag state when any drag operation ends (handles card-to-card drops that stopPropagation)
+  useEffect(() => {
+    const reset = () => { dragCounterRef.current = 0; setDragOver(false); };
+    document.addEventListener('dragend', reset);
+    return () => document.removeEventListener('dragend', reset);
+  }, []);
+
   return (
     <div style={{ flex: 1, minWidth: '220px' }}>
       <div style={{
@@ -2243,7 +2250,7 @@ export default function Home() {
               onClick={() => setShowChangeRequest(!showChangeRequest)}
               title="Request a change"
               style={{
-                width: '28px', height: '28px', borderRadius: '6px',
+                width: '36px', height: '36px', borderRadius: '8px',
                 border: '1px solid #1e4258', background: 'none',
                 color: '#64748b', cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -2252,8 +2259,9 @@ export default function Home() {
               onMouseEnter={e => { e.currentTarget.style.borderColor = '#8b5cf6'; e.currentTarget.style.color = '#8b5cf6'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = '#1e4258'; e.currentTarget.style.color = '#64748b'; }}
             >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
               </svg>
             </button>
             {showChangeRequest && (

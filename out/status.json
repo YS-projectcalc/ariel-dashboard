@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-18T22:20:57.137Z",
+  "lastUpdated": "2026-02-19T08:20:40.011Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -39,7 +39,7 @@
           },
           {
             "id": "sa-2",
-            "title": "Tier 1â2 Upgrade UX polish",
+            "title": "Tier 1Ã¢ÂÂ2 Upgrade UX polish",
             "description": "Two bugs: PDF double-open on success page; /pricing?email= shows full pricing page instead of streamlined upgrade flow.",
             "priority": "high",
             "tags": [
@@ -77,7 +77,7 @@
           {
             "id": "sa-4",
             "title": "Verify Tier 2 Monitoring",
-            "description": "Two customer journeys remain: Tier 0â2 and Tier 0â1â2.",
+            "description": "Two customer journeys remain: Tier 0Ã¢ÂÂ2 and Tier 0Ã¢ÂÂ1Ã¢ÂÂ2.",
             "priority": "medium",
             "tags": [
               "testing"
@@ -173,7 +173,7 @@
           },
           {
             "id": "sa-13",
-            "title": "Branding â favicon & logo",
+            "title": "Branding Ã¢ÂÂ favicon & logo",
             "description": "Still needed.",
             "priority": "medium",
             "tags": [
@@ -207,7 +207,7 @@
           {
             "id": "sa-17",
             "title": "Agency white-label program",
-            "description": "Growth opportunity â not started.",
+            "description": "Growth opportunity Ã¢ÂÂ not started.",
             "priority": "low",
             "tags": [
               "growth"
@@ -243,7 +243,7 @@
             "id": "eg-1",
             "title": "Pick agency name",
             "description": "Replaces {{AGENCY_NAME}} everywhere. Blocking all downstream work.",
-            "priority": "high",
+            "priority": "low",
             "tags": [
               "blocking",
               "foundation"
@@ -381,7 +381,7 @@
           {
             "id": "eg-14",
             "title": "Build crm-entry-generator skill",
-            "description": "Deliverable â structured HubSpot JSON.",
+            "description": "Deliverable Ã¢ÂÂ structured HubSpot JSON.",
             "priority": "medium",
             "tags": [
               "skills"
@@ -411,7 +411,7 @@
           {
             "id": "eg-17",
             "title": "Build monthly-client-report skill",
-            "description": "Metrics â one-page report + upsell rec.",
+            "description": "Metrics Ã¢ÂÂ one-page report + upsell rec.",
             "priority": "medium",
             "tags": [
               "skills"
@@ -421,7 +421,7 @@
           {
             "id": "eg-18",
             "title": "Build report-formatter skill",
-            "description": "Raw analysis â branded HTML/PDF.",
+            "description": "Raw analysis Ã¢ÂÂ branded HTML/PDF.",
             "priority": "medium",
             "tags": [
               "skills"
@@ -441,7 +441,7 @@
           {
             "id": "eg-20",
             "title": "Create SOW templates per product",
-            "description": "templates/sow-templates/ â one per service offering.",
+            "description": "templates/sow-templates/ Ã¢ÂÂ one per service offering.",
             "priority": "medium",
             "tags": [
               "contracts"
@@ -461,7 +461,7 @@
           {
             "id": "eg-22",
             "title": "Build Cloudflare Workers backend",
-            "description": "Twilio webhook, Claude API proxy, formâHubSpot+Brevo+Twilio, Stripe webhookâHubSpotâDocuSeal.",
+            "description": "Twilio webhook, Claude API proxy, formÃ¢ÂÂHubSpot+Brevo+Twilio, Stripe webhookÃ¢ÂÂHubSpotÃ¢ÂÂDocuSeal.",
             "priority": "high",
             "tags": [
               "backend"
@@ -521,7 +521,7 @@
           {
             "id": "eg-28",
             "title": "End-to-end launch test",
-            "description": "Fake client â enrichment â deliverable â CRM entry â follow-up. Full pipeline validation.",
+            "description": "Fake client Ã¢ÂÂ enrichment Ã¢ÂÂ deliverable Ã¢ÂÂ CRM entry Ã¢ÂÂ follow-up. Full pipeline validation.",
             "priority": "high",
             "tags": [
               "launch"
@@ -587,7 +587,7 @@
           {
             "id": "ju-t1",
             "title": "Get 3 people to purchase",
-            "description": "First 3 paying customers â validation milestone.",
+            "description": "First 3 paying customers Ã¢ÂÂ validation milestone.",
             "priority": "high",
             "tags": [
               "sales",
@@ -685,7 +685,7 @@
           },
           {
             "id": "ju-t9",
-            "title": "DNS: thejuniform.com â CF Workers",
+            "title": "DNS: thejuniform.com Ã¢ÂÂ CF Workers",
             "description": "Custom domain setup on Cloudflare Workers.",
             "priority": "medium",
             "tags": [
@@ -870,7 +870,7 @@
           },
           {
             "id": "ju-d9",
-            "title": "Amazon PA-API â Creators API migration",
+            "title": "Amazon PA-API Ã¢ÂÂ Creators API migration",
             "description": "Completed API migration.",
             "priority": "medium",
             "tags": [
@@ -1050,7 +1050,7 @@
           },
           {
             "id": "ju-d27",
-            "title": "Domain wwwâapex redirect",
+            "title": "Domain wwwÃ¢ÂÂapex redirect",
             "description": "DNS redirect configured.",
             "priority": "low",
             "tags": [

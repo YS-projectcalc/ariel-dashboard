@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T14:35:09.370Z",
+  "lastUpdated": "2026-02-19T15:13:39.088Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -272,6 +272,16 @@
               "website"
             ],
             "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-22",
+            "title": "Build Cloudflare Workers backend",
+            "description": "Twilio webhook, Claude API proxy, form→HubSpot+Brevo+Twilio, Stripe webhook→HubSpot→DocuSeal.",
+            "priority": "high",
+            "tags": [
+              "backend"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z"
           }
         ],
         "todo": [
@@ -442,16 +452,6 @@
             "priority": "medium",
             "tags": [
               "contracts"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z"
-          },
-          {
-            "id": "eg-22",
-            "title": "Build Cloudflare Workers backend",
-            "description": "Twilio webhook, Claude API proxy, form→HubSpot+Brevo+Twilio, Stripe webhook→HubSpot→DocuSeal.",
-            "priority": "high",
-            "tags": [
-              "backend"
             ],
             "createdAt": "2026-02-18T14:22:00Z"
           },

@@ -106,6 +106,27 @@ export async function onRequestPost(context) {
     return jsonResponse({ error: 'Invalid JSON body' }, 400);
   }
 
+  // Handle cancel action
+  if (body.action === 'cancel') {
+    const id = body.id;
+    if (!id) return jsonResponse({ error: 'Missing id' }, 400);
+    try {
+      const { content, sha } = await getStatusJson(token, repo);
+      if (content.changeRequests) {
+        const req = content.changeRequests.find(r => r.id === id);
+        if (req) {
+          req.status = 'cancelled';
+          req.cancelledAt = new Date().toISOString();
+          content.lastUpdated = new Date().toISOString();
+          await commitStatusJson(token, repo, content, sha, `Cancel change request: ${req.text?.slice(0, 50) || id}`);
+        }
+      }
+      return jsonResponse({ ok: true }, 200);
+    } catch (err) {
+      return jsonResponse({ error: 'Internal error', detail: err.message }, 500);
+    }
+  }
+
   const text = body.text?.trim();
   if (!text) return jsonResponse({ error: 'Missing text' }, 400);
 

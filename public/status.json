@@ -83,7 +83,7 @@
           },
           {
             "id": "sa-2",
-            "title": "Tier 1\u21922 Upgrade UX polish",
+            "title": "Tier 1→2 Upgrade UX polish",
             "description": "Two bugs: PDF double-open on success page; /pricing?email= shows full pricing page instead of streamlined upgrade flow.",
             "priority": "high",
             "tags": [
@@ -150,7 +150,7 @@
           {
             "id": "sa-4",
             "title": "Verify Tier 2 Monitoring",
-            "description": "Two customer journeys remain: Tier 0\u21922 and Tier 0\u21921\u21922.",
+            "description": "Two customer journeys remain: Tier 0→2 and Tier 0→1→2.",
             "priority": "medium",
             "tags": [
               "testing"
@@ -160,12 +160,12 @@
             "subtasks": [
               {
                 "id": "sa-4-s1",
-                "text": "Test Tier 0\u21922 direct purchase journey",
+                "text": "Test Tier 0→2 direct purchase journey",
                 "done": false
               },
               {
                 "id": "sa-4-s2",
-                "text": "Test Tier 0\u21921\u21922 upgrade journey",
+                "text": "Test Tier 0→1→2 upgrade journey",
                 "done": false
               }
             ]
@@ -304,7 +304,7 @@
           },
           {
             "id": "sa-13",
-            "title": "Branding \u2014 favicon & logo",
+            "title": "Branding — favicon & logo",
             "description": "Still needed.",
             "priority": "medium",
             "tags": [
@@ -372,7 +372,7 @@
           {
             "id": "sa-17",
             "title": "Agency white-label program",
-            "description": "Growth opportunity \u2014 not started.",
+            "description": "Growth opportunity — not started.",
             "priority": "low",
             "tags": [
               "growth"
@@ -397,7 +397,7 @@
     },
     {
       "id": "epiphany-guy",
-      "name": "Epiphany Guy",
+      "name": "Epiphany Made",
       "color": "#f59e0b",
       "icon": "E",
       "status": "active",
@@ -620,7 +620,7 @@
           {
             "id": "eg-14",
             "title": "Build crm-entry-generator skill",
-            "description": "Deliverable \u2192 structured HubSpot JSON.",
+            "description": "Deliverable → structured HubSpot JSON.",
             "priority": "medium",
             "tags": [
               "skills"
@@ -650,7 +650,7 @@
           {
             "id": "eg-17",
             "title": "Build monthly-client-report skill",
-            "description": "Metrics \u2192 one-page report + upsell rec.",
+            "description": "Metrics → one-page report + upsell rec.",
             "priority": "medium",
             "tags": [
               "skills"
@@ -660,7 +660,7 @@
           {
             "id": "eg-18",
             "title": "Build report-formatter skill",
-            "description": "Raw analysis \u2192 branded HTML/PDF.",
+            "description": "Raw analysis → branded HTML/PDF.",
             "priority": "medium",
             "tags": [
               "skills"
@@ -680,7 +680,7 @@
           {
             "id": "eg-20",
             "title": "Create SOW templates per product",
-            "description": "templates/sow-templates/ \u2014 one per service offering.",
+            "description": "templates/sow-templates/ — one per service offering.",
             "priority": "medium",
             "tags": [
               "contracts"
@@ -772,7 +772,7 @@
           {
             "id": "eg-28",
             "title": "End-to-end launch test",
-            "description": "Fake client \u2192 enrichment \u2192 deliverable \u2192 CRM entry \u2192 follow-up. Full pipeline validation.",
+            "description": "Fake client → enrichment → deliverable → CRM entry → follow-up. Full pipeline validation.",
             "priority": "high",
             "tags": [
               "launch"
@@ -809,7 +809,7 @@
           {
             "id": "eg-22",
             "title": "Build Cloudflare Workers backend",
-            "description": "Twilio webhook, Claude API proxy, form\u2192HubSpot+Brevo+Twilio, Stripe webhook\u2192HubSpot\u2192DocuSeal.",
+            "description": "Twilio webhook, Claude API proxy, form→HubSpot+Brevo+Twilio, Stripe webhook→HubSpot→DocuSeal.",
             "priority": "high",
             "tags": [
               "backend"
@@ -828,12 +828,12 @@
               },
               {
                 "id": "eg-22-s3",
-                "text": "Build form\u2192HubSpot+Brevo+Twilio worker",
+                "text": "Build form→HubSpot+Brevo+Twilio worker",
                 "done": false
               },
               {
                 "id": "eg-22-s4",
-                "text": "Build Stripe webhook\u2192HubSpot\u2192DocuSeal worker",
+                "text": "Build Stripe webhook→HubSpot→DocuSeal worker",
                 "done": false
               }
             ]
@@ -927,7 +927,7 @@
           {
             "id": "ju-t1",
             "title": "Get 3 people to purchase",
-            "description": "First 3 paying customers \u2014 validation milestone.",
+            "description": "First 3 paying customers — validation milestone.",
             "priority": "high",
             "tags": [
               "sales",
@@ -1098,7 +1098,7 @@
           },
           {
             "id": "ju-t9",
-            "title": "DNS: thejuniform.com \u2192 CF Workers",
+            "title": "DNS: thejuniform.com → CF Workers",
             "description": "Custom domain setup on Cloudflare Workers.",
             "priority": "medium",
             "tags": [
@@ -1283,7 +1283,7 @@
           },
           {
             "id": "ju-d9",
-            "title": "Amazon PA-API \u2192 Creators API migration",
+            "title": "Amazon PA-API → Creators API migration",
             "description": "Completed API migration.",
             "priority": "medium",
             "tags": [
@@ -1463,7 +1463,7 @@
           },
           {
             "id": "ju-d27",
-            "title": "Domain www\u2192apex redirect",
+            "title": "Domain www→apex redirect",
             "description": "DNS redirect configured.",
             "priority": "low",
             "tags": [
@@ -1567,7 +1567,9 @@
       "id": "mltt9eiu",
       "text": "Please add a feature to cancel a change request",
       "createdAt": "2026-02-19T18:45:05.862Z",
-      "status": "pending"
+      "status": "done",
+      "resolvedAt": "2026-02-19T19:01:00Z",
+      "resolution": "Cancel button added to pending change requests in Ariel sidebar"
     }
   ]
 }

@@ -974,7 +974,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
             {task.title}
           </div>
           {task.description && !isDone && (
-            <div style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.4, marginBottom: '8px' }}>
+            <div style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
               {task.description}
             </div>
           )}
@@ -1268,31 +1268,6 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
           </div>
         )}
       </div>
-      {/* Collapse/uncollapse arrow at bottom right */}
-      {!isDone && (
-        <div
-          onClick={(e) => { e.stopPropagation(); setSubtasksExpanded(!subtasksExpanded); }}
-          title={subtasksExpanded ? 'Collapse subtasks' : 'Expand subtasks'}
-          style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
-            marginTop: '6px', cursor: 'pointer', padding: '2px 0',
-          }}
-        >
-          <svg
-            width="16" height="16" viewBox="0 0 16 16" fill="none"
-            stroke={(task.subtasks && task.subtasks.length > 0) ? '#4ade80' : '#475569'}
-            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-            style={{
-              transition: 'transform 0.2s, stroke 0.2s',
-              transform: subtasksExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-            }}
-            onMouseEnter={e => e.currentTarget.style.stroke = '#4ade80'}
-            onMouseLeave={e => e.currentTarget.style.stroke = (task.subtasks && task.subtasks.length > 0) ? '#4ade80' : '#475569'}
-          >
-            <path d="M4 6L8 10L12 6"/>
-          </svg>
-        </div>
-      )}
     </div>
   );
 }
@@ -2197,11 +2172,32 @@ function ArielSidebar({ isOpen, onToggle }) {
             {changeRequests.map(cr => (
               <div key={cr.id} style={{
                 padding: '10px', backgroundColor: '#163344', borderRadius: '8px',
-                marginBottom: '6px', borderLeft: '3px solid #8b5cf6',
+                marginBottom: '6px', borderLeft: `3px solid ${cr.status === 'cancelled' ? '#475569' : cr.status === 'done' ? '#4ade80' : '#8b5cf6'}`,
+                opacity: cr.status === 'cancelled' ? 0.5 : 1,
               }}>
                 <div style={{ fontSize: '13px', color: '#f8fafc', lineHeight: 1.4 }}>{cr.text}</div>
-                <div style={{ fontSize: '10px', color: '#475569', marginTop: '4px' }}>
-                  {cr.status} &middot; {timeAgo(cr.createdAt)}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px' }}>
+                  <div style={{ fontSize: '10px', color: '#475569' }}>
+                    {cr.status} &middot; {timeAgo(cr.createdAt)}
+                  </div>
+                  {cr.status === 'pending' && (
+                    <button
+                      onClick={() => {
+                        const updated = changeRequests.map(r => r.id === cr.id ? { ...r, status: 'cancelled' } : r);
+                        setChangeRequests(updated);
+                        localStorage.setItem('cc_change_requests', JSON.stringify(updated));
+                        fetch('/api/change-request', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ action: 'cancel', id: cr.id }),
+                        }).catch(() => {});
+                      }}
+                      style={{
+                        background: 'none', border: '1px solid #334155', borderRadius: '4px',
+                        color: '#64748b', fontSize: '10px', cursor: 'pointer', padding: '2px 6px',
+                      }}
+                    >Cancel</button>
+                  )}
                 </div>
               </div>
             ))}

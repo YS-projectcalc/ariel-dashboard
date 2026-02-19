@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T18:32:00.000Z",
+  "lastUpdated": "2026-02-19T18:55:00.000Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -23,7 +23,29 @@
             ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z",
-            "promotedAt": "2026-02-18T14:46:49.555Z"
+            "promotedAt": "2026-02-18T14:46:49.555Z",
+            "subtasks": [
+              {
+                "id": "sa-1-s1",
+                "text": "Swap 6 Stripe env vars from test to live keys",
+                "done": false
+              },
+              {
+                "id": "sa-1-s2",
+                "text": "Register live webhook endpoint in Stripe dashboard",
+                "done": false
+              },
+              {
+                "id": "sa-1-s3",
+                "text": "Run test transaction (Tier 1 purchase) end-to-end",
+                "done": false
+              },
+              {
+                "id": "sa-1-s4",
+                "text": "Run test transaction (Tier 2 upgrade) end-to-end",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-3",
@@ -35,7 +57,29 @@
             ],
             "assignee": "mordy",
             "createdAt": "2026-02-18T14:25:00Z",
-            "promotedAt": "2026-02-18T14:46:49.555Z"
+            "promotedAt": "2026-02-18T14:46:49.555Z",
+            "subtasks": [
+              {
+                "id": "sa-3-s1",
+                "text": "Set up Firecrawl API key and test basic scrape",
+                "done": false
+              },
+              {
+                "id": "sa-3-s2",
+                "text": "Replace fetch+Cheerio scraping code with Firecrawl calls",
+                "done": false
+              },
+              {
+                "id": "sa-3-s3",
+                "text": "Test on JS-rendered sites that currently fail",
+                "done": false
+              },
+              {
+                "id": "sa-3-s4",
+                "text": "Test on bot-blocked sites that currently fail",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-2",
@@ -48,7 +92,19 @@
             ],
             "assignee": "yaakov",
             "createdAt": "2026-02-18T14:25:00Z",
-            "promotedAt": "2026-02-18T14:46:49.555Z"
+            "promotedAt": "2026-02-18T14:46:49.555Z",
+            "subtasks": [
+              {
+                "id": "sa-2-s1",
+                "text": "Fix PDF double-open on success page",
+                "done": false
+              },
+              {
+                "id": "sa-2-s2",
+                "text": "Fix /pricing?email= showing full pricing page instead of streamlined upgrade flow",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-16",
@@ -59,7 +115,24 @@
               "operational"
             ],
             "createdAt": "2026-02-18T14:25:00Z",
-            "promotedAt": "2026-02-18T14:46:49.555Z"
+            "promotedAt": "2026-02-18T14:46:49.555Z",
+            "subtasks": [
+              {
+                "id": "sa-16-s1",
+                "text": "Set up GA4 property and add tracking snippet",
+                "done": false
+              },
+              {
+                "id": "sa-16-s2",
+                "text": "Configure key events (scan started, report generated, purchase)",
+                "done": false
+              },
+              {
+                "id": "sa-16-s3",
+                "text": "Set up conversion tracking for Stripe checkout",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-15",
@@ -83,7 +156,19 @@
               "testing"
             ],
             "assignee": "mordy",
-            "createdAt": "2026-02-18T14:25:00Z"
+            "createdAt": "2026-02-18T14:25:00Z",
+            "subtasks": [
+              {
+                "id": "sa-4-s1",
+                "text": "Test Tier 0→2 direct purchase journey",
+                "done": false
+              },
+              {
+                "id": "sa-4-s2",
+                "text": "Test Tier 0→1→2 upgrade journey",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-5",
@@ -116,7 +201,19 @@
               "email"
             ],
             "assignee": "mordy",
-            "createdAt": "2026-02-18T14:25:00Z"
+            "createdAt": "2026-02-18T14:25:00Z",
+            "subtasks": [
+              {
+                "id": "sa-7-s1",
+                "text": "Finalize upgrade reminder email copy",
+                "done": false
+              },
+              {
+                "id": "sa-7-s2",
+                "text": "Update CTA URLs with ?email= param",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-8",
@@ -138,7 +235,24 @@
               "email"
             ],
             "assignee": "mordy",
-            "createdAt": "2026-02-18T14:25:00Z"
+            "createdAt": "2026-02-18T14:25:00Z",
+            "subtasks": [
+              {
+                "id": "sa-9-s1",
+                "text": "Create transactional email templates in Loops",
+                "done": false
+              },
+              {
+                "id": "sa-9-s2",
+                "text": "Wire up template IDs in codebase",
+                "done": false
+              },
+              {
+                "id": "sa-9-s3",
+                "text": "Test each transactional email fires correctly",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-10",
@@ -158,7 +272,24 @@
             "priority": "medium",
             "tags": [],
             "assignee": "mordy",
-            "createdAt": "2026-02-18T14:25:00Z"
+            "createdAt": "2026-02-18T14:25:00Z",
+            "subtasks": [
+              {
+                "id": "sa-11-s1",
+                "text": "Design monthly re-scan reminder email template",
+                "done": false
+              },
+              {
+                "id": "sa-11-s2",
+                "text": "Build cron/trigger logic for 30-day re-scan",
+                "done": false
+              },
+              {
+                "id": "sa-11-s3",
+                "text": "Test reminder delivery and re-scan flow",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-12",
@@ -180,7 +311,24 @@
               "branding"
             ],
             "assignee": "mordy",
-            "createdAt": "2026-02-18T14:25:00Z"
+            "createdAt": "2026-02-18T14:25:00Z",
+            "subtasks": [
+              {
+                "id": "sa-13-s1",
+                "text": "Design favicon (multiple sizes)",
+                "done": false
+              },
+              {
+                "id": "sa-13-s2",
+                "text": "Design logo (light + dark variants)",
+                "done": false
+              },
+              {
+                "id": "sa-13-s3",
+                "text": "Add favicon to site head + manifest",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-14",
@@ -191,7 +339,24 @@
               "security"
             ],
             "assignee": "mordy",
-            "createdAt": "2026-02-18T14:25:00Z"
+            "createdAt": "2026-02-18T14:25:00Z",
+            "subtasks": [
+              {
+                "id": "sa-14-s1",
+                "text": "Create Cloudflare Turnstile site key",
+                "done": false
+              },
+              {
+                "id": "sa-14-s2",
+                "text": "Add Turnstile widget to /api/scan frontend",
+                "done": false
+              },
+              {
+                "id": "sa-14-s3",
+                "text": "Add server-side token verification on /api/scan endpoint",
+                "done": false
+              }
+            ]
           },
           {
             "id": "sa-19",
@@ -232,37 +397,13 @@
     },
     {
       "id": "epiphany-guy",
-      "name": "Epiphany Guy",
+      "name": "Epiphany Made",
       "color": "#f59e0b",
       "icon": "E",
       "status": "active",
       "description": "AI Agency",
       "tasks": {
         "upnext": [
-          {
-            "id": "eg-1",
-            "title": "Pick agency name",
-            "description": "Replaces {{AGENCY_NAME}} everywhere. Blocking all downstream work.",
-            "priority": "low",
-            "tags": [
-              "blocking",
-              "foundation"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z",
-            "promotedAt": "2026-02-18T14:46:49.556Z"
-          },
-          {
-            "id": "eg-2",
-            "title": "Register domain",
-            "description": "Depends on agency name decision.",
-            "priority": "high",
-            "tags": [
-              "blocking",
-              "foundation"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z",
-            "promotedAt": "2026-02-18T14:46:49.556Z"
-          },
           {
             "id": "eg-21",
             "title": "Build agency website",
@@ -271,7 +412,76 @@
             "tags": [
               "website"
             ],
-            "createdAt": "2026-02-18T14:22:00Z"
+            "createdAt": "2026-02-18T14:22:00Z",
+            "subtasks": [
+              {
+                "id": "eg-21-s1",
+                "text": "Build hero section with value prop",
+                "done": false
+              },
+              {
+                "id": "eg-21-s2",
+                "text": "Build 3 interactive demo sections",
+                "done": false
+              },
+              {
+                "id": "eg-21-s3",
+                "text": "Build services section",
+                "done": false
+              },
+              {
+                "id": "eg-21-s4",
+                "text": "Build contact/intake form",
+                "done": false
+              },
+              {
+                "id": "eg-21-s5",
+                "text": "Add social proof section",
+                "done": false
+              },
+              {
+                "id": "eg-21-s6",
+                "text": "SEO + analytics + branding pass",
+                "done": false
+              },
+              {
+                "id": "eg-21-s7",
+                "text": "QC and deploy to Cloudflare Pages",
+                "done": false
+              }
+            ]
+          },
+          {
+            "id": "eg-29",
+            "title": "Deploy & go live",
+            "description": "Deploy website, workers, VPS scripts. Go live on platforms.",
+            "priority": "high",
+            "tags": [
+              "launch"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z",
+            "subtasks": [
+              {
+                "id": "eg-29-s1",
+                "text": "Deploy website to Cloudflare Pages",
+                "done": false
+              },
+              {
+                "id": "eg-29-s2",
+                "text": "Deploy Workers to production",
+                "done": false
+              },
+              {
+                "id": "eg-29-s3",
+                "text": "Deploy VPS scripts and start crons",
+                "done": false
+              },
+              {
+                "id": "eg-29-s4",
+                "text": "Go live on Fiverr/Upwork",
+                "done": false
+              }
+            ]
           }
         ],
         "todo": [
@@ -280,7 +490,10 @@
             "title": "Newsletter",
             "description": "Set up and launch newsletter for Epiphany Guy.",
             "priority": "medium",
-            "tags": ["marketing", "content"],
+            "tags": [
+              "marketing",
+              "content"
+            ],
             "createdAt": "2026-02-19T18:32:00Z"
           },
           {
@@ -288,7 +501,10 @@
             "title": "Custom funnel building",
             "description": "Build custom funnels for Epiphany Guy client acquisition/services.",
             "priority": "medium",
-            "tags": ["marketing", "funnels"],
+            "tags": [
+              "marketing",
+              "funnels"
+            ],
             "createdAt": "2026-02-19T18:32:00Z"
           },
           {
@@ -296,7 +512,9 @@
             "title": "Workflow automation",
             "description": "Build workflow automation capabilities. Sample: email triggered by keywords.",
             "priority": "medium",
-            "tags": ["automation"],
+            "tags": [
+              "automation"
+            ],
             "createdAt": "2026-02-19T18:32:00Z"
           },
           {
@@ -477,7 +695,39 @@
             "tags": [
               "automation"
             ],
-            "createdAt": "2026-02-18T14:22:00Z"
+            "createdAt": "2026-02-18T14:22:00Z",
+            "subtasks": [
+              {
+                "id": "eg-23-s1",
+                "text": "Build daily follow-up cron script",
+                "done": false
+              },
+              {
+                "id": "eg-23-s2",
+                "text": "Build webhook listeners (Stripe, HubSpot, DocuSeal)",
+                "done": false
+              },
+              {
+                "id": "eg-23-s3",
+                "text": "Build demo interaction tracking",
+                "done": false
+              },
+              {
+                "id": "eg-23-s4",
+                "text": "Build holding pattern email automation",
+                "done": false
+              },
+              {
+                "id": "eg-23-s5",
+                "text": "Build monthly report generator",
+                "done": false
+              },
+              {
+                "id": "eg-23-s6",
+                "text": "Set up Sentry error monitoring",
+                "done": false
+              }
+            ]
           },
           {
             "id": "eg-24",
@@ -527,17 +777,34 @@
             "tags": [
               "launch"
             ],
-            "createdAt": "2026-02-18T14:22:00Z"
-          },
-          {
-            "id": "eg-29",
-            "title": "Deploy & go live",
-            "description": "Deploy website, workers, VPS scripts. Go live on platforms.",
-            "priority": "high",
-            "tags": [
-              "launch"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z"
+            "createdAt": "2026-02-18T14:22:00Z",
+            "subtasks": [
+              {
+                "id": "eg-28-s1",
+                "text": "Create fake client test data",
+                "done": false
+              },
+              {
+                "id": "eg-28-s2",
+                "text": "Run through enrichment pipeline",
+                "done": false
+              },
+              {
+                "id": "eg-28-s3",
+                "text": "Verify deliverable generation",
+                "done": false
+              },
+              {
+                "id": "eg-28-s4",
+                "text": "Verify CRM entry creation in HubSpot",
+                "done": false
+              },
+              {
+                "id": "eg-28-s5",
+                "text": "Verify follow-up email sequence triggers",
+                "done": false
+              }
+            ]
           },
           {
             "id": "eg-22",
@@ -547,7 +814,29 @@
             "tags": [
               "backend"
             ],
-            "createdAt": "2026-02-18T14:22:00Z"
+            "createdAt": "2026-02-18T14:22:00Z",
+            "subtasks": [
+              {
+                "id": "eg-22-s1",
+                "text": "Build Twilio webhook handler (missed call text-back)",
+                "done": false
+              },
+              {
+                "id": "eg-22-s2",
+                "text": "Build Claude API proxy worker",
+                "done": false
+              },
+              {
+                "id": "eg-22-s3",
+                "text": "Build form→HubSpot+Brevo+Twilio worker",
+                "done": false
+              },
+              {
+                "id": "eg-22-s4",
+                "text": "Build Stripe webhook→HubSpot→DocuSeal worker",
+                "done": false
+              }
+            ]
           }
         ],
         "in_progress": [],
@@ -596,6 +885,32 @@
             "createdAt": "2026-02-18T14:22:00Z",
             "promotedAt": "2026-02-18T14:46:49.556Z",
             "completedAt": "2026-02-19T14:34:43.681Z"
+          },
+          {
+            "id": "eg-2",
+            "title": "Register domain",
+            "description": "Depends on agency name decision.",
+            "priority": "high",
+            "tags": [
+              "blocking",
+              "foundation"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z",
+            "completedAt": "2026-02-19T18:51:15.025Z"
+          },
+          {
+            "id": "eg-1",
+            "title": "Pick agency name",
+            "description": "Replaces {{AGENCY_NAME}} everywhere. Blocking all downstream work.",
+            "priority": "low",
+            "tags": [
+              "blocking",
+              "foundation"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z",
+            "completedAt": "2026-02-19T18:51:16.246Z"
           }
         ]
       }
@@ -619,7 +934,24 @@
               "validation"
             ],
             "createdAt": "2026-02-18T14:26:00Z",
-            "promotedAt": "2026-02-18T14:46:49.556Z"
+            "promotedAt": "2026-02-18T14:46:49.556Z",
+            "subtasks": [
+              {
+                "id": "ju-t1-s1",
+                "text": "Identify 10 target people to reach out to",
+                "done": false
+              },
+              {
+                "id": "ju-t1-s2",
+                "text": "Send personalized outreach messages",
+                "done": false
+              },
+              {
+                "id": "ju-t1-s3",
+                "text": "Follow up and close 3 purchases",
+                "done": false
+              }
+            ]
           },
           {
             "id": "ju-t2",
@@ -630,7 +962,24 @@
               "product"
             ],
             "createdAt": "2026-02-18T14:26:00Z",
-            "promotedAt": "2026-02-18T14:46:49.556Z"
+            "promotedAt": "2026-02-18T14:46:49.556Z",
+            "subtasks": [
+              {
+                "id": "ju-t2-s1",
+                "text": "Update DB schema for size/color/style variants",
+                "done": false
+              },
+              {
+                "id": "ju-t2-s2",
+                "text": "Update product UI to show variation selector",
+                "done": false
+              },
+              {
+                "id": "ju-t2-s3",
+                "text": "Update scrapers to capture variation data",
+                "done": false
+              }
+            ]
           },
           {
             "id": "ju-t3",
@@ -641,7 +990,24 @@
               "images"
             ],
             "createdAt": "2026-02-18T14:26:00Z",
-            "promotedAt": "2026-02-18T14:46:49.556Z"
+            "promotedAt": "2026-02-18T14:46:49.556Z",
+            "subtasks": [
+              {
+                "id": "ju-t3-s1",
+                "text": "Audit current image pipeline for broken/missing images",
+                "done": false
+              },
+              {
+                "id": "ju-t3-s2",
+                "text": "Fix any broken image processing steps",
+                "done": false
+              },
+              {
+                "id": "ju-t3-s3",
+                "text": "Verify consistent output quality across all products",
+                "done": false
+              }
+            ]
           }
         ],
         "todo": [
@@ -665,7 +1031,29 @@
               "website",
               "ux"
             ],
-            "createdAt": "2026-02-18T14:26:00Z"
+            "createdAt": "2026-02-18T14:26:00Z",
+            "subtasks": [
+              {
+                "id": "ju-t4-s1",
+                "text": "Design new homepage layout/wireframe",
+                "done": false
+              },
+              {
+                "id": "ju-t4-s2",
+                "text": "Implement hero section redesign",
+                "done": false
+              },
+              {
+                "id": "ju-t4-s3",
+                "text": "Implement product showcase sections",
+                "done": false
+              },
+              {
+                "id": "ju-t4-s4",
+                "text": "Mobile responsive pass",
+                "done": false
+              }
+            ]
           },
           {
             "id": "ju-t5",
@@ -1100,7 +1488,10 @@
             "title": "Make sure Tuli gets the spreadsheet and is working on low-hanging fruit",
             "description": "Follow up with Tuli to ensure she has the spreadsheet and is actively working on the low-hanging fruit items.",
             "priority": "high",
-            "tags": ["operations", "follow-up"],
+            "tags": [
+              "operations",
+              "follow-up"
+            ],
             "assignee": "yaakov",
             "createdAt": "2026-02-19T18:32:00Z",
             "promotedAt": "2026-02-19T18:32:00Z"
@@ -1171,6 +1562,12 @@
       "status": "done",
       "resolvedAt": "2026-02-19T18:30:00Z",
       "resolution": "Fixed: drag-to-position (Y-coord based insert) + scrollbars hidden"
+    },
+    {
+      "id": "mltt9eiu",
+      "text": "Please add a feature to cancel a change request",
+      "createdAt": "2026-02-19T18:45:05.862Z",
+      "status": "pending"
     }
   ]
 }

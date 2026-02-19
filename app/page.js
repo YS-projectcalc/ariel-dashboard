@@ -2168,42 +2168,39 @@ function ArielSidebar({ isOpen, onToggle }) {
           </div>
         )}
 
-        {/* Change Requests */}
-        {changeRequests.length > 0 && (
+        {/* Change Requests — only show pending */}
+        {changeRequests.filter(cr => cr.status === 'pending').length > 0 && (
           <div style={{ marginBottom: '24px' }}>
             <div style={{
               fontSize: '11px', fontWeight: 700, color: '#64748b',
               textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '10px',
             }}>Change Requests</div>
-            {changeRequests.map(cr => (
+            {changeRequests.filter(cr => cr.status === 'pending').map(cr => (
               <div key={cr.id} style={{
                 padding: '10px', backgroundColor: '#163344', borderRadius: '8px',
-                marginBottom: '6px', borderLeft: `3px solid ${cr.status === 'cancelled' ? '#475569' : cr.status === 'done' ? '#4ade80' : '#8b5cf6'}`,
-                opacity: cr.status === 'cancelled' ? 0.5 : 1,
+                marginBottom: '6px', borderLeft: '3px solid #8b5cf6',
               }}>
                 <div style={{ fontSize: '13px', color: '#f8fafc', lineHeight: 1.4 }}>{cr.text}</div>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '6px' }}>
                   <div style={{ fontSize: '10px', color: '#475569' }}>
-                    {cr.status} &middot; {timeAgo(cr.createdAt)}
+                    pending &middot; {timeAgo(cr.createdAt)}
                   </div>
-                  {cr.status === 'pending' && (
-                    <button
-                      onClick={() => {
-                        const updated = changeRequests.map(r => r.id === cr.id ? { ...r, status: 'cancelled' } : r);
-                        setChangeRequests(updated);
-                        localStorage.setItem('cc_change_requests', JSON.stringify(updated));
-                        fetch('/api/change-request', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ action: 'cancel', id: cr.id }),
-                        }).catch(() => {});
-                      }}
-                      style={{
-                        background: 'none', border: '1px solid #334155', borderRadius: '4px',
-                        color: '#64748b', fontSize: '10px', cursor: 'pointer', padding: '2px 6px',
-                      }}
-                    >Cancel</button>
-                  )}
+                  <button
+                    onClick={() => {
+                      const updated = changeRequests.map(r => r.id === cr.id ? { ...r, status: 'cancelled' } : r);
+                      setChangeRequests(updated);
+                      localStorage.setItem('cc_change_requests', JSON.stringify(updated));
+                      fetch('/api/change-request', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'cancel', id: cr.id }),
+                      }).catch(() => {});
+                    }}
+                    style={{
+                      background: 'none', border: '1px solid #334155', borderRadius: '4px',
+                      color: '#64748b', fontSize: '10px', cursor: 'pointer', padding: '2px 6px',
+                    }}
+                  >Cancel</button>
                 </div>
               </div>
             ))}

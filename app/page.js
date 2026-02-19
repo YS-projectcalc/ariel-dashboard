@@ -883,6 +883,8 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
   const dueDate = dueDates[task.id] || task.dueDate;
   const isOverdue = dueDate && new Date(dueDate) < new Date() && !isDone;
 
+  const pickerOpen = showDuePicker || showReminder;
+
   return (
     <div
       draggable="true"
@@ -923,6 +925,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
         transition: 'opacity 0.2s',
         cursor: 'grab',
         position: 'relative',
+        zIndex: pickerOpen ? 500 : 'auto',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
@@ -1078,6 +1081,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
 
 function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop, onAddTask, showAddForm, onToggleAddForm, dueDates, onSetDueDate, onEdit, onReorder }) {
   const [dragOver, setDragOver] = useState(false);
+  const dragCounterRef = useRef(0);
 
   return (
     <div style={{ flex: 1, minWidth: '220px' }}>
@@ -1104,10 +1108,10 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
       </div>
       <div
         onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }}
-        onDragEnter={(e) => { e.preventDefault(); if (e.currentTarget === e.target || !e.currentTarget.contains(e.relatedTarget)) setDragOver(true); }}
-        onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}
+        onDragEnter={(e) => { e.preventDefault(); dragCounterRef.current++; setDragOver(true); }}
+        onDragLeave={(e) => { dragCounterRef.current--; if (dragCounterRef.current === 0) setDragOver(false); }}
         onDrop={(e) => {
-          e.preventDefault(); setDragOver(false);
+          e.preventDefault(); dragCounterRef.current = 0; setDragOver(false);
           const taskId = e.dataTransfer.getData('text/plain');
           if (taskId && onDrop) onDrop(taskId, columnId);
         }}
@@ -1851,7 +1855,7 @@ function ArielSidebar({ isOpen, onToggle }) {
           borderRadius: '8px 0 0 8px',
           color: '#94a3b8', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '14px', zIndex: 101,
+          fontSize: '14px', zIndex: 102,
           transition: 'right 0.2s',
         }}
         title="Ariel Panel"
@@ -1861,10 +1865,11 @@ function ArielSidebar({ isOpen, onToggle }) {
 
       {/* Sidebar panel */}
       <div style={{
-        position: 'fixed', right: isOpen ? 0 : '-340px', top: 0, bottom: 0,
-        width: '340px', maxWidth: '90vw', backgroundColor: '#0f2233',
+        position: 'fixed', right: 0, top: 0, bottom: 0,
+        width: 'min(340px, 90vw)', backgroundColor: '#0f2233',
         borderLeft: '1px solid #1e4258',
-        zIndex: 100, transition: 'right 0.2s',
+        zIndex: 101, transition: 'transform 0.2s',
+        transform: isOpen ? 'translateX(0)' : 'translateX(100%)',
         overflowY: 'auto', padding: '24px', boxSizing: 'border-box',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '24px' }}>
@@ -2188,7 +2193,7 @@ export default function Home() {
       minHeight: '100vh', backgroundColor: '#143d4f', padding: '24px',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
-      marginRight: sidebarOpen ? 'min(340px, 90vw)' : '0',
+      marginRight: sidebarOpen ? 'min(340px, 90vw)' : '32px',
       transition: 'margin-right 0.2s',
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>

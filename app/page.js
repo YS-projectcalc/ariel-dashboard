@@ -896,6 +896,10 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
       }}
       onDragEnd={(e) => {
         e.currentTarget.style.opacity = isDone ? '0.6' : '1';
+        // Belt-and-suspenders: reset all column drag states when any drag ends
+        document.querySelectorAll('[data-drop-column]').forEach(el => {
+          el.dispatchEvent(new CustomEvent('dragreset'));
+        });
       }}
       onDragOver={(e) => {
         e.preventDefault();
@@ -906,6 +910,9 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
         e.preventDefault();
         e.stopPropagation();
       }}
+      onDragLeave={(e) => {
+        e.stopPropagation();
+      }}
       onDrop={(e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -913,6 +920,10 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
         if (draggedId && draggedId !== task.id && onReorder) {
           onReorder(draggedId, task.id);
         }
+        // Reset all column drag states
+        document.querySelectorAll('[data-drop-column]').forEach(el => {
+          el.dispatchEvent(new CustomEvent('dragreset'));
+        });
       }}
       onDoubleClick={() => { if (onEdit && !isDone) onEdit(task); }}
       style={{
@@ -1083,11 +1094,18 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
   const [dragOver, setDragOver] = useState(false);
   const dragCounterRef = useRef(0);
 
-  // Reset drag state when any drag operation ends (handles card-to-card drops that stopPropagation)
+  const columnRef = useRef(null);
+
+  // Reset drag state when any drag operation ends OR when a card-to-card drop fires dragreset
   useEffect(() => {
     const reset = () => { dragCounterRef.current = 0; setDragOver(false); };
     document.addEventListener('dragend', reset);
-    return () => document.removeEventListener('dragend', reset);
+    const el = columnRef.current;
+    if (el) el.addEventListener('dragreset', reset);
+    return () => {
+      document.removeEventListener('dragend', reset);
+      if (el) el.removeEventListener('dragreset', reset);
+    };
   }, []);
 
   return (
@@ -1114,6 +1132,8 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
         )}
       </div>
       <div
+        ref={columnRef}
+        data-drop-column={columnId}
         onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; }}
         onDragEnter={(e) => { e.preventDefault(); dragCounterRef.current++; setDragOver(true); }}
         onDragLeave={(e) => { dragCounterRef.current--; if (dragCounterRef.current === 0) setDragOver(false); }}

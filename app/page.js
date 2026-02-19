@@ -2470,7 +2470,7 @@ export default function Home() {
   useEffect(() => {
     const load = async () => {
       try {
-        const res = await fetch('/status.json?t=' + Date.now());
+        const res = await fetch('/api/status?t=' + Date.now());
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         setData(await res.json());
       } catch (e) { setError(e.message); }

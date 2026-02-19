@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T18:51:15.025Z",
+  "lastUpdated": "2026-02-19T18:51:16.246Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -239,18 +239,6 @@
       "description": "AI Agency",
       "tasks": {
         "upnext": [
-          {
-            "id": "eg-1",
-            "title": "Pick agency name",
-            "description": "Replaces {{AGENCY_NAME}} everywhere. Blocking all downstream work.",
-            "priority": "low",
-            "tags": [
-              "blocking",
-              "foundation"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z",
-            "promotedAt": "2026-02-18T14:46:49.556Z"
-          },
           {
             "id": "eg-21",
             "title": "Build agency website",
@@ -605,6 +593,19 @@
             "createdAt": "2026-02-18T14:22:00Z",
             "promotedAt": "2026-02-18T14:46:49.556Z",
             "completedAt": "2026-02-19T18:51:15.025Z"
+          },
+          {
+            "id": "eg-1",
+            "title": "Pick agency name",
+            "description": "Replaces {{AGENCY_NAME}} everywhere. Blocking all downstream work.",
+            "priority": "low",
+            "tags": [
+              "blocking",
+              "foundation"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z",
+            "completedAt": "2026-02-19T18:51:16.246Z"
           }
         ]
       }

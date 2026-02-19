@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T18:32:00.000Z",
+  "lastUpdated": "2026-02-19T18:45:04.594Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -280,7 +280,10 @@
             "title": "Newsletter",
             "description": "Set up and launch newsletter for Epiphany Guy.",
             "priority": "medium",
-            "tags": ["marketing", "content"],
+            "tags": [
+              "marketing",
+              "content"
+            ],
             "createdAt": "2026-02-19T18:32:00Z"
           },
           {
@@ -288,7 +291,10 @@
             "title": "Custom funnel building",
             "description": "Build custom funnels for Epiphany Guy client acquisition/services.",
             "priority": "medium",
-            "tags": ["marketing", "funnels"],
+            "tags": [
+              "marketing",
+              "funnels"
+            ],
             "createdAt": "2026-02-19T18:32:00Z"
           },
           {
@@ -296,7 +302,9 @@
             "title": "Workflow automation",
             "description": "Build workflow automation capabilities. Sample: email triggered by keywords.",
             "priority": "medium",
-            "tags": ["automation"],
+            "tags": [
+              "automation"
+            ],
             "createdAt": "2026-02-19T18:32:00Z"
           },
           {
@@ -1100,7 +1108,10 @@
             "title": "Make sure Tuli gets the spreadsheet and is working on low-hanging fruit",
             "description": "Follow up with Tuli to ensure she has the spreadsheet and is actively working on the low-hanging fruit items.",
             "priority": "high",
-            "tags": ["operations", "follow-up"],
+            "tags": [
+              "operations",
+              "follow-up"
+            ],
             "assignee": "yaakov",
             "createdAt": "2026-02-19T18:32:00Z",
             "promotedAt": "2026-02-19T18:32:00Z"
@@ -1171,6 +1182,12 @@
       "status": "done",
       "resolvedAt": "2026-02-19T18:30:00Z",
       "resolution": "Fixed: drag-to-position (Y-coord based insert) + scrollbars hidden"
+    },
+    {
+      "id": "mltt9eiu",
+      "text": "Please add a feature to cancel a change request",
+      "createdAt": "2026-02-19T18:45:05.862Z",
+      "status": "pending"
     }
   ]
 }

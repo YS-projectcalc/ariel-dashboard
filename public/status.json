@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T18:55:00.000Z",
+  "lastUpdated": "2026-02-19T19:28:36.995Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -1570,6 +1570,12 @@
       "status": "done",
       "resolvedAt": "2026-02-19T19:01:00Z",
       "resolution": "Cancel button added to pending change requests in Ariel sidebar"
+    },
+    {
+      "id": "mltutcz9",
+      "text": "Can you make standard card size 25% longer and cards should always be same size, even if the title is long- max 2 lines. To make more space, let's put the 3 icons (edit, calendar, alert) vertical on the right side",
+      "createdAt": "2026-02-19T19:28:36.597Z",
+      "status": "pending"
     }
   ]
 }

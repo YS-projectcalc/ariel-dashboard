@@ -1215,24 +1215,6 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
               </svg>
             </button>
             <button
-              onClick={(e) => { e.stopPropagation(); setSubtasksExpanded(!subtasksExpanded); }}
-              title="Subtasks"
-              style={{
-                width: '24px', height: '24px', borderRadius: '4px',
-                border: '1px solid #334155', background: 'none',
-                color: (task.subtasks && task.subtasks.length > 0) ? '#4ade80' : '#475569', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                padding: 0, transition: 'all 0.15s', fontSize: '12px',
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = '#4ade80'; e.currentTarget.style.color = '#4ade80'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = '#334155'; e.currentTarget.style.color = (task.subtasks && task.subtasks.length > 0) ? '#4ade80' : '#475569'; }}
-            >
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
-                <path d="M9 12l2 2 4-4"/>
-              </svg>
-            </button>
-            <button
               onClick={(e) => { e.stopPropagation(); const rect = e.currentTarget.getBoundingClientRect(); setPickerAnchor(rect); setShowDuePicker(!showDuePicker); setShowReminder(false); }}
               title="Set due date"
               style={{
@@ -1286,6 +1268,31 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
           </div>
         )}
       </div>
+      {/* Collapse/uncollapse arrow at bottom right */}
+      {!isDone && (
+        <div
+          onClick={(e) => { e.stopPropagation(); setSubtasksExpanded(!subtasksExpanded); }}
+          title={subtasksExpanded ? 'Collapse subtasks' : 'Expand subtasks'}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'flex-end',
+            marginTop: '6px', cursor: 'pointer', padding: '2px 0',
+          }}
+        >
+          <svg
+            width="16" height="16" viewBox="0 0 16 16" fill="none"
+            stroke={(task.subtasks && task.subtasks.length > 0) ? '#4ade80' : '#475569'}
+            strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            style={{
+              transition: 'transform 0.2s, stroke 0.2s',
+              transform: subtasksExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+            }}
+            onMouseEnter={e => e.currentTarget.style.stroke = '#4ade80'}
+            onMouseLeave={e => e.currentTarget.style.stroke = (task.subtasks && task.subtasks.length > 0) ? '#4ade80' : '#475569'}
+          >
+            <path d="M4 6L8 10L12 6"/>
+          </svg>
+        </div>
+      )}
     </div>
   );
 }

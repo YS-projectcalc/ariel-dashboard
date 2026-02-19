@@ -191,6 +191,31 @@ async function handleComplete(body, token, repo) {
   return jsonResponse({ ok: true, taskId, completed: completed !== false });
 }
 
+async function handleEdit(body, token, repo) {
+  const { taskId, projectId, updates } = body;
+  if (!taskId || !updates) return jsonResponse({ error: 'Missing taskId or updates' }, 400);
+
+  const { content, sha } = await getStatusJson(token, repo);
+
+  if (projectId) {
+    const project = content.projects?.find(p => p.id === projectId);
+    if (!project) return jsonResponse({ error: `Project not found: ${projectId}` }, 404);
+    const found = findTaskInProject(project, taskId);
+    if (!found) return jsonResponse({ error: `Task not found: ${taskId}` }, 404);
+    const allowed = ['title', 'description', 'priority', 'tags', 'dueDate'];
+    allowed.forEach(k => { if (k in updates) found.task[k] = updates[k]; });
+  } else {
+    const todo = (content.todos || []).find(t => t.id === taskId);
+    if (!todo) return jsonResponse({ error: `Todo not found: ${taskId}` }, 404);
+    const allowed = ['title', 'description', 'priority', 'tags'];
+    allowed.forEach(k => { if (k in updates) todo[k] = updates[k]; });
+  }
+
+  content.lastUpdated = new Date().toISOString();
+  await commitStatusJson(token, repo, content, sha, `Edit task: ${taskId}`);
+  return jsonResponse({ ok: true, taskId });
+}
+
 // ─── Entry points ────────────────────────────────────────────────────
 
 export async function onRequestOptions() {
@@ -220,6 +245,7 @@ export async function onRequestPost(context) {
       case 'add': return await handleAdd(body, token, repo);
       case 'move': return await handleMove(body, token, repo);
       case 'complete': return await handleComplete(body, token, repo);
+      case 'edit': return await handleEdit(body, token, repo);
       default: return jsonResponse({ error: `Unknown action: ${action}` }, 400);
     }
   } catch (err) {

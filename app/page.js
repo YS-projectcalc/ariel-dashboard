@@ -2087,7 +2087,21 @@ export default function Home() {
       }
       return prev;
     });
-  }, []);
+    // Sync edits to server (persists to status.json via GitHub)
+    const projectId = findProjectForTask(updatedTask.id);
+    syncToServer({
+      action: 'edit',
+      taskId: updatedTask.id,
+      projectId: projectId || updatedTask._projectId || null,
+      updates: {
+        title: updatedTask.title,
+        description: updatedTask.description,
+        priority: updatedTask.priority,
+        tags: updatedTask.tags,
+        dueDate: updatedTask.dueDate,
+      },
+    });
+  }, [findProjectForTask, syncToServer]);
 
   const reorderInColumn = useCallback((projectId, columnId, draggedId, targetId) => {
     setColumnOrder(prev => {

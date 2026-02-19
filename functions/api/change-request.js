@@ -28,7 +28,12 @@ async function getStatusJson(token, repo) {
   );
   if (!res.ok) throw new Error(`GitHub read failed: ${res.status}`);
   const fileData = await res.json();
-  const content = JSON.parse(atob(fileData.content.replace(/\n/g, '')));
+  // Decode base64 → bytes → UTF-8 string (atob alone mangles multi-byte UTF-8)
+  const binaryStr = atob(fileData.content.replace(/\n/g, ''));
+  const bytes = new Uint8Array(binaryStr.length);
+  for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+  const jsonStr = new TextDecoder('utf-8').decode(bytes);
+  const content = JSON.parse(jsonStr);
   return { content, sha: fileData.sha };
 }
 
@@ -45,7 +50,13 @@ async function commitStatusJson(token, repo, content, sha, message) {
       },
       body: JSON.stringify({
         message,
-        content: btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2)))),
+        // Encode UTF-8 string → bytes → base64 (matches the read-side decode)
+        content: ((str) => {
+          const bytes = new TextEncoder().encode(str);
+          let binary = '';
+          for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+          return btoa(binary);
+        })(JSON.stringify(content, null, 2)),
         sha,
       }),
     }

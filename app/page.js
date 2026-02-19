@@ -80,7 +80,16 @@ function sortByPriority(tasks) {
 // Apply user edits to tasks
 function applyEdits(tasks, taskEdits) {
   if (!taskEdits || Object.keys(taskEdits).length === 0) return tasks;
-  return tasks.map(t => taskEdits[t.id] ? { ...t, ...taskEdits[t.id] } : t);
+  return tasks.map(t => {
+    const edits = taskEdits[t.id];
+    if (!edits) return t;
+    const merged = { ...t, ...edits };
+    // Preserve original subtasks if edits don't have meaningful subtask data
+    if (t.subtasks && (!edits.subtasks || edits.subtasks.length === 0)) {
+      merged.subtasks = t.subtasks;
+    }
+    return merged;
+  });
 }
 
 // Apply column ordering
@@ -933,9 +942,9 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
       style={{
         backgroundColor: '#0a2233',
         borderRadius: '8px',
-        padding: '14px',
+        padding: '10px 10px 14px 10px',
         borderLeft: `3px solid ${isDone ? '#4ade80' : isOverdue ? '#f87171' : accentColor}`,
-        marginBottom: '8px',
+        marginBottom: '6px',
         opacity: isDone ? 0.6 : 1,
         transition: 'opacity 0.2s',
         cursor: 'grab',
@@ -943,7 +952,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
         zIndex: pickerOpen ? 500 : 'auto',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
         <div
           onClick={(e) => { e.stopPropagation(); onToggle(task.id); }}
           style={{
@@ -973,23 +982,23 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
           }}>
             {task.title}
           </div>
-          {task.description && !isDone && (
-            <div style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.4, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {task.description && !isDone && (!task.subtasks || task.subtasks.length === 0) && (
+            <div style={{ fontSize: '11px', color: '#94a3b8', lineHeight: 1.3, marginBottom: '4px', display: '-webkit-box', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
               {task.description}
             </div>
           )}
           {!isDone && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', flexWrap: 'wrap' }}>
               {p && (
                 <span style={{
-                  padding: '2px 6px', borderRadius: '3px',
+                  padding: '1px 5px', borderRadius: '3px',
                   fontSize: '10px', fontWeight: 600,
                   backgroundColor: p.bg, color: p.text,
                 }}>{p.label}</span>
               )}
               {task.assignee && (
                 <span style={{
-                  padding: '2px 6px', borderRadius: '3px',
+                  padding: '1px 5px', borderRadius: '3px',
                   fontSize: '10px', fontWeight: 600,
                   backgroundColor: task.assignee === 'mordy' ? '#7c2d1220' : '#4c1d9520',
                   color: task.assignee === 'mordy' ? '#f97316' : '#8b5cf6',
@@ -997,13 +1006,13 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
               )}
               {task.tags && task.tags.map(tag => (
                 <span key={tag} style={{
-                  padding: '2px 6px', borderRadius: '3px',
+                  padding: '1px 5px', borderRadius: '3px',
                   fontSize: '10px', backgroundColor: '#163344', color: '#94a3b8',
                 }}>{tag}</span>
               ))}
               {dueDate && (
                 <span style={{
-                  padding: '2px 6px', borderRadius: '3px',
+                  padding: '1px 5px', borderRadius: '3px',
                   fontSize: '10px', fontWeight: 600,
                   backgroundColor: isOverdue ? '#7f1d1d' : '#1e3a5f',
                   color: isOverdue ? '#f87171' : '#60a5fa',
@@ -1013,34 +1022,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
               )}
             </div>
           )}
-          {/* Subtask indicator + expand toggle */}
-          {!isDone && task.subtasks && task.subtasks.length > 0 && (
-            <div
-              onClick={(e) => { e.stopPropagation(); setSubtasksExpanded(!subtasksExpanded); }}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '6px',
-                cursor: 'pointer', marginTop: '4px',
-                fontSize: '11px', color: '#64748b',
-              }}
-            >
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round"
-                style={{ transition: 'transform 0.15s', transform: subtasksExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}>
-                <path d="M3 1L7 5L3 9"/>
-              </svg>
-              <span>{task.subtasks.filter(s => s.done).length}/{task.subtasks.length} subtasks</span>
-              {/* Mini progress bar */}
-              <div style={{
-                flex: 1, maxWidth: '60px', height: '3px', backgroundColor: '#1e3a5f',
-                borderRadius: '2px', overflow: 'hidden',
-              }}>
-                <div style={{
-                  width: `${task.subtasks.length > 0 ? (task.subtasks.filter(s => s.done).length / task.subtasks.length) * 100 : 0}%`,
-                  height: '100%', backgroundColor: '#4ade80', borderRadius: '2px',
-                  transition: 'width 0.2s',
-                }} />
-              </div>
-            </div>
-          )}
+          {/* Subtask indicator removed — info merged into bottom-right arrow area */}
           {/* Expanded subtask list */}
           {!isDone && subtasksExpanded && task.subtasks && (
             <div style={{ marginTop: '8px', paddingLeft: '4px', borderLeft: '2px solid #1e4258' }}>
@@ -1070,7 +1052,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
                     color: st.done ? '#475569' : '#cbd5e1',
                     textDecoration: st.done ? 'line-through' : 'none',
                     flex: 1,
-                  }}>{st.title}</span>
+                  }}>{st.text || st.title}</span>
                 </div>
               ))}
               {/* Add subtask inline */}
@@ -1268,6 +1250,30 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
           </div>
         )}
       </div>
+      {/* Subtask expand/collapse arrow - absolute positioned bottom-right */}
+      {!isDone && (
+        <div
+          onClick={(e) => { e.stopPropagation(); setSubtasksExpanded(!subtasksExpanded); }}
+          title={subtasksExpanded ? 'Collapse subtasks' : 'Expand subtasks'}
+          style={{
+            position: 'absolute', bottom: '4px', right: '6px',
+            cursor: 'pointer', padding: '2px',
+            color: '#475569', transition: 'color 0.15s',
+            lineHeight: 0,
+            display: 'flex', alignItems: 'center', gap: '4px',
+          }}
+          onMouseEnter={e => e.currentTarget.style.color = '#94a3b8'}
+          onMouseLeave={e => e.currentTarget.style.color = '#475569'}
+        >
+          {task.subtasks && task.subtasks.length > 0 && (
+            <span style={{ fontSize: '9px', lineHeight: 1 }}>{task.subtasks.filter(s => s.done).length}/{task.subtasks.length}</span>
+          )}
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+            style={{ transition: 'transform 0.15s', transform: subtasksExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}>
+            <path d="M3 1L7 5L3 9"/>
+          </svg>
+        </div>
+      )}
     </div>
   );
 }

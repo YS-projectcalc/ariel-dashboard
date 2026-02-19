@@ -1133,7 +1133,9 @@
       "id": "mltlqs76",
       "text": "When i drag and drop, it should work when I'm over any space in the column and go into that specific spot.\n\nAlso, I don't like those grey scroll things, can you remove them or make them fit more seamlessly",
       "createdAt": "2026-02-19T15:14:39.810Z",
-      "status": "pending"
+      "status": "done",
+      "resolvedAt": "2026-02-19T18:30:00Z",
+      "resolution": "Fixed: drag-to-position (Y-coord based insert) + scrollbars hidden"
     }
   ]
 }

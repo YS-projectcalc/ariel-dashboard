@@ -260,15 +260,26 @@ function ChangeRequestPopout({ onClose }) {
     if (!request.trim() || sending) return;
     setSending(true);
     try {
-      // Save change request to localStorage for Ariel to pick up
-      const requests = JSON.parse(localStorage.getItem('cc_change_requests') || '[]');
-      requests.push({
+      const newReq = {
         id: Date.now().toString(36),
         text: request.trim(),
         createdAt: new Date().toISOString(),
         status: 'pending',
-      });
+      };
+      // Save to localStorage for local display
+      const requests = JSON.parse(localStorage.getItem('cc_change_requests') || '[]');
+      requests.push(newReq);
       localStorage.setItem('cc_change_requests', JSON.stringify(requests));
+      // Also POST to server so Ariel can see it
+      try {
+        await fetch('/api/change-request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newReq),
+        });
+      } catch {
+        // Server save failed silently — local copy still preserved
+      }
       setSent(true);
       setTimeout(() => onClose(), 1500);
     } catch {

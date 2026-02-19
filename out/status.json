@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-18T19:27:00.000Z",
+  "lastUpdated": "2026-02-18T22:20:57.137Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -39,7 +39,7 @@
           },
           {
             "id": "sa-2",
-            "title": "Tier 1→2 Upgrade UX polish",
+            "title": "Tier 1â2 Upgrade UX polish",
             "description": "Two bugs: PDF double-open on success page; /pricing?email= shows full pricing page instead of streamlined upgrade flow.",
             "priority": "high",
             "tags": [
@@ -77,7 +77,7 @@
           {
             "id": "sa-4",
             "title": "Verify Tier 2 Monitoring",
-            "description": "Two customer journeys remain: Tier 0→2 and Tier 0→1→2.",
+            "description": "Two customer journeys remain: Tier 0â2 and Tier 0â1â2.",
             "priority": "medium",
             "tags": [
               "testing"
@@ -173,7 +173,7 @@
           },
           {
             "id": "sa-13",
-            "title": "Branding — favicon & logo",
+            "title": "Branding â favicon & logo",
             "description": "Still needed.",
             "priority": "medium",
             "tags": [
@@ -198,13 +198,16 @@
             "title": "Mention: local business SEO optimization has major impact (low competition)",
             "description": "When marketing/positioning Spotlight, emphasize that optimizing for local businesses has an outsized impact because competition is so low in local SEO.",
             "priority": "medium",
-            "tags": ["marketing", "note"],
+            "tags": [
+              "marketing",
+              "note"
+            ],
             "createdAt": "2026-02-18T19:27:00Z"
           },
           {
             "id": "sa-17",
             "title": "Agency white-label program",
-            "description": "Growth opportunity — not started.",
+            "description": "Growth opportunity â not started.",
             "priority": "low",
             "tags": [
               "growth"
@@ -249,18 +252,6 @@
             "promotedAt": "2026-02-18T14:46:49.556Z"
           },
           {
-            "id": "eg-2",
-            "title": "Register domain",
-            "description": "Depends on agency name decision.",
-            "priority": "high",
-            "tags": [
-              "blocking",
-              "foundation"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z",
-            "promotedAt": "2026-02-18T14:46:49.556Z"
-          },
-          {
             "id": "eg-3",
             "title": "Finalize color palette & brand direction",
             "description": "6 palette variants explored in branding/references/. Need final pick + logo + typography specs.",
@@ -269,6 +260,18 @@
               "blocking",
               "foundation",
               "branding"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z"
+          },
+          {
+            "id": "eg-2",
+            "title": "Register domain",
+            "description": "Depends on agency name decision.",
+            "priority": "high",
+            "tags": [
+              "blocking",
+              "foundation"
             ],
             "createdAt": "2026-02-18T14:22:00Z",
             "promotedAt": "2026-02-18T14:46:49.556Z"
@@ -378,7 +381,7 @@
           {
             "id": "eg-14",
             "title": "Build crm-entry-generator skill",
-            "description": "Deliverable → structured HubSpot JSON.",
+            "description": "Deliverable â structured HubSpot JSON.",
             "priority": "medium",
             "tags": [
               "skills"
@@ -408,7 +411,7 @@
           {
             "id": "eg-17",
             "title": "Build monthly-client-report skill",
-            "description": "Metrics → one-page report + upsell rec.",
+            "description": "Metrics â one-page report + upsell rec.",
             "priority": "medium",
             "tags": [
               "skills"
@@ -418,7 +421,7 @@
           {
             "id": "eg-18",
             "title": "Build report-formatter skill",
-            "description": "Raw analysis → branded HTML/PDF.",
+            "description": "Raw analysis â branded HTML/PDF.",
             "priority": "medium",
             "tags": [
               "skills"
@@ -438,7 +441,7 @@
           {
             "id": "eg-20",
             "title": "Create SOW templates per product",
-            "description": "templates/sow-templates/ — one per service offering.",
+            "description": "templates/sow-templates/ â one per service offering.",
             "priority": "medium",
             "tags": [
               "contracts"
@@ -458,7 +461,7 @@
           {
             "id": "eg-22",
             "title": "Build Cloudflare Workers backend",
-            "description": "Twilio webhook, Claude API proxy, form→HubSpot+Brevo+Twilio, Stripe webhook→HubSpot→DocuSeal.",
+            "description": "Twilio webhook, Claude API proxy, formâHubSpot+Brevo+Twilio, Stripe webhookâHubSpotâDocuSeal.",
             "priority": "high",
             "tags": [
               "backend"
@@ -518,7 +521,7 @@
           {
             "id": "eg-28",
             "title": "End-to-end launch test",
-            "description": "Fake client → enrichment → deliverable → CRM entry → follow-up. Full pipeline validation.",
+            "description": "Fake client â enrichment â deliverable â CRM entry â follow-up. Full pipeline validation.",
             "priority": "high",
             "tags": [
               "launch"
@@ -584,7 +587,7 @@
           {
             "id": "ju-t1",
             "title": "Get 3 people to purchase",
-            "description": "First 3 paying customers — validation milestone.",
+            "description": "First 3 paying customers â validation milestone.",
             "priority": "high",
             "tags": [
               "sales",
@@ -622,7 +625,10 @@
             "title": "Work out variations and pricing for unpopular items",
             "description": "Figure out how to handle product variations (sizes, colors) and pricing strategy specifically for less popular items.",
             "priority": "high",
-            "tags": ["product", "pricing"],
+            "tags": [
+              "product",
+              "pricing"
+            ],
             "createdAt": "2026-02-18T19:27:00Z"
           },
           {
@@ -679,7 +685,7 @@
           },
           {
             "id": "ju-t9",
-            "title": "DNS: thejuniform.com → CF Workers",
+            "title": "DNS: thejuniform.com â CF Workers",
             "description": "Custom domain setup on Cloudflare Workers.",
             "priority": "medium",
             "tags": [
@@ -864,7 +870,7 @@
           },
           {
             "id": "ju-d9",
-            "title": "Amazon PA-API → Creators API migration",
+            "title": "Amazon PA-API â Creators API migration",
             "description": "Completed API migration.",
             "priority": "medium",
             "tags": [
@@ -1044,7 +1050,7 @@
           },
           {
             "id": "ju-d27",
-            "title": "Domain www→apex redirect",
+            "title": "Domain wwwâapex redirect",
             "description": "DNS redirect configured.",
             "priority": "low",
             "tags": [

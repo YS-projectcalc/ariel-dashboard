@@ -888,6 +888,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
   return (
     <div
       draggable="true"
+      data-task-id={task.id}
       onDragStart={(e) => {
         e.dataTransfer.setData('text/plain', task.id);
         e.dataTransfer.setData('application/x-index', String(index));
@@ -1140,13 +1141,25 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
         onDrop={(e) => {
           e.preventDefault(); dragCounterRef.current = 0; setDragOver(false);
           const taskId = e.dataTransfer.getData('text/plain');
-          if (taskId && onDrop) onDrop(taskId, columnId);
+          if (!taskId || !onDrop) return;
+          // Find which card position the drop landed near using Y coordinate
+          const cards = Array.from(e.currentTarget.querySelectorAll('[data-task-id]'));
+          let insertBeforeId = null;
+          for (const card of cards) {
+            const rect = card.getBoundingClientRect();
+            if (e.clientY < rect.top + rect.height / 2) {
+              insertBeforeId = card.getAttribute('data-task-id');
+              break;
+            }
+          }
+          onDrop(taskId, columnId, insertBeforeId);
         }}
         style={{
           backgroundColor: dragOver ? dotColor + '10' : '#1e293b',
           borderRadius: '10px', padding: '10px', minHeight: '120px',
           border: dragOver ? `2px dashed ${dotColor}` : '1px solid #334155',
           maxHeight: '70vh', overflowY: 'auto',
+          scrollbarWidth: 'none',
           transition: 'border 0.15s, background-color 0.15s',
         }}
       >
@@ -1266,8 +1279,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
     return task.assignee;
   };
 
-  const handleDrop = (taskId, columnId) => {
-    if (onDragDrop) onDragDrop(taskId, columnId, project.id);
+  const handleDrop = (taskId, columnId, insertBeforeId) => {
+    if (onDragDrop) onDragDrop(taskId, columnId, project.id, insertBeforeId);
   };
 
   const handleAddTask = (task) => {
@@ -2068,7 +2081,7 @@ export default function Home() {
     }
   }, [findProjectForTask, syncToServer]);
 
-  const handleDragDrop = useCallback((taskId, targetColumnId, projectId) => {
+  const handleDragDrop = useCallback((taskId, targetColumnId, projectId, insertBeforeId) => {
     if (!taskId) return;
     if (targetColumnId === '__done__') {
       setCompletedIds(prev => {
@@ -2094,6 +2107,23 @@ export default function Home() {
     const pid = projectId || findProjectForTask(taskId);
     if (pid) {
       syncToServer({ action: 'move', taskId, projectId: pid, targetColumn: targetColumnId });
+    }
+    // If a specific drop position was requested, reorder within the column
+    if (insertBeforeId && pid) {
+      setColumnOrder(prev => {
+        const key = `${pid}:${targetColumnId}`;
+        const currentOrder = prev[key] || [];
+        const filtered = currentOrder.filter(id => id !== taskId);
+        const targetIdx = filtered.indexOf(insertBeforeId);
+        if (targetIdx >= 0) {
+          filtered.splice(targetIdx, 0, taskId);
+        } else {
+          filtered.push(taskId);
+        }
+        const next = { ...prev, [key]: filtered };
+        saveColumnOrder(next);
+        return next;
+      });
     }
   }, [findProjectForTask, syncToServer]);
 
@@ -2237,6 +2267,10 @@ export default function Home() {
       marginRight: sidebarOpen ? 'min(340px, 90vw)' : '32px',
       transition: 'margin-right 0.2s',
     }}>
+      <style>{`
+        ::-webkit-scrollbar { display: none; }
+        * { scrollbar-width: none; }
+      `}</style>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <header style={{
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',

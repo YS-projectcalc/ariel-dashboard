@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T14:35:09.370Z",
+  "lastUpdated": "2026-02-19T15:14:40.936Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -446,16 +446,6 @@
             "createdAt": "2026-02-18T14:22:00Z"
           },
           {
-            "id": "eg-22",
-            "title": "Build Cloudflare Workers backend",
-            "description": "Twilio webhook, Claude API proxy, form→HubSpot+Brevo+Twilio, Stripe webhook→HubSpot→DocuSeal.",
-            "priority": "high",
-            "tags": [
-              "backend"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z"
-          },
-          {
             "id": "eg-23",
             "title": "Build VPS automation scripts",
             "description": "Daily follow-up cron, webhook listeners (Stripe/HubSpot/DocuSeal), demo interaction tracking, holding pattern emails, monthly reports, Sentry.",
@@ -522,6 +512,16 @@
             "priority": "high",
             "tags": [
               "launch"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z"
+          },
+          {
+            "id": "eg-22",
+            "title": "Build Cloudflare Workers backend",
+            "description": "Twilio webhook, Claude API proxy, form→HubSpot+Brevo+Twilio, Stripe webhook→HubSpot→DocuSeal.",
+            "priority": "high",
+            "tags": [
+              "backend"
             ],
             "createdAt": "2026-02-18T14:22:00Z"
           }
@@ -1126,6 +1126,14 @@
         "in_progress": [],
         "done": []
       }
+    }
+  ],
+  "changeRequests": [
+    {
+      "id": "mltlqs76",
+      "text": "When i drag and drop, it should work when I'm over any space in the column and go into that specific spot.\n\nAlso, I don't like those grey scroll things, can you remove them or make them fit more seamlessly",
+      "createdAt": "2026-02-19T15:14:39.810Z",
+      "status": "pending"
     }
   ]
 }

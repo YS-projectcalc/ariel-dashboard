@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T19:28:36.995Z",
+  "lastUpdated": "2026-02-19T18:55:00.000Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -396,7 +396,7 @@
       }
     },
     {
-      "id": "epiphany-guy",
+      "id": "epiphany-made",
       "name": "Epiphany Made",
       "color": "#f59e0b",
       "icon": "E",
@@ -488,7 +488,7 @@
           {
             "id": "eg-30",
             "title": "Newsletter",
-            "description": "Set up and launch newsletter for Epiphany Guy.",
+            "description": "Set up and launch newsletter for Epiphany Made.",
             "priority": "medium",
             "tags": [
               "marketing",
@@ -499,7 +499,7 @@
           {
             "id": "eg-31",
             "title": "Custom funnel building",
-            "description": "Build custom funnels for Epiphany Guy client acquisition/services.",
+            "description": "Build custom funnels for Epiphany Made client acquisition/services.",
             "priority": "medium",
             "tags": [
               "marketing",
@@ -1569,13 +1569,7 @@
       "createdAt": "2026-02-19T18:45:05.862Z",
       "status": "done",
       "resolvedAt": "2026-02-19T19:01:00Z",
-      "resolution": "Cancel button added to pending change requests in Ariel sidebar"
-    },
-    {
-      "id": "mltutcz9",
-      "text": "Can you make standard card size 25% longer and cards should always be same size, even if the title is long- max 2 lines. To make more space, let's put the 3 icons (edit, calendar, alert) vertical on the right side",
-      "createdAt": "2026-02-19T19:28:36.597Z",
-      "status": "pending"
+      "resolution": "Cancel button added to pending change requests in sidebar"
     }
   ]
 }

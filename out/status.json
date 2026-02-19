@@ -396,7 +396,7 @@
       }
     },
     {
-      "id": "epiphany-guy",
+      "id": "epiphany-made",
       "name": "Epiphany Made",
       "color": "#f59e0b",
       "icon": "E",
@@ -488,7 +488,7 @@
           {
             "id": "eg-30",
             "title": "Newsletter",
-            "description": "Set up and launch newsletter for Epiphany Guy.",
+            "description": "Set up and launch newsletter for Epiphany Made.",
             "priority": "medium",
             "tags": [
               "marketing",
@@ -499,7 +499,7 @@
           {
             "id": "eg-31",
             "title": "Custom funnel building",
-            "description": "Build custom funnels for Epiphany Guy client acquisition/services.",
+            "description": "Build custom funnels for Epiphany Made client acquisition/services.",
             "priority": "medium",
             "tags": [
               "marketing",
@@ -1567,7 +1567,9 @@
       "id": "mltt9eiu",
       "text": "Please add a feature to cancel a change request",
       "createdAt": "2026-02-19T18:45:05.862Z",
-      "status": "pending"
+      "status": "done",
+      "resolvedAt": "2026-02-19T19:01:00Z",
+      "resolution": "Cancel button added to pending change requests in sidebar"
     }
   ]
 }

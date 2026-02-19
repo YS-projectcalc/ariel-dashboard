@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T15:14:40.936Z",
+  "lastUpdated": "2026-02-19T18:32:00.000Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -275,6 +275,30 @@
           }
         ],
         "todo": [
+          {
+            "id": "eg-30",
+            "title": "Newsletter",
+            "description": "Set up and launch newsletter for Epiphany Guy.",
+            "priority": "medium",
+            "tags": ["marketing", "content"],
+            "createdAt": "2026-02-19T18:32:00Z"
+          },
+          {
+            "id": "eg-31",
+            "title": "Custom funnel building",
+            "description": "Build custom funnels for Epiphany Guy client acquisition/services.",
+            "priority": "medium",
+            "tags": ["marketing", "funnels"],
+            "createdAt": "2026-02-19T18:32:00Z"
+          },
+          {
+            "id": "eg-32",
+            "title": "Workflow automation",
+            "description": "Build workflow automation capabilities. Sample: email triggered by keywords.",
+            "priority": "medium",
+            "tags": ["automation"],
+            "createdAt": "2026-02-19T18:32:00Z"
+          },
           {
             "id": "eg-4",
             "title": "Create HubSpot account + configure pipeline",
@@ -1070,7 +1094,18 @@
       "status": "active",
       "description": "",
       "tasks": {
-        "upnext": [],
+        "upnext": [
+          {
+            "id": "il-1",
+            "title": "Make sure Tuli gets the spreadsheet and is working on low-hanging fruit",
+            "description": "Follow up with Tuli to ensure she has the spreadsheet and is actively working on the low-hanging fruit items.",
+            "priority": "high",
+            "tags": ["operations", "follow-up"],
+            "assignee": "yaakov",
+            "createdAt": "2026-02-19T18:32:00Z",
+            "promotedAt": "2026-02-19T18:32:00Z"
+          }
+        ],
         "todo": [],
         "in_progress": [],
         "done": []

@@ -250,6 +250,47 @@ async function handleEdit(body, token, repo, env) {
   return jsonResponse({ ok: true, taskId });
 }
 
+async function handleSubtask(body, token, repo, env) {
+  const { taskId, projectId, subtaskAction, subtaskId, subtask } = body;
+  if (!taskId || !subtaskAction) return jsonResponse({ error: 'Missing taskId or subtaskAction' }, 400);
+
+  const { content, sha } = await getStatusJson(token, repo);
+
+  let task = null;
+  if (projectId) {
+    const project = content.projects?.find(p => p.id === projectId);
+    if (!project) return jsonResponse({ error: `Project not found: ${projectId}` }, 404);
+    const found = findTaskInProject(project, taskId);
+    if (!found) return jsonResponse({ error: `Task not found: ${taskId}` }, 404);
+    task = found.task;
+  } else {
+    task = (content.todos || []).find(t => t.id === taskId);
+    if (!task) return jsonResponse({ error: `Todo not found: ${taskId}` }, 404);
+  }
+
+  if (!task.subtasks) task.subtasks = [];
+
+  if (subtaskAction === 'add' && subtask) {
+    task.subtasks.push({
+      id: subtask.id || ('st-' + Date.now().toString(36)),
+      title: subtask.title,
+      done: false,
+    });
+  } else if (subtaskAction === 'toggle' && subtaskId) {
+    const st = task.subtasks.find(s => s.id === subtaskId);
+    if (st) st.done = !st.done;
+  } else if (subtaskAction === 'remove' && subtaskId) {
+    task.subtasks = task.subtasks.filter(s => s.id !== subtaskId);
+  } else {
+    return jsonResponse({ error: `Invalid subtaskAction: ${subtaskAction}` }, 400);
+  }
+
+  content.lastUpdated = new Date().toISOString();
+  await commitStatusJson(token, repo, content, sha, `Subtask ${subtaskAction}: ${taskId}`);
+  notifyOpenClaw(env, `Subtask ${subtaskAction} on "${task.title}"`);
+  return jsonResponse({ ok: true, taskId, subtasks: task.subtasks });
+}
+
 // ─── Entry points ────────────────────────────────────────────────────
 
 export async function onRequestOptions() {
@@ -280,6 +321,7 @@ export async function onRequestPost(context) {
       case 'move': return await handleMove(body, token, repo, env);
       case 'complete': return await handleComplete(body, token, repo, env);
       case 'edit': return await handleEdit(body, token, repo, env);
+      case 'subtask': return await handleSubtask(body, token, repo, env);
       default: return jsonResponse({ error: `Unknown action: ${action}` }, 400);
     }
   } catch (err) {

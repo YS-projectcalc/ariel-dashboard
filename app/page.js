@@ -869,10 +869,13 @@ function ProjectOverviewCard({ project, completedIds, dragOverrides, onClick, us
 
 // ─── Task card (with due date + reminder buttons) ───────────────────
 
-function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate, onEdit, index, onReorder }) {
+function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate, onEdit, index, onReorder, onSubtaskToggle, onSubtaskAdd }) {
   const [showDuePicker, setShowDuePicker] = useState(false);
   const [showReminder, setShowReminder] = useState(false);
   const [pickerAnchor, setPickerAnchor] = useState(null);
+  const [subtasksExpanded, setSubtasksExpanded] = useState(false);
+  const [addingSubtask, setAddingSubtask] = useState(false);
+  const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
 
   const priorityColors = {
     high: { bg: '#451a03', text: '#fb923c', label: 'High' },
@@ -1010,6 +1013,186 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
               )}
             </div>
           )}
+          {/* Subtask indicator + expand toggle */}
+          {!isDone && task.subtasks && task.subtasks.length > 0 && (
+            <div
+              onClick={(e) => { e.stopPropagation(); setSubtasksExpanded(!subtasksExpanded); }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                cursor: 'pointer', marginTop: '4px',
+                fontSize: '11px', color: '#64748b',
+              }}
+            >
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="#64748b" strokeWidth="1.5" strokeLinecap="round"
+                style={{ transition: 'transform 0.15s', transform: subtasksExpanded ? 'rotate(90deg)' : 'rotate(0deg)' }}>
+                <path d="M3 1L7 5L3 9"/>
+              </svg>
+              <span>{task.subtasks.filter(s => s.done).length}/{task.subtasks.length} subtasks</span>
+              {/* Mini progress bar */}
+              <div style={{
+                flex: 1, maxWidth: '60px', height: '3px', backgroundColor: '#1e3a5f',
+                borderRadius: '2px', overflow: 'hidden',
+              }}>
+                <div style={{
+                  width: `${task.subtasks.length > 0 ? (task.subtasks.filter(s => s.done).length / task.subtasks.length) * 100 : 0}%`,
+                  height: '100%', backgroundColor: '#4ade80', borderRadius: '2px',
+                  transition: 'width 0.2s',
+                }} />
+              </div>
+            </div>
+          )}
+          {/* Expanded subtask list */}
+          {!isDone && subtasksExpanded && task.subtasks && (
+            <div style={{ marginTop: '8px', paddingLeft: '4px', borderLeft: '2px solid #1e4258' }}>
+              {task.subtasks.map((st) => (
+                <div key={st.id} style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '4px 8px', fontSize: '12px',
+                }}>
+                  <div
+                    onClick={(e) => { e.stopPropagation(); if (onSubtaskToggle) onSubtaskToggle(task.id, st.id); }}
+                    style={{
+                      width: '14px', height: '14px', minWidth: '14px',
+                      borderRadius: '3px',
+                      border: st.done ? '1.5px solid #4ade80' : '1.5px solid #475569',
+                      backgroundColor: st.done ? '#4ade8020' : 'transparent',
+                      cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >
+                    {st.done && (
+                      <svg width="8" height="8" viewBox="0 0 12 12" fill="none">
+                        <path d="M2 6L5 9L10 3" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    )}
+                  </div>
+                  <span style={{
+                    color: st.done ? '#475569' : '#cbd5e1',
+                    textDecoration: st.done ? 'line-through' : 'none',
+                    flex: 1,
+                  }}>{st.title}</span>
+                </div>
+              ))}
+              {/* Add subtask inline */}
+              {addingSubtask ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 8px', marginTop: '2px' }}>
+                  <input
+                    autoFocus
+                    value={newSubtaskTitle}
+                    onChange={(e) => setNewSubtaskTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && newSubtaskTitle.trim()) {
+                        if (onSubtaskAdd) onSubtaskAdd(task.id, newSubtaskTitle.trim());
+                        setNewSubtaskTitle('');
+                      }
+                      if (e.key === 'Escape') { setAddingSubtask(false); setNewSubtaskTitle(''); }
+                    }}
+                    placeholder="Subtask..."
+                    style={{
+                      flex: 1, backgroundColor: '#163344', border: '1px solid #334155',
+                      borderRadius: '4px', padding: '4px 8px',
+                      color: '#f8fafc', fontSize: '11px', fontFamily: 'inherit',
+                      outline: 'none',
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (newSubtaskTitle.trim() && onSubtaskAdd) {
+                        onSubtaskAdd(task.id, newSubtaskTitle.trim());
+                        setNewSubtaskTitle('');
+                      }
+                    }}
+                    style={{
+                      background: 'none', border: 'none', color: '#4ade80',
+                      cursor: 'pointer', fontSize: '14px', padding: '2px',
+                    }}
+                  >+</button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setAddingSubtask(false); setNewSubtaskTitle(''); }}
+                    style={{
+                      background: 'none', border: 'none', color: '#64748b',
+                      cursor: 'pointer', fontSize: '12px', padding: '2px',
+                    }}
+                  >&times;</button>
+                </div>
+              ) : (
+                <div
+                  onClick={(e) => { e.stopPropagation(); setAddingSubtask(true); }}
+                  style={{
+                    padding: '4px 8px', marginTop: '2px',
+                    fontSize: '11px', color: '#475569', cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#94a3b8'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#475569'}
+                >
+                  + Add subtask
+                </div>
+              )}
+            </div>
+          )}
+          {/* Subtask expand button for tasks without subtasks yet (shows on hover via CSS-in-JS) */}
+          {!isDone && (!task.subtasks || task.subtasks.length === 0) && subtasksExpanded && (
+            <div style={{ marginTop: '8px', paddingLeft: '4px', borderLeft: '2px solid #1e4258' }}>
+              {addingSubtask ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 8px' }}>
+                  <input
+                    autoFocus
+                    value={newSubtaskTitle}
+                    onChange={(e) => setNewSubtaskTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && newSubtaskTitle.trim()) {
+                        if (onSubtaskAdd) onSubtaskAdd(task.id, newSubtaskTitle.trim());
+                        setNewSubtaskTitle('');
+                      }
+                      if (e.key === 'Escape') { setAddingSubtask(false); setNewSubtaskTitle(''); }
+                    }}
+                    placeholder="Subtask..."
+                    style={{
+                      flex: 1, backgroundColor: '#163344', border: '1px solid #334155',
+                      borderRadius: '4px', padding: '4px 8px',
+                      color: '#f8fafc', fontSize: '11px', fontFamily: 'inherit',
+                      outline: 'none',
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (newSubtaskTitle.trim() && onSubtaskAdd) {
+                        onSubtaskAdd(task.id, newSubtaskTitle.trim());
+                        setNewSubtaskTitle('');
+                      }
+                    }}
+                    style={{
+                      background: 'none', border: 'none', color: '#4ade80',
+                      cursor: 'pointer', fontSize: '14px', padding: '2px',
+                    }}
+                  >+</button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setAddingSubtask(false); setNewSubtaskTitle(''); }}
+                    style={{
+                      background: 'none', border: 'none', color: '#64748b',
+                      cursor: 'pointer', fontSize: '12px', padding: '2px',
+                    }}
+                  >&times;</button>
+                </div>
+              ) : (
+                <div
+                  onClick={(e) => { e.stopPropagation(); setAddingSubtask(true); }}
+                  style={{
+                    padding: '4px 8px',
+                    fontSize: '11px', color: '#475569', cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.color = '#94a3b8'}
+                  onMouseLeave={e => e.currentTarget.style.color = '#475569'}
+                >
+                  + Add subtask
+                </div>
+              )}
+            </div>
+          )}
         </div>
         {/* Edit + Due date + Reminder buttons */}
         {!isDone && (
@@ -1029,6 +1212,24 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
             >
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+            </button>
+            <button
+              onClick={(e) => { e.stopPropagation(); setSubtasksExpanded(!subtasksExpanded); }}
+              title="Subtasks"
+              style={{
+                width: '24px', height: '24px', borderRadius: '4px',
+                border: '1px solid #334155', background: 'none',
+                color: (task.subtasks && task.subtasks.length > 0) ? '#4ade80' : '#475569', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: 0, transition: 'all 0.15s', fontSize: '12px',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = '#4ade80'; e.currentTarget.style.color = '#4ade80'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#334155'; e.currentTarget.style.color = (task.subtasks && task.subtasks.length > 0) ? '#4ade80' : '#475569'; }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
+                <path d="M9 12l2 2 4-4"/>
               </svg>
             </button>
             <button
@@ -1091,7 +1292,7 @@ function TaskCard({ task, accentColor, isDone, onToggle, dueDates, onSetDueDate,
 
 // ─── Task column (drop target) ──────────────────────────────────────
 
-function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop, onAddTask, showAddForm, onToggleAddForm, dueDates, onSetDueDate, onEdit, onReorder }) {
+function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedIds, onToggle, project, columnId, onDrop, onAddTask, showAddForm, onToggleAddForm, dueDates, onSetDueDate, onEdit, onReorder, onSubtaskToggle, onSubtaskAdd }) {
   const [dragOver, setDragOver] = useState(false);
   const dragCounterRef = useRef(0);
 
@@ -1193,6 +1394,8 @@ function TaskColumn({ title, tasks, accentColor, emptyText, dotColor, completedI
               onSetDueDate={onSetDueDate}
               onEdit={onEdit}
               onReorder={onReorder}
+              onSubtaskToggle={onSubtaskToggle}
+              onSubtaskAdd={onSubtaskAdd}
             />
           ))
         )}
@@ -1244,7 +1447,7 @@ function DetailHeader({ project, onBack }) {
 
 // ─── Project detail view ────────────────────────────────────────────
 
-function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop, userTasks, onAddUserTask, dueDates, onSetDueDate, onEditTask, columnOrder, onReorderInColumn, taskEdits: taskEditsFromParent }) {
+function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverrides, onDragDrop, userTasks, onAddUserTask, dueDates, onSetDueDate, onEditTask, columnOrder, onReorderInColumn, taskEdits: taskEditsFromParent, onSubtaskToggle, onSubtaskAdd }) {
   const [addingToColumn, setAddingToColumn] = useState(null);
   const [editingTask, setEditingTask] = useState(null);
 
@@ -1336,6 +1539,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
               onSetDueDate={onSetDueDate}
               onEdit={handleEdit}
               onReorder={handleReorder(col.name)}
+              onSubtaskToggle={onSubtaskToggle}
+              onSubtaskAdd={onSubtaskAdd}
             />
           ))}
           {(unassignedTasks.length > 0 || addingToColumn === '__general__') && (
@@ -1352,6 +1557,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
               onSetDueDate={onSetDueDate}
               onEdit={handleEdit}
               onReorder={handleReorder('__todo__')}
+              onSubtaskToggle={onSubtaskToggle}
+              onSubtaskAdd={onSubtaskAdd}
             />
           )}
           <TaskColumn
@@ -1364,6 +1571,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
             onSetDueDate={onSetDueDate}
             onEdit={handleEdit}
             onReorder={handleReorder('__done__')}
+            onSubtaskToggle={onSubtaskToggle}
+            onSubtaskAdd={onSubtaskAdd}
           />
         </div>
         {editingTask && (
@@ -1398,6 +1607,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           onSetDueDate={onSetDueDate}
           onEdit={handleEdit}
           onReorder={handleReorder('__todo__')}
+          onSubtaskToggle={onSubtaskToggle}
+          onSubtaskAdd={onSubtaskAdd}
         />
         <TaskColumn
           title="Up Next" tasks={upnextTasks}
@@ -1412,6 +1623,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           onSetDueDate={onSetDueDate}
           onEdit={handleEdit}
           onReorder={handleReorder('__upnext__')}
+          onSubtaskToggle={onSubtaskToggle}
+          onSubtaskAdd={onSubtaskAdd}
         />
         <TaskColumn
           title="Done" tasks={doneTasks}
@@ -1423,6 +1636,8 @@ function ProjectDetailView({ project, onBack, completedIds, onToggle, dragOverri
           onSetDueDate={onSetDueDate}
           onEdit={handleEdit}
           onReorder={handleReorder('__done__')}
+          onSubtaskToggle={onSubtaskToggle}
+          onSubtaskAdd={onSubtaskAdd}
         />
       </div>
       {editingTask && (
@@ -2160,6 +2375,57 @@ export default function Home() {
     });
   }, [findProjectForTask, syncToServer]);
 
+  // Helper to find a task within a project (client-side)
+  const findTaskInProjectLocal = useCallback((project, taskId) => {
+    const t = project.tasks || {};
+    for (const col of ['todo', 'upnext', 'in_progress', 'done']) {
+      const found = (t[col] || []).find(task => task.id === taskId);
+      if (found) return found;
+    }
+    return null;
+  }, []);
+
+  // ─── Subtask handlers ──────────────────────────────────────────────
+  const handleSubtaskToggle = useCallback((taskId, subtaskId) => {
+    // Update local state (taskEdits) to toggle subtask done status
+    setTaskEdits(prev => {
+      const existing = prev[taskId] || {};
+      const currentSubtasks = existing.subtasks || (data?.projects?.reduce((found, p) => {
+        if (found) return found;
+        const t = findTaskInProjectLocal(p, taskId);
+        return t?.subtasks;
+      }, null)) || [];
+      const updatedSubtasks = currentSubtasks.map(s =>
+        s.id === subtaskId ? { ...s, done: !s.done } : s
+      );
+      const next = { ...prev, [taskId]: { ...existing, subtasks: updatedSubtasks } };
+      localStorage.setItem('cc_task_edits', JSON.stringify(next));
+      return next;
+    });
+    // Sync to server
+    const projectId = findProjectForTask(taskId);
+    syncToServer({ action: 'subtask', taskId, projectId, subtaskAction: 'toggle', subtaskId });
+  }, [data, findProjectForTask, syncToServer]);
+
+  const handleSubtaskAdd = useCallback((taskId, title) => {
+    const newSubtask = { id: 'st-' + Date.now().toString(36), title, done: false };
+    setTaskEdits(prev => {
+      const existing = prev[taskId] || {};
+      const currentSubtasks = existing.subtasks || (data?.projects?.reduce((found, p) => {
+        if (found) return found;
+        const t = findTaskInProjectLocal(p, taskId);
+        return t?.subtasks;
+      }, null)) || [];
+      const updatedSubtasks = [...currentSubtasks, newSubtask];
+      const next = { ...prev, [taskId]: { ...existing, subtasks: updatedSubtasks } };
+      localStorage.setItem('cc_task_edits', JSON.stringify(next));
+      return next;
+    });
+    // Sync to server
+    const projectId = findProjectForTask(taskId);
+    syncToServer({ action: 'subtask', taskId, projectId, subtaskAction: 'add', subtask: newSubtask });
+  }, [data, findProjectForTask, syncToServer]);
+
   const reorderInColumn = useCallback((projectId, columnId, draggedId, targetId) => {
     setColumnOrder(prev => {
       const key = `${projectId}:${columnId}`;
@@ -2340,6 +2606,8 @@ export default function Home() {
             columnOrder={columnOrder}
             onReorderInColumn={reorderInColumn}
             taskEdits={taskEdits}
+            onSubtaskToggle={handleSubtaskToggle}
+            onSubtaskAdd={handleSubtaskAdd}
           />
         ) : (
           <>

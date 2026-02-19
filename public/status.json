@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-19T18:45:04.594Z",
+  "lastUpdated": "2026-02-19T18:51:15.025Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -244,18 +244,6 @@
             "title": "Pick agency name",
             "description": "Replaces {{AGENCY_NAME}} everywhere. Blocking all downstream work.",
             "priority": "low",
-            "tags": [
-              "blocking",
-              "foundation"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z",
-            "promotedAt": "2026-02-18T14:46:49.556Z"
-          },
-          {
-            "id": "eg-2",
-            "title": "Register domain",
-            "description": "Depends on agency name decision.",
-            "priority": "high",
             "tags": [
               "blocking",
               "foundation"
@@ -604,6 +592,19 @@
             "createdAt": "2026-02-18T14:22:00Z",
             "promotedAt": "2026-02-18T14:46:49.556Z",
             "completedAt": "2026-02-19T14:34:43.681Z"
+          },
+          {
+            "id": "eg-2",
+            "title": "Register domain",
+            "description": "Depends on agency name decision.",
+            "priority": "high",
+            "tags": [
+              "blocking",
+              "foundation"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z",
+            "promotedAt": "2026-02-18T14:46:49.556Z",
+            "completedAt": "2026-02-19T18:51:15.025Z"
           }
         ]
       }

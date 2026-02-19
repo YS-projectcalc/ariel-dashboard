@@ -2469,7 +2469,7 @@ export default function Home() {
       } catch (e) { setError(e.message); }
     };
     load();
-    const interval = setInterval(load, 60000);
+    const interval = setInterval(load, 10000);
     return () => clearInterval(interval);
   }, []);
 

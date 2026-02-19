@@ -57,6 +57,25 @@ async function commitStatusJson(token, repo, content, sha, message) {
   return res.json();
 }
 
+// Notify OpenClaw that a dashboard change was made (fire-and-forget)
+async function notifyOpenClaw(env, message) {
+  const hookUrl = env.OPENCLAW_HOOK_URL;
+  const hookToken = env.OPENCLAW_HOOK_TOKEN;
+  if (!hookUrl || !hookToken) return;
+  try {
+    await fetch(`${hookUrl}/hooks/wake`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${hookToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: `📋 Dashboard: ${message}`, mode: 'now' }),
+    });
+  } catch {
+    // Non-critical — don't fail the request if notification fails
+  }
+}
+
 function findTaskInProject(project, taskId) {
   const tasks = project.tasks || {};
   for (const col of ['todo', 'upnext', 'in_progress', 'done']) {
@@ -86,7 +105,7 @@ function resolveColumn(columnId) {
 
 // ─── Handlers ────────────────────────────────────────────────────────
 
-async function handleAdd(body, token, repo) {
+async function handleAdd(body, token, repo, env) {
   const { task, projectId, column } = body;
   if (!task || !task.title) return jsonResponse({ error: 'Missing task.title' }, 400);
 
@@ -116,10 +135,11 @@ async function handleAdd(body, token, repo) {
 
   content.lastUpdated = new Date().toISOString();
   await commitStatusJson(token, repo, content, sha, `Add task: ${newTask.title}`);
+  notifyOpenClaw(env, `New task added: "${newTask.title}"`);
   return jsonResponse({ ok: true, task: newTask }, 201);
 }
 
-async function handleMove(body, token, repo) {
+async function handleMove(body, token, repo, env) {
   const { taskId, projectId, targetColumn, assignee } = body;
   if (!taskId || !projectId) return jsonResponse({ error: 'Missing taskId or projectId' }, 400);
 
@@ -152,10 +172,11 @@ async function handleMove(body, token, repo) {
   content.lastUpdated = new Date().toISOString();
   await commitStatusJson(token, repo, content, sha,
     `Move task "${task.title}" to ${resolvedCol || targetColumn}`);
+  notifyOpenClaw(env, `Task moved: "${task.title}" → ${resolvedCol || targetColumn}`);
   return jsonResponse({ ok: true, taskId, from: found.column, to: destCol });
 }
 
-async function handleComplete(body, token, repo) {
+async function handleComplete(body, token, repo, env) {
   const { taskId, projectId, completed } = body;
   if (!taskId) return jsonResponse({ error: 'Missing taskId' }, 400);
 
@@ -186,12 +207,13 @@ async function handleComplete(body, token, repo) {
     content.lastUpdated = new Date().toISOString();
     await commitStatusJson(token, repo, content, sha,
       `${completed !== false ? 'Complete' : 'Reopen'} task: ${task.title}`);
+    notifyOpenClaw(env, `Task ${completed !== false ? 'completed' : 'reopened'}: "${task.title}"`);
   }
 
   return jsonResponse({ ok: true, taskId, completed: completed !== false });
 }
 
-async function handleEdit(body, token, repo) {
+async function handleEdit(body, token, repo, env) {
   const { taskId, projectId, updates } = body;
   if (!taskId || !updates) return jsonResponse({ error: 'Missing taskId or updates' }, 400);
 
@@ -213,6 +235,7 @@ async function handleEdit(body, token, repo) {
 
   content.lastUpdated = new Date().toISOString();
   await commitStatusJson(token, repo, content, sha, `Edit task: ${taskId}`);
+  notifyOpenClaw(env, `Task edited: ${taskId}`);
   return jsonResponse({ ok: true, taskId });
 }
 
@@ -242,10 +265,10 @@ export async function onRequestPost(context) {
 
   try {
     switch (action) {
-      case 'add': return await handleAdd(body, token, repo);
-      case 'move': return await handleMove(body, token, repo);
-      case 'complete': return await handleComplete(body, token, repo);
-      case 'edit': return await handleEdit(body, token, repo);
+      case 'add': return await handleAdd(body, token, repo, env);
+      case 'move': return await handleMove(body, token, repo, env);
+      case 'complete': return await handleComplete(body, token, repo, env);
+      case 'edit': return await handleEdit(body, token, repo, env);
       default: return jsonResponse({ error: `Unknown action: ${action}` }, 400);
     }
   } catch (err) {

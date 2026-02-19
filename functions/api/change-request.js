@@ -57,6 +57,24 @@ async function commitStatusJson(token, repo, content, sha, message) {
   return res.json();
 }
 
+async function notifyOpenClaw(env, message) {
+  const hookUrl = env.OPENCLAW_HOOK_URL;
+  const hookToken = env.OPENCLAW_HOOK_TOKEN;
+  if (!hookUrl || !hookToken) return;
+  try {
+    await fetch(`${hookUrl}/hooks/wake`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${hookToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ text: `💬 Dashboard change request: ${message}`, mode: 'now' }),
+    });
+  } catch {
+    // Non-critical
+  }
+}
+
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: CORS_HEADERS });
 }
@@ -94,6 +112,7 @@ export async function onRequestPost(context) {
     content.lastUpdated = new Date().toISOString();
 
     await commitStatusJson(token, repo, content, sha, `Change request: ${text.slice(0, 60)}`);
+    notifyOpenClaw(env, text.slice(0, 120));
     return jsonResponse({ ok: true, id: req.id }, 201);
   } catch (err) {
     return jsonResponse({ error: 'Internal error', detail: err.message }, 500);

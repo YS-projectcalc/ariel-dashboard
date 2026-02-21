@@ -1563,28 +1563,29 @@
       "tasks": {
         "upnext": [
           {
+            "id": "rb-2",
+            "title": "Produce full implementation plan",
+            "description": "Data model, API endpoints, admin UX, public page, randomizer algorithm, security checklist, phased rollout. Working from Yaakov's email brief (locked decisions + constraints). Sent clarifying questions — awaiting answers on tech stack, auth, webhook source, AMOE details, hosting.",
+            "priority": "high",
+            "tags": ["planning"],
+            "createdAt": "2026-02-21T21:18:00Z",
+            "promotedAt": "2026-02-21T21:29:00Z"
+          }
+        ],
+        "todo": [],
+        "in_progress": [],
+        "done": [
+          {
             "id": "rb-1",
             "title": "Receive MVP spec from Yaakov",
-            "description": "Email contained prompt/framework but placeholder for actual spec. Waiting for Yaakov to paste/attach the MVP spec document.",
+            "description": "Yaakov confirmed there's no separate spec doc — the email brief with locked decisions IS the spec. Proceeding with that.",
             "priority": "high",
             "tags": ["blocking"],
             "assignee": "yaakov",
             "createdAt": "2026-02-21T21:18:00Z",
-            "promotedAt": "2026-02-21T21:18:00Z"
+            "completedAt": "2026-02-21T21:29:00Z"
           }
-        ],
-        "todo": [
-          {
-            "id": "rb-2",
-            "title": "Produce full implementation plan",
-            "description": "Data model, API endpoints, admin UX, public page, randomizer algorithm, security checklist, phased rollout. Per Yaakov's brief.",
-            "priority": "high",
-            "tags": ["planning"],
-            "createdAt": "2026-02-21T21:18:00Z"
-          }
-        ],
-        "in_progress": [],
-        "done": []
+        ]
       }
     }
   ],

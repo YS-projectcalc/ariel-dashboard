@@ -1552,6 +1552,40 @@
         "in_progress": [],
         "done": []
       }
+    },
+    {
+      "id": "raffle-builder",
+      "name": "Raffle Builder",
+      "color": "#ec4899",
+      "icon": "R",
+      "status": "active",
+      "description": "External Payments → Entry Ledger + Manual AMOE/Cash + Selection Randomizer",
+      "tasks": {
+        "upnext": [
+          {
+            "id": "rb-1",
+            "title": "Receive MVP spec from Yaakov",
+            "description": "Email contained prompt/framework but placeholder for actual spec. Waiting for Yaakov to paste/attach the MVP spec document.",
+            "priority": "high",
+            "tags": ["blocking"],
+            "assignee": "yaakov",
+            "createdAt": "2026-02-21T21:18:00Z",
+            "promotedAt": "2026-02-21T21:18:00Z"
+          }
+        ],
+        "todo": [
+          {
+            "id": "rb-2",
+            "title": "Produce full implementation plan",
+            "description": "Data model, API endpoints, admin UX, public page, randomizer algorithm, security checklist, phased rollout. Per Yaakov's brief.",
+            "priority": "high",
+            "tags": ["planning"],
+            "createdAt": "2026-02-21T21:18:00Z"
+          }
+        ],
+        "in_progress": [],
+        "done": []
+      }
     }
   ],
   "changeRequests": [

@@ -2207,18 +2207,48 @@ function TodaySection({ projects, completedIds: globalCompletedIds, dragOverride
     });
   };
 
-  // Group tasks by project
-  const grouped = {};
-  todayTasks.forEach(t => {
-    if (!grouped[t.projectId]) grouped[t.projectId] = [];
-    grouped[t.projectId].push(t);
-  });
+  // Cycle: swap a task for the next available one from same project
+  const cycleTask = (task) => {
+    const project = projectMap[task.projectId];
+    if (!project) return;
+    const available = getAvailableTasks(project);
+    // Filter out tasks already in today's list
+    const currentTaskIds = todayTasks.map(t => t.taskId);
+    const candidates = available.filter(t => !currentTaskIds.includes(t.id));
+    if (candidates.length === 0) return; // no alternatives
+    // Pick the next candidate
+    const replacement = candidates[0];
+    setTodayTasks(prev => {
+      const next = prev.map(t => {
+        if (t.taskId === task.taskId) {
+          return {
+            taskId: replacement.id,
+            projectId: task.projectId,
+            title: replacement.title,
+            priority: replacement.priority || 'medium',
+          };
+        }
+        return t;
+      });
+      saveTodayTasks(next);
+      return next;
+    });
+  };
 
   const doneCount = todayTasks.filter(t => todayDone.includes(t.taskId)).length;
   const totalCount = todayTasks.length;
   const progressPct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
 
   const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+  // Check if a task has alternatives available for cycling
+  const hasAlternatives = (task) => {
+    const project = projectMap[task.projectId];
+    if (!project) return false;
+    const available = getAvailableTasks(project);
+    const currentTaskIds = todayTasks.map(t => t.taskId);
+    return available.filter(t => !currentTaskIds.includes(t.id)).length > 0;
+  };
 
   return (
     <div>
@@ -2267,7 +2297,7 @@ function TodaySection({ projects, completedIds: globalCompletedIds, dragOverride
         )}
       </div>
 
-      {/* Tasks grouped by project */}
+      {/* Kanban-style vertical cards */}
       {totalCount === 0 ? (
         <div style={{
           backgroundColor: '#163344', borderRadius: '12px', border: '1px solid #1e4258',
@@ -2282,103 +2312,116 @@ function TodaySection({ projects, completedIds: globalCompletedIds, dragOverride
           </div>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {Object.entries(grouped).map(([projectId, tasks]) => {
-            const project = projectMap[projectId];
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {todayTasks.map(task => {
+            const project = projectMap[task.projectId];
             if (!project) return null;
-            const projectDone = tasks.filter(t => todayDone.includes(t.taskId)).length;
+            const isDone = todayDone.includes(task.taskId);
+            const priorityColors = { high: '#f87171', medium: '#f59e0b', low: '#94a3b8' };
+            const canCycle = hasAlternatives(task);
             return (
-              <div key={projectId} style={{
-                backgroundColor: '#163344', borderRadius: '12px', border: '1px solid #1e4258',
+              <div key={task.taskId} style={{
+                display: 'flex', alignItems: 'stretch',
+                backgroundColor: isDone ? '#0f2a38' : '#163344',
+                borderRadius: '10px', border: '1px solid #1e4258',
+                borderLeft: `4px solid ${isDone ? '#4ade80' : project.color}`,
                 overflow: 'hidden',
+                transition: 'all 0.2s',
+                opacity: isDone ? 0.7 : 1,
               }}>
-                {/* Project header */}
-                <div style={{
-                  padding: '16px 20px', borderBottom: '1px solid #1e4258',
-                  display: 'flex', alignItems: 'center', gap: '12px',
-                  borderLeft: `4px solid ${project.color}`,
-                }}>
-                  <div style={{
-                    width: '32px', height: '32px', borderRadius: '8px',
-                    backgroundColor: project.color + '20', color: project.color,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '14px', fontWeight: 700, flexShrink: 0,
-                  }}>{project.icon}</div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#f8fafc' }}>{project.name}</div>
-                    <div style={{ fontSize: '11px', color: '#64748b' }}>{project.description}</div>
+                {/* Main card content */}
+                <div
+                  style={{
+                    flex: 1, display: 'flex', alignItems: 'center', gap: '14px',
+                    padding: '14px 16px', cursor: 'pointer',
+                    transition: 'background-color 0.15s',
+                  }}
+                  onMouseEnter={e => { if (!isDone) e.currentTarget.style.backgroundColor = '#1a3d52'; }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+                >
+                  {/* Checkbox */}
+                  <div
+                    onClick={() => toggleTodayDone(task.taskId)}
+                    style={{
+                      width: '22px', height: '22px', borderRadius: '6px',
+                      border: `2px solid ${isDone ? '#4ade80' : '#475569'}`,
+                      backgroundColor: isDone ? '#4ade8020' : 'transparent',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', flexShrink: 0, transition: 'all 0.15s',
+                    }}
+                  >
+                    {isDone && (
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                        stroke="#4ade80" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                    )}
                   </div>
-                  <div style={{
-                    fontSize: '12px', fontWeight: 600,
-                    color: projectDone === tasks.length ? '#4ade80' : '#94a3b8',
-                  }}>
-                    {projectDone}/{tasks.length}
-                  </div>
-                </div>
-                {/* Task list */}
-                <div style={{ padding: '8px 12px' }}>
-                  {tasks.map(task => {
-                    const isDone = todayDone.includes(task.taskId);
-                    const priorityColors = { high: '#f87171', medium: '#f59e0b', low: '#94a3b8' };
-                    return (
-                      <div key={task.taskId} style={{
-                        display: 'flex', alignItems: 'center', gap: '12px',
-                        padding: '10px 8px', borderRadius: '8px',
-                        transition: 'background-color 0.15s',
-                        cursor: 'pointer',
-                      }}
-                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#0a2233'; }}
-                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
-                      >
-                        {/* Checkbox */}
-                        <div
-                          onClick={() => toggleTodayDone(task.taskId)}
-                          style={{
-                            width: '20px', height: '20px', borderRadius: '6px',
-                            border: `2px solid ${isDone ? '#4ade80' : '#475569'}`,
-                            backgroundColor: isDone ? '#4ade8020' : 'transparent',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            cursor: 'pointer', flexShrink: 0, transition: 'all 0.15s',
-                          }}
-                        >
-                          {isDone && (
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                              stroke="#4ade80" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                          )}
-                        </div>
-                        {/* Task title */}
-                        <div style={{
-                          flex: 1, fontSize: '13px', fontWeight: 500,
-                          color: isDone ? '#64748b' : '#f8fafc',
-                          textDecoration: isDone ? 'line-through' : 'none',
-                          transition: 'color 0.15s',
-                        }}>
-                          {task.title}
-                        </div>
-                        {/* Priority dot */}
-                        <div style={{
-                          width: '8px', height: '8px', borderRadius: '50%',
-                          backgroundColor: priorityColors[task.priority] || '#94a3b8',
-                          flexShrink: 0,
-                        }} title={task.priority} />
-                        {/* Remove button */}
-                        <div
-                          onClick={(e) => { e.stopPropagation(); removeFromToday(task.taskId); }}
-                          style={{
-                            width: '20px', height: '20px', borderRadius: '4px',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            cursor: 'pointer', color: '#475569', fontSize: '14px',
-                            transition: 'color 0.15s',
-                          }}
-                          onMouseEnter={e => { e.currentTarget.style.color = '#f87171'; }}
-                          onMouseLeave={e => { e.currentTarget.style.color = '#475569'; }}
-                          title="Remove from today"
-                        >{'\u00D7'}</div>
+                  {/* Task info */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{
+                      fontSize: '14px', fontWeight: 600,
+                      color: isDone ? '#64748b' : '#f8fafc',
+                      textDecoration: isDone ? 'line-through' : 'none',
+                      transition: 'color 0.15s',
+                      lineHeight: 1.3,
+                    }}>
+                      {task.title}
+                    </div>
+                    <div style={{
+                      display: 'flex', alignItems: 'center', gap: '8px',
+                      marginTop: '4px',
+                    }}>
+                      <div style={{
+                        fontSize: '11px', fontWeight: 600,
+                        color: project.color, opacity: 0.9,
+                      }}>
+                        {project.icon} {project.name}
                       </div>
-                    );
-                  })}
+                      <div style={{
+                        width: '6px', height: '6px', borderRadius: '50%',
+                        backgroundColor: priorityColors[task.priority] || '#94a3b8',
+                        flexShrink: 0,
+                      }} title={task.priority} />
+                      <div style={{
+                        fontSize: '10px', color: '#64748b', textTransform: 'uppercase',
+                        fontWeight: 600,
+                      }}>
+                        {task.priority}
+                      </div>
+                    </div>
+                  </div>
+                  {/* Remove button */}
+                  <div
+                    onClick={(e) => { e.stopPropagation(); removeFromToday(task.taskId); }}
+                    style={{
+                      width: '24px', height: '24px', borderRadius: '6px',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', color: '#475569', fontSize: '16px',
+                      transition: 'all 0.15s', flexShrink: 0,
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.color = '#f87171'; e.currentTarget.style.backgroundColor = '#f8717110'; }}
+                    onMouseLeave={e => { e.currentTarget.style.color = '#475569'; e.currentTarget.style.backgroundColor = 'transparent'; }}
+                    title="Remove from today"
+                  >{'\u00D7'}</div>
+                </div>
+                {/* Cycle button — right side */}
+                <div
+                  onClick={(e) => { e.stopPropagation(); if (canCycle) cycleTask(task); }}
+                  style={{
+                    width: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    borderLeft: '1px solid #1e4258',
+                    cursor: canCycle ? 'pointer' : 'default',
+                    color: canCycle ? '#60a5fa' : '#2a3f4d',
+                    fontSize: '16px',
+                    transition: 'all 0.15s', flexShrink: 0,
+                    backgroundColor: 'transparent',
+                  }}
+                  onMouseEnter={e => { if (canCycle) { e.currentTarget.style.backgroundColor = '#60a5fa15'; e.currentTarget.style.color = '#93c5fd'; } }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = canCycle ? '#60a5fa' : '#2a3f4d'; }}
+                  title={canCycle ? 'Swap for different task' : 'No other tasks available'}
+                >
+                  {'\u21C5'}
                 </div>
               </div>
             );

@@ -1901,7 +1901,7 @@ function PotentialIdeaCard({ biz, onDelete }) {
 }
 
 function PotentialIdeasSection({ businesses }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newIdea, setNewIdea] = useState('');
@@ -2104,7 +2104,7 @@ function PotentialIdeasSection({ businesses }) {
 // ─── Scheduler Section ──────────────────────────────────────────────
 
 function SchedulerSection({ projects }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [hoursPerDay, setHoursPerDay] = useState(() => {
     try { return parseFloat(localStorage.getItem('cc_sched_hours') || '5'); } catch { return 5; }
   });
@@ -2510,6 +2510,7 @@ export default function Home() {
   const [dueDates, setDueDates] = useState({});
   const [columnOrder, setColumnOrder] = useState({});
   const [taskEdits, setTaskEdits] = useState({});
+  const [activeSection, setActiveSection] = useState('projects');
 
   useEffect(() => {
     setCompletedIds(getCompletedIds());
@@ -2805,149 +2806,232 @@ export default function Home() {
   });
   const totalTasks = totalTodo + totalUpnext + totalDone + todos.length;
 
+  const navItems = [
+    { id: 'projects', label: 'Current Projects', icon: '\u{1F4CB}' },
+    { id: 'ideas', label: 'Potential Ideas', icon: '\u{1F4A1}' },
+    { id: 'schedule', label: 'Schedule', icon: '\u{1F4C5}' },
+  ];
+
+  // When selecting a project detail, force projects section
+  const handleProjectClick = (projectId) => {
+    setSelectedProject(projectId);
+    setActiveSection('projects');
+  };
+
   return (
     <div style={{
-      minHeight: '100vh', backgroundColor: '#143d4f', padding: '24px',
+      minHeight: '100vh', backgroundColor: '#143d4f',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       color: '#f8fafc',
-      marginRight: sidebarOpen ? 'min(340px, 90vw)' : '32px',
-      transition: 'margin-right 0.2s',
+      display: 'flex',
     }}>
       <style>{`
         ::-webkit-scrollbar { display: none; }
         * { scrollbar-width: none; }
       `}</style>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <header style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          marginBottom: '32px', paddingBottom: '16px', borderBottom: '1px solid #1e4258',
-          gap: '16px', flexWrap: 'wrap',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+
+      {/* Left Navbar */}
+      <nav style={{
+        width: '220px',
+        minWidth: '220px',
+        backgroundColor: '#0f2233',
+        borderRight: '1px solid #1e4258',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '20px 0',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        zIndex: 100,
+      }}>
+        {/* Logo */}
+        <div style={{ padding: '0 16px 24px', borderBottom: '1px solid #1e4258', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
-              width: '36px', height: '36px', borderRadius: '8px',
+              width: '32px', height: '32px', borderRadius: '8px',
               background: 'linear-gradient(135deg, #8b5cf6, #06b6d4)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '16px', fontWeight: 800, color: '#fff',
+              fontSize: '14px', fontWeight: 800, color: '#fff',
             }}>CC</div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: '18px', color: '#f8fafc' }}>Command Center</div>
-              <div style={{ fontSize: '12px', color: '#64748b' }}>
-                {projects.length} projects &middot; {totalTasks} tasks
+              <div style={{ fontWeight: 700, fontSize: '15px', color: '#f8fafc' }}>Command Center</div>
+              <div style={{ fontSize: '11px', color: '#64748b' }}>
+                {projects.length} projects
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Omnisearch Bar (Feature 5) */}
-          <OmnisearchBar data={data} onNavigate={handleSearchNavigate} userTasks={userTasks} />
+        {/* Nav Items */}
+        <div style={{ flex: 1, padding: '8px' }}>
+          {navItems.map(item => {
+            const isActive = activeSection === item.id && !selectedProject;
+            return (
+              <button
+                key={item.id}
+                onClick={() => { setActiveSection(item.id); setSelectedProject(null); }}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  padding: '10px 12px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: isActive ? '#1e4258' : 'transparent',
+                  color: isActive ? '#f8fafc' : '#94a3b8',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  fontWeight: isActive ? 600 : 400,
+                  textAlign: 'left',
+                  transition: 'all 0.15s',
+                  marginBottom: '2px',
+                }}
+                onMouseEnter={e => { if (!isActive) { e.currentTarget.style.background = '#163344'; e.currentTarget.style.color = '#f8fafc'; } }}
+                onMouseLeave={e => { if (!isActive) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#94a3b8'; } }}
+              >
+                <span style={{ fontSize: '16px' }}>{item.icon}</span>
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
-            {data.lastUpdated && (
-              <div style={{ fontSize: '12px', color: '#64748b' }}>Updated {timeAgo(data.lastUpdated)}</div>
-            )}
-            {/* Change Request Button (Feature 6) */}
-            <button
-              onClick={() => setShowChangeRequest(!showChangeRequest)}
-              title="Request a change"
-              style={{
-                width: '36px', height: '36px', borderRadius: '8px',
-                border: '1px solid #1e4258', background: 'none',
-                color: '#64748b', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                transition: 'all 0.15s', padding: 0,
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = '#8b5cf6'; e.currentTarget.style.color = '#8b5cf6'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = '#1e4258'; e.currentTarget.style.color = '#64748b'; }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-              </svg>
-            </button>
-            {showChangeRequest && (
-              <ChangeRequestPopout onClose={() => setShowChangeRequest(false)} />
-            )}
-          </div>
-        </header>
+        {/* Bottom info */}
+        <div style={{ padding: '12px 16px', borderTop: '1px solid #1e4258', fontSize: '11px', color: '#475569' }}>
+          {data.lastUpdated && <>Updated {timeAgo(data.lastUpdated)}</>}
+        </div>
+      </nav>
 
-        {selected ? (
-          <ProjectDetailView
-            project={selected}
-            onBack={() => setSelectedProject(null)}
-            completedIds={completedIds}
-            onToggle={toggleTask}
-            dragOverrides={dragOverrides}
-            onDragDrop={handleDragDrop}
-            userTasks={userTasks}
-            onAddUserTask={addUserTask}
-            dueDates={dueDates}
-            onSetDueDate={setDueDate}
-            onEditTask={editTask}
-            columnOrder={columnOrder}
-            onReorderInColumn={reorderInColumn}
-            taskEdits={taskEdits}
-            onSubtaskToggle={handleSubtaskToggle}
-            onSubtaskAdd={handleSubtaskAdd}
-          />
-        ) : (
-          <>
-            {totalTasks > 0 && (
-              <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
-                {[
-                  { label: 'To Do', count: totalTodo, color: '#94a3b8' },
-                  { label: 'Up Next', count: totalUpnext, color: '#60a5fa' },
-                  { label: 'Done', count: totalDone, color: '#4ade80' },
-                ].map(item => (
-                  <div key={item.label} style={{
-                    flex: 1, backgroundColor: '#163344',
-                    borderRadius: '10px', border: '1px solid #1e4258',
-                    padding: '16px', textAlign: 'center',
-                  }}>
-                    <div style={{ fontSize: '28px', fontWeight: 700, color: item.color }}>{item.count}</div>
-                    <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>
-                      {item.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: '16px',
-            }}>
-              {overviewCards.map(card => (
-                <ProjectOverviewCard
-                  key={card.key}
-                  project={card.project}
-                  completedIds={completedIds}
-                  dragOverrides={dragOverrides}
-                  onClick={() => setSelectedProject(card.project.id)}
-                  userTasks={userTasks}
-                />
-              ))}
+      {/* Main Content */}
+      <div style={{
+        flex: 1,
+        marginLeft: '220px',
+        padding: '24px',
+        marginRight: sidebarOpen ? 'min(340px, 90vw)' : '32px',
+        transition: 'margin-right 0.2s',
+      }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Top bar with search and actions */}
+          <header style={{
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            marginBottom: '32px', paddingBottom: '16px', borderBottom: '1px solid #1e4258',
+            gap: '16px', flexWrap: 'wrap',
+          }}>
+            <div style={{ fontWeight: 700, fontSize: '18px', color: '#f8fafc' }}>
+              {selected ? selected.name : navItems.find(n => n.id === activeSection)?.label}
             </div>
 
-            <GeneralTodosSection
-              todos={todos}
+            <OmnisearchBar data={data} onNavigate={(type, id) => {
+              if (type === 'project') handleProjectClick(id);
+              else if (type === 'ideas') { setActiveSection('ideas'); setSelectedProject(null); }
+              else handleSearchNavigate(type, id);
+            }} userTasks={userTasks} />
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative' }}>
+              <button
+                onClick={() => setShowChangeRequest(!showChangeRequest)}
+                title="Request a change"
+                style={{
+                  width: '36px', height: '36px', borderRadius: '8px',
+                  border: '1px solid #1e4258', background: 'none',
+                  color: '#64748b', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  transition: 'all 0.15s', padding: 0,
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = '#8b5cf6'; e.currentTarget.style.color = '#8b5cf6'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = '#1e4258'; e.currentTarget.style.color = '#64748b'; }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+              </button>
+              {showChangeRequest && (
+                <ChangeRequestPopout onClose={() => setShowChangeRequest(false)} />
+              )}
+            </div>
+          </header>
+
+          {/* Content based on active section or selected project */}
+          {selected ? (
+            <ProjectDetailView
+              project={selected}
+              onBack={() => setSelectedProject(null)}
               completedIds={completedIds}
               onToggle={toggleTask}
+              dragOverrides={dragOverrides}
+              onDragDrop={handleDragDrop}
               userTasks={userTasks}
               onAddUserTask={addUserTask}
+              dueDates={dueDates}
+              onSetDueDate={setDueDate}
+              onEditTask={editTask}
+              columnOrder={columnOrder}
+              onReorderInColumn={reorderInColumn}
+              taskEdits={taskEdits}
+              onSubtaskToggle={handleSubtaskToggle}
+              onSubtaskAdd={handleSubtaskAdd}
             />
+          ) : activeSection === 'projects' ? (
+            <>
+              {totalTasks > 0 && (
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+                  {[
+                    { label: 'To Do', count: totalTodo, color: '#94a3b8' },
+                    { label: 'Up Next', count: totalUpnext, color: '#60a5fa' },
+                    { label: 'Done', count: totalDone, color: '#4ade80' },
+                  ].map(item => (
+                    <div key={item.label} style={{
+                      flex: 1, backgroundColor: '#163344',
+                      borderRadius: '10px', border: '1px solid #1e4258',
+                      padding: '16px', textAlign: 'center',
+                    }}>
+                      <div style={{ fontSize: '28px', fontWeight: 700, color: item.color }}>{item.count}</div>
+                      <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.5px' }}>
+                        {item.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
 
-            {/* Scheduler Section */}
-            <SchedulerSection projects={projects} />
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                gap: '16px',
+              }}>
+                {overviewCards.map(card => (
+                  <ProjectOverviewCard
+                    key={card.key}
+                    project={card.project}
+                    completedIds={completedIds}
+                    dragOverrides={dragOverrides}
+                    onClick={() => handleProjectClick(card.project.id)}
+                    userTasks={userTasks}
+                  />
+                ))}
+              </div>
 
-            {/* Feature 1: Potential Ideas as cards */}
+              <GeneralTodosSection
+                todos={todos}
+                completedIds={completedIds}
+                onToggle={toggleTask}
+                userTasks={userTasks}
+                onAddUserTask={addUserTask}
+              />
+            </>
+          ) : activeSection === 'ideas' ? (
             <div id="potential-ideas-section">
               <PotentialIdeasSection
                 businesses={data.potentialBusinesses || []}
               />
             </div>
-          </>
-        )}
+          ) : activeSection === 'schedule' ? (
+            <SchedulerSection projects={projects} />
+          ) : null}
+        </div>
       </div>
 
       {/* Feature 4: Ariel Sidebar */}

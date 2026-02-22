@@ -1789,7 +1789,7 @@ function GeneralTodosSection({ todos, completedIds, onToggle, userTasks, onAddUs
 
 // ─── Potential Ideas Cards (Feature 1) ──────────────────────────────
 
-function PotentialIdeaCard({ biz }) {
+function PotentialIdeaCard({ biz, onDelete }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -1880,6 +1880,20 @@ function PotentialIdeaCard({ biz }) {
               No details yet
             </div>
           )}
+          {onDelete && (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '8px' }}>
+              <button
+                onClick={(e) => { e.stopPropagation(); onDelete(biz.id); }}
+                style={{
+                  background: 'none', border: '1px solid #334155', borderRadius: '4px',
+                  color: '#64748b', fontSize: '11px', cursor: 'pointer', padding: '2px 8px',
+                  transition: 'all 0.15s',
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = '#f87171'; e.currentTarget.style.color = '#f87171'; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = '#334155'; e.currentTarget.style.color = '#64748b'; }}
+              >Delete</button>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -1894,23 +1908,52 @@ function PotentialIdeasSection({ businesses }) {
 
   const handleAddIdea = () => {
     if (!newTitle.trim()) return;
-    const ideas = JSON.parse(localStorage.getItem('cc_potential_ideas') || '[]');
-    ideas.push({
+    const idea = {
       id: 'idea-' + Date.now().toString(36),
       title: newTitle.trim(),
       idea: newIdea.trim() || undefined,
       tags: [],
       createdAt: new Date().toISOString(),
-    });
-    localStorage.setItem('cc_potential_ideas', JSON.stringify(ideas));
+    };
+    // Sync to server (persists to status.json)
+    fetch('/api/ideas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'add', ...idea }),
+    }).catch(() => {});
     setNewTitle('');
     setNewIdea('');
     setShowAddForm(false);
     window.dispatchEvent(new Event('ideas-updated'));
   };
 
-  const localIdeas = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('cc_potential_ideas') || '[]') : [];
-  const allIdeas = [...(businesses || []), ...localIdeas];
+  const allIdeas = businesses || [];
+
+  // Migrate localStorage ideas to server (one-time)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const localIdeas = JSON.parse(localStorage.getItem('cc_potential_ideas') || '[]');
+    if (localIdeas.length === 0) return;
+    // Sync each local idea to server, then clear localStorage
+    Promise.all(localIdeas.map(idea =>
+      fetch('/api/ideas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'add', ...idea }),
+      }).catch(() => {})
+    )).then(() => {
+      localStorage.removeItem('cc_potential_ideas');
+    });
+  }, []);
+
+  const handleDeleteIdea = (id) => {
+    fetch('/api/ideas', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'delete', id }),
+    }).catch(() => {});
+    window.dispatchEvent(new Event('ideas-updated'));
+  };
 
   return (
     <div style={{ marginTop: '32px' }}>
@@ -2040,7 +2083,7 @@ function PotentialIdeasSection({ businesses }) {
                 gap: '12px',
               }}>
                 {allIdeas.map(biz => (
-                  <PotentialIdeaCard key={biz.id} biz={biz} />
+                  <PotentialIdeaCard key={biz.id} biz={biz} onDelete={handleDeleteIdea} />
                 ))}
               </div>
             ) : (
@@ -2051,6 +2094,237 @@ function PotentialIdeasSection({ businesses }) {
                 No ideas yet — add your first one above
               </div>
             )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Scheduler Section ──────────────────────────────────────────────
+
+function SchedulerSection({ projects }) {
+  const [expanded, setExpanded] = useState(false);
+  const [hoursPerDay, setHoursPerDay] = useState(() => {
+    try { return parseFloat(localStorage.getItem('cc_sched_hours') || '5'); } catch { return 5; }
+  });
+  const [allocations, setAllocations] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('cc_sched_alloc') || '{}'); } catch { return {}; }
+  });
+
+  const activeProjects = (projects || []).filter(p => p.status === 'active');
+
+  // Initialize allocations for new projects (equal split)
+  useEffect(() => {
+    if (activeProjects.length === 0) return;
+    setAllocations(prev => {
+      const next = { ...prev };
+      let hasNew = false;
+      activeProjects.forEach(p => {
+        if (!(p.id in next)) {
+          next[p.id] = Math.round(100 / activeProjects.length);
+          hasNew = true;
+        }
+      });
+      // Remove stale projects
+      Object.keys(next).forEach(k => {
+        if (!activeProjects.find(p => p.id === k)) {
+          delete next[k];
+          hasNew = true;
+        }
+      });
+      if (hasNew) localStorage.setItem('cc_sched_alloc', JSON.stringify(next));
+      return next;
+    });
+  }, [activeProjects.length]);
+
+  const totalPct = activeProjects.reduce((sum, p) => sum + (allocations[p.id] || 0), 0);
+
+  const updateAllocation = (projectId, value) => {
+    const val = Math.max(0, Math.min(100, parseInt(value) || 0));
+    setAllocations(prev => {
+      const next = { ...prev, [projectId]: val };
+      localStorage.setItem('cc_sched_alloc', JSON.stringify(next));
+      return next;
+    });
+  };
+
+  const updateHours = (val) => {
+    const h = Math.max(1, Math.min(16, parseFloat(val) || 5));
+    setHoursPerDay(h);
+    localStorage.setItem('cc_sched_hours', String(h));
+  };
+
+  // Count upnext tasks per project
+  const getUpnextCount = (project) => {
+    return ((project.tasks || {}).upnext || []).length;
+  };
+
+  return (
+    <div style={{ marginTop: '32px' }}>
+      <div
+        onClick={() => setExpanded(!expanded)}
+        style={{
+          backgroundColor: '#163344',
+          borderRadius: '12px',
+          border: '1px solid #1e4258',
+          padding: '24px',
+          cursor: 'pointer',
+          transition: 'border-color 0.15s, transform 0.15s',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+        onMouseEnter={e => {
+          e.currentTarget.style.borderColor = '#60a5fa';
+          e.currentTarget.style.transform = 'translateY(-2px)';
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.borderColor = '#1e4258';
+          e.currentTarget.style.transform = 'translateY(0)';
+        }}
+      >
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0,
+          height: '3px', backgroundColor: '#60a5fa',
+        }} />
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: expanded ? '16px' : '0' }}>
+          <div style={{
+            width: '40px', height: '40px', borderRadius: '10px',
+            backgroundColor: '#60a5fa20', color: '#60a5fa',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '18px', fontWeight: 700, flexShrink: 0,
+          }}>{'\u{1F4C5}'}</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 700, fontSize: '16px', color: '#f8fafc' }}>
+              Time Scheduler
+            </div>
+            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
+              {hoursPerDay}h/day across {activeProjects.length} projects — click to {expanded ? 'collapse' : 'expand'}
+            </div>
+          </div>
+          <span style={{
+            fontSize: '14px', color: '#475569',
+            transition: 'transform 0.2s',
+            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+            display: 'inline-block',
+          }}>{'\u25BC'}</span>
+        </div>
+
+        {expanded && (
+          <div onClick={e => e.stopPropagation()}>
+            {/* Hours per day control */}
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: '12px',
+              marginBottom: '20px', padding: '12px',
+              backgroundColor: '#0a2233', borderRadius: '8px',
+            }}>
+              <span style={{ fontSize: '13px', color: '#94a3b8', fontWeight: 600 }}>Available hours/day:</span>
+              <input
+                type="range" min="1" max="12" step="0.5"
+                value={hoursPerDay}
+                onChange={e => updateHours(e.target.value)}
+                style={{ flex: 1, accentColor: '#60a5fa' }}
+              />
+              <span style={{
+                fontSize: '18px', fontWeight: 700, color: '#60a5fa',
+                minWidth: '40px', textAlign: 'right',
+              }}>{hoursPerDay}h</span>
+            </div>
+
+            {/* Total indicator */}
+            {totalPct !== 100 && (
+              <div style={{
+                padding: '8px 12px', borderRadius: '6px', marginBottom: '12px',
+                backgroundColor: totalPct > 100 ? '#f8717120' : '#f59e0b20',
+                color: totalPct > 100 ? '#f87171' : '#f59e0b',
+                fontSize: '12px', fontWeight: 600,
+              }}>
+                Total: {totalPct}% — {totalPct > 100 ? 'over-allocated!' : `${100 - totalPct}% unallocated`}
+              </div>
+            )}
+
+            {/* Visual bar */}
+            <div style={{
+              display: 'flex', height: '12px', borderRadius: '6px',
+              overflow: 'hidden', marginBottom: '20px',
+              backgroundColor: '#0a2233',
+            }}>
+              {activeProjects.map(p => {
+                const pct = allocations[p.id] || 0;
+                if (pct === 0) return null;
+                return (
+                  <div key={p.id} style={{
+                    width: `${pct}%`, backgroundColor: p.color,
+                    transition: 'width 0.2s',
+                  }} title={`${p.name}: ${pct}%`} />
+                );
+              })}
+            </div>
+
+            {/* Project allocation rows */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {activeProjects.map(p => {
+                const pct = allocations[p.id] || 0;
+                const hrs = ((pct / 100) * hoursPerDay).toFixed(1);
+                const weeklyHrs = (hrs * 5).toFixed(1);
+                const upnext = getUpnextCount(p);
+                return (
+                  <div key={p.id} style={{
+                    display: 'flex', alignItems: 'center', gap: '12px',
+                    padding: '12px', backgroundColor: '#0a2233',
+                    borderRadius: '8px', borderLeft: `3px solid ${p.color}`,
+                  }}>
+                    <div style={{
+                      width: '32px', height: '32px', borderRadius: '8px',
+                      backgroundColor: p.color + '20', color: p.color,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: '14px', fontWeight: 700, flexShrink: 0,
+                    }}>{p.icon}</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: '#f8fafc' }}>
+                        {p.name}
+                        {upnext > 0 && (
+                          <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 400, marginLeft: '8px' }}>
+                            {upnext} up next
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
+                        {hrs}h/day &middot; {weeklyHrs}h/week
+                      </div>
+                    </div>
+                    <input
+                      type="range" min="0" max="100" step="5"
+                      value={pct}
+                      onChange={e => updateAllocation(p.id, e.target.value)}
+                      style={{ width: '120px', accentColor: p.color }}
+                    />
+                    <span style={{
+                      fontSize: '14px', fontWeight: 700, color: p.color,
+                      minWidth: '36px', textAlign: 'right',
+                    }}>{pct}%</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Weekly summary */}
+            <div style={{
+              marginTop: '16px', padding: '12px',
+              backgroundColor: '#0a2233', borderRadius: '8px',
+              display: 'flex', justifyContent: 'space-between',
+              flexWrap: 'wrap', gap: '8px',
+            }}>
+              <div style={{ fontSize: '12px', color: '#64748b' }}>
+                <span style={{ fontWeight: 600, color: '#94a3b8' }}>Weekly total: </span>
+                {(hoursPerDay * 5).toFixed(0)}h (5 days)
+              </div>
+              <div style={{ fontSize: '12px', color: '#64748b' }}>
+                <span style={{ fontWeight: 600, color: '#94a3b8' }}>Allocated: </span>
+                {((totalPct / 100) * hoursPerDay * 5).toFixed(1)}h ({totalPct}%)
+              </div>
+            </div>
           </div>
         )}
       </div>
@@ -2662,6 +2936,9 @@ export default function Home() {
               userTasks={userTasks}
               onAddUserTask={addUserTask}
             />
+
+            {/* Scheduler Section */}
+            <SchedulerSection projects={projects} />
 
             {/* Feature 1: Potential Ideas as cards */}
             <div id="potential-ideas-section">

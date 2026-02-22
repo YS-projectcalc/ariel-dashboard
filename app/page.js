@@ -2101,233 +2101,290 @@ function PotentialIdeasSection({ businesses }) {
   );
 }
 
-// ─── Scheduler Section ──────────────────────────────────────────────
+// ─── Today's Plan Section ──────────────────────────────────────────────
 
-function SchedulerSection({ projects }) {
-  const [expanded, setExpanded] = useState(true);
-  const [hoursPerDay, setHoursPerDay] = useState(() => {
-    try { return parseFloat(localStorage.getItem('cc_sched_hours') || '5'); } catch { return 5; }
-  });
-  const [allocations, setAllocations] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('cc_sched_alloc') || '{}'); } catch { return {}; }
-  });
+// localStorage helpers for today's tasks
+function getTodayKey() {
+  const d = new Date();
+  return `cc_today_${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function getTodayTasks() {
+  try { return JSON.parse(localStorage.getItem(getTodayKey()) || '[]'); } catch { return []; }
+}
+function saveTodayTasks(tasks) {
+  localStorage.setItem(getTodayKey(), JSON.stringify(tasks));
+}
+function getTodayCompletedIds() {
+  try { return JSON.parse(localStorage.getItem(getTodayKey() + '_done') || '[]'); } catch { return []; }
+}
+function saveTodayCompletedIds(ids) {
+  localStorage.setItem(getTodayKey() + '_done', JSON.stringify(ids));
+}
+
+function TodaySection({ projects, completedIds: globalCompletedIds, dragOverrides, serverTodayTasks }) {
+  const [todayTasks, setTodayTasks] = useState(() => getTodayTasks());
+  const [todayDone, setTodayDone] = useState(() => getTodayCompletedIds());
 
   const activeProjects = (projects || []).filter(p => p.status === 'active');
+  const projectMap = {};
+  activeProjects.forEach(p => { projectMap[p.id] = p; });
 
-  // Initialize allocations for new projects (equal split)
+  // Check effective column for a task (respects drag overrides + completions)
+  const getEffCol = (task, project) => {
+    const override = dragOverrides[task.id];
+    if (override === '__done__') return 'done';
+    if (override === '__upnext__') return 'upnext';
+    if (override === '__todo__') return 'todo';
+    if (globalCompletedIds.includes(task.id)) return 'done';
+    if (((project.tasks || {}).done || []).some(d => d.id === task.id)) return 'done';
+    if (((project.tasks || {}).upnext || []).some(d => d.id === task.id)) return 'upnext';
+    return 'todo';
+  };
+
+  // Get available (non-done) tasks from a project, prioritized
+  const getAvailableTasks = (project) => {
+    const t = project.tasks || {};
+    const all = [...(t.upnext || []), ...(t.in_progress || []), ...(t.todo || [])];
+    return all.filter(task => getEffCol(task, project) !== 'done');
+  };
+
+  // Load from server todayTasks if localStorage is empty
   useEffect(() => {
-    if (activeProjects.length === 0) return;
-    setAllocations(prev => {
-      const next = { ...prev };
-      let hasNew = false;
-      activeProjects.forEach(p => {
-        if (!(p.id in next)) {
-          next[p.id] = Math.round(100 / activeProjects.length);
-          hasNew = true;
-        }
+    if (todayTasks.length > 0) return;
+    // Try server-side todayTasks first (populated by 8 AM cron)
+    if (serverTodayTasks && serverTodayTasks.tasks && serverTodayTasks.tasks.length > 0) {
+      // Check if it's for today
+      const now = new Date();
+      const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+      if (serverTodayTasks.date === todayStr) {
+        setTodayTasks(serverTodayTasks.tasks);
+        saveTodayTasks(serverTodayTasks.tasks);
+        return;
+      }
+    }
+    // Fallback: auto-populate from project tasks
+    const weights = {
+      'epiphany-made': 40,
+      'juniform': 25,
+      'spotlight-ai': 20,
+      'bigbang': 5,
+      'iluy': 5,
+      'raffle-builder': 5,
+    };
+    const planned = [];
+    activeProjects.forEach(p => {
+      const weight = weights[p.id] || 5;
+      const available = getAvailableTasks(p);
+      const count = Math.max(1, Math.min(available.length, Math.round(weight / 10)));
+      available.slice(0, count).forEach(task => {
+        planned.push({
+          taskId: task.id,
+          projectId: p.id,
+          title: task.title,
+          priority: task.priority || 'medium',
+        });
       });
-      // Remove stale projects
-      Object.keys(next).forEach(k => {
-        if (!activeProjects.find(p => p.id === k)) {
-          delete next[k];
-          hasNew = true;
-        }
-      });
-      if (hasNew) localStorage.setItem('cc_sched_alloc', JSON.stringify(next));
+    });
+    if (planned.length > 0) {
+      setTodayTasks(planned);
+      saveTodayTasks(planned);
+    }
+  }, []);
+
+  const toggleTodayDone = (taskId) => {
+    setTodayDone(prev => {
+      const next = prev.includes(taskId) ? prev.filter(id => id !== taskId) : [...prev, taskId];
+      saveTodayCompletedIds(next);
       return next;
     });
-  }, [activeProjects.length]);
+  };
 
-  const totalPct = activeProjects.reduce((sum, p) => sum + (allocations[p.id] || 0), 0);
-
-  const updateAllocation = (projectId, value) => {
-    const val = Math.max(0, Math.min(100, parseInt(value) || 0));
-    setAllocations(prev => {
-      const next = { ...prev, [projectId]: val };
-      localStorage.setItem('cc_sched_alloc', JSON.stringify(next));
+  const removeFromToday = (taskId) => {
+    setTodayTasks(prev => {
+      const next = prev.filter(t => t.taskId !== taskId);
+      saveTodayTasks(next);
       return next;
     });
   };
 
-  const updateHours = (val) => {
-    const h = Math.max(1, Math.min(16, parseFloat(val) || 5));
-    setHoursPerDay(h);
-    localStorage.setItem('cc_sched_hours', String(h));
-  };
+  // Group tasks by project
+  const grouped = {};
+  todayTasks.forEach(t => {
+    if (!grouped[t.projectId]) grouped[t.projectId] = [];
+    grouped[t.projectId].push(t);
+  });
 
-  // Count upnext tasks per project
-  const getUpnextCount = (project) => {
-    return ((project.tasks || {}).upnext || []).length;
-  };
+  const doneCount = todayTasks.filter(t => todayDone.includes(t.taskId)).length;
+  const totalCount = todayTasks.length;
+  const progressPct = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+
+  const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
   return (
-    <div style={{ marginTop: '32px' }}>
-      <div
-        onClick={() => setExpanded(!expanded)}
-        style={{
-          backgroundColor: '#163344',
-          borderRadius: '12px',
-          border: '1px solid #1e4258',
-          padding: '24px',
-          cursor: 'pointer',
-          transition: 'border-color 0.15s, transform 0.15s',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-        onMouseEnter={e => {
-          e.currentTarget.style.borderColor = '#60a5fa';
-          e.currentTarget.style.transform = 'translateY(-2px)';
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.borderColor = '#1e4258';
-          e.currentTarget.style.transform = 'translateY(0)';
-        }}
-      >
+    <div>
+      {/* Header card */}
+      <div style={{
+        backgroundColor: '#163344', borderRadius: '12px', border: '1px solid #1e4258',
+        padding: '24px', marginBottom: '20px', position: 'relative', overflow: 'hidden',
+      }}>
         <div style={{
           position: 'absolute', top: 0, left: 0, right: 0,
           height: '3px', backgroundColor: '#60a5fa',
         }} />
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: expanded ? '16px' : '0' }}>
-          <div style={{
-            width: '40px', height: '40px', borderRadius: '10px',
-            backgroundColor: '#60a5fa20', color: '#60a5fa',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '18px', fontWeight: 700, flexShrink: 0,
-          }}>{'\u{1F4C5}'}</div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 700, fontSize: '16px', color: '#f8fafc' }}>
-              Time Scheduler
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: '20px', color: '#f8fafc' }}>
+              Today&apos;s Plan
             </div>
-            <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>
-              {hoursPerDay}h/day across {activeProjects.length} projects — click to {expanded ? 'collapse' : 'expand'}
+            <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>
+              {todayStr}
             </div>
           </div>
-          <span style={{
-            fontSize: '14px', color: '#475569',
-            transition: 'transform 0.2s',
-            transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
-            display: 'inline-block',
-          }}>{'\u25BC'}</span>
+          <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '28px', fontWeight: 700, color: progressPct === 100 ? '#4ade80' : '#60a5fa' }}>
+              {doneCount}/{totalCount}
+            </div>
+            <div style={{ fontSize: '11px', color: '#64748b', textTransform: 'uppercase', fontWeight: 600 }}>
+              completed
+            </div>
+          </div>
         </div>
-
-        {expanded && (
-          <div onClick={e => e.stopPropagation()}>
-            {/* Hours per day control */}
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: '12px',
-              marginBottom: '20px', padding: '12px',
-              backgroundColor: '#0a2233', borderRadius: '8px',
-            }}>
-              <span style={{ fontSize: '13px', color: '#94a3b8', fontWeight: 600 }}>Available hours/day:</span>
-              <input
-                type="range" min="1" max="12" step="0.5"
-                value={hoursPerDay}
-                onChange={e => updateHours(e.target.value)}
-                style={{ flex: 1, accentColor: '#60a5fa' }}
-              />
-              <span style={{
-                fontSize: '18px', fontWeight: 700, color: '#60a5fa',
-                minWidth: '40px', textAlign: 'right',
-              }}>{hoursPerDay}h</span>
-            </div>
-
-            {/* Total indicator */}
-            {totalPct !== 100 && (
-              <div style={{
-                padding: '8px 12px', borderRadius: '6px', marginBottom: '12px',
-                backgroundColor: totalPct > 100 ? '#f8717120' : '#f59e0b20',
-                color: totalPct > 100 ? '#f87171' : '#f59e0b',
-                fontSize: '12px', fontWeight: 600,
-              }}>
-                Total: {totalPct}% — {totalPct > 100 ? 'over-allocated!' : `${100 - totalPct}% unallocated`}
-              </div>
-            )}
-
-            {/* Visual bar */}
-            <div style={{
-              display: 'flex', height: '12px', borderRadius: '6px',
-              overflow: 'hidden', marginBottom: '20px',
-              backgroundColor: '#0a2233',
-            }}>
-              {activeProjects.map(p => {
-                const pct = allocations[p.id] || 0;
-                if (pct === 0) return null;
-                return (
-                  <div key={p.id} style={{
-                    width: `${pct}%`, backgroundColor: p.color,
-                    transition: 'width 0.2s',
-                  }} title={`${p.name}: ${pct}%`} />
-                );
-              })}
-            </div>
-
-            {/* Project allocation rows */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {activeProjects.map(p => {
-                const pct = allocations[p.id] || 0;
-                const hrs = ((pct / 100) * hoursPerDay).toFixed(1);
-                const weeklyHrs = (hrs * 5).toFixed(1);
-                const upnext = getUpnextCount(p);
-                return (
-                  <div key={p.id} style={{
-                    display: 'flex', alignItems: 'center', gap: '12px',
-                    padding: '12px', backgroundColor: '#0a2233',
-                    borderRadius: '8px', borderLeft: `3px solid ${p.color}`,
-                  }}>
-                    <div style={{
-                      width: '32px', height: '32px', borderRadius: '8px',
-                      backgroundColor: p.color + '20', color: p.color,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: '14px', fontWeight: 700, flexShrink: 0,
-                    }}>{p.icon}</div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: '#f8fafc' }}>
-                        {p.name}
-                        {upnext > 0 && (
-                          <span style={{ fontSize: '11px', color: '#64748b', fontWeight: 400, marginLeft: '8px' }}>
-                            {upnext} up next
-                          </span>
-                        )}
-                      </div>
-                      <div style={{ fontSize: '11px', color: '#64748b', marginTop: '2px' }}>
-                        {hrs}h/day &middot; {weeklyHrs}h/week
-                      </div>
-                    </div>
-                    <input
-                      type="range" min="0" max="100" step="5"
-                      value={pct}
-                      onChange={e => updateAllocation(p.id, e.target.value)}
-                      style={{ width: '120px', accentColor: p.color }}
-                    />
-                    <span style={{
-                      fontSize: '14px', fontWeight: 700, color: p.color,
-                      minWidth: '36px', textAlign: 'right',
-                    }}>{pct}%</span>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Weekly summary */}
-            <div style={{
-              marginTop: '16px', padding: '12px',
-              backgroundColor: '#0a2233', borderRadius: '8px',
-              display: 'flex', justifyContent: 'space-between',
-              flexWrap: 'wrap', gap: '8px',
-            }}>
-              <div style={{ fontSize: '12px', color: '#64748b' }}>
-                <span style={{ fontWeight: 600, color: '#94a3b8' }}>Weekly total: </span>
-                {(hoursPerDay * 5).toFixed(0)}h (5 days)
-              </div>
-              <div style={{ fontSize: '12px', color: '#64748b' }}>
-                <span style={{ fontWeight: 600, color: '#94a3b8' }}>Allocated: </span>
-                {((totalPct / 100) * hoursPerDay * 5).toFixed(1)}h ({totalPct}%)
-              </div>
-            </div>
+        {/* Progress bar */}
+        <div style={{
+          height: '8px', borderRadius: '4px', backgroundColor: '#0a2233', overflow: 'hidden',
+        }}>
+          <div style={{
+            height: '100%', borderRadius: '4px',
+            backgroundColor: progressPct === 100 ? '#4ade80' : '#60a5fa',
+            width: `${progressPct}%`,
+            transition: 'width 0.3s, background-color 0.3s',
+          }} />
+        </div>
+        {progressPct === 100 && totalCount > 0 && (
+          <div style={{ marginTop: '12px', fontSize: '14px', color: '#4ade80', fontWeight: 600 }}>
+            All done for today!
           </div>
         )}
       </div>
+
+      {/* Tasks grouped by project */}
+      {totalCount === 0 ? (
+        <div style={{
+          backgroundColor: '#163344', borderRadius: '12px', border: '1px solid #1e4258',
+          padding: '40px', textAlign: 'center',
+        }}>
+          <div style={{ fontSize: '32px', marginBottom: '12px' }}>{'\u{1F4C5}'}</div>
+          <div style={{ fontSize: '15px', color: '#94a3b8', fontWeight: 600, marginBottom: '4px' }}>
+            No tasks scheduled for today
+          </div>
+          <div style={{ fontSize: '12px', color: '#64748b' }}>
+            Tasks are populated at 8 AM each workday (Sun–Thu)
+          </div>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {Object.entries(grouped).map(([projectId, tasks]) => {
+            const project = projectMap[projectId];
+            if (!project) return null;
+            const projectDone = tasks.filter(t => todayDone.includes(t.taskId)).length;
+            return (
+              <div key={projectId} style={{
+                backgroundColor: '#163344', borderRadius: '12px', border: '1px solid #1e4258',
+                overflow: 'hidden',
+              }}>
+                {/* Project header */}
+                <div style={{
+                  padding: '16px 20px', borderBottom: '1px solid #1e4258',
+                  display: 'flex', alignItems: 'center', gap: '12px',
+                  borderLeft: `4px solid ${project.color}`,
+                }}>
+                  <div style={{
+                    width: '32px', height: '32px', borderRadius: '8px',
+                    backgroundColor: project.color + '20', color: project.color,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '14px', fontWeight: 700, flexShrink: 0,
+                  }}>{project.icon}</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: '14px', fontWeight: 700, color: '#f8fafc' }}>{project.name}</div>
+                    <div style={{ fontSize: '11px', color: '#64748b' }}>{project.description}</div>
+                  </div>
+                  <div style={{
+                    fontSize: '12px', fontWeight: 600,
+                    color: projectDone === tasks.length ? '#4ade80' : '#94a3b8',
+                  }}>
+                    {projectDone}/{tasks.length}
+                  </div>
+                </div>
+                {/* Task list */}
+                <div style={{ padding: '8px 12px' }}>
+                  {tasks.map(task => {
+                    const isDone = todayDone.includes(task.taskId);
+                    const priorityColors = { high: '#f87171', medium: '#f59e0b', low: '#94a3b8' };
+                    return (
+                      <div key={task.taskId} style={{
+                        display: 'flex', alignItems: 'center', gap: '12px',
+                        padding: '10px 8px', borderRadius: '8px',
+                        transition: 'background-color 0.15s',
+                        cursor: 'pointer',
+                      }}
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#0a2233'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
+                      >
+                        {/* Checkbox */}
+                        <div
+                          onClick={() => toggleTodayDone(task.taskId)}
+                          style={{
+                            width: '20px', height: '20px', borderRadius: '6px',
+                            border: `2px solid ${isDone ? '#4ade80' : '#475569'}`,
+                            backgroundColor: isDone ? '#4ade8020' : 'transparent',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: 'pointer', flexShrink: 0, transition: 'all 0.15s',
+                          }}
+                        >
+                          {isDone && (
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                              stroke="#4ade80" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                          )}
+                        </div>
+                        {/* Task title */}
+                        <div style={{
+                          flex: 1, fontSize: '13px', fontWeight: 500,
+                          color: isDone ? '#64748b' : '#f8fafc',
+                          textDecoration: isDone ? 'line-through' : 'none',
+                          transition: 'color 0.15s',
+                        }}>
+                          {task.title}
+                        </div>
+                        {/* Priority dot */}
+                        <div style={{
+                          width: '8px', height: '8px', borderRadius: '50%',
+                          backgroundColor: priorityColors[task.priority] || '#94a3b8',
+                          flexShrink: 0,
+                        }} title={task.priority} />
+                        {/* Remove button */}
+                        <div
+                          onClick={(e) => { e.stopPropagation(); removeFromToday(task.taskId); }}
+                          style={{
+                            width: '20px', height: '20px', borderRadius: '4px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            cursor: 'pointer', color: '#475569', fontSize: '14px',
+                            transition: 'color 0.15s',
+                          }}
+                          onMouseEnter={e => { e.currentTarget.style.color = '#f87171'; }}
+                          onMouseLeave={e => { e.currentTarget.style.color = '#475569'; }}
+                          title="Remove from today"
+                        >{'\u00D7'}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -2809,7 +2866,7 @@ export default function Home() {
   const navItems = [
     { id: 'projects', label: 'Current Projects', icon: '\u{1F4CB}' },
     { id: 'ideas', label: 'Potential Ideas', icon: '\u{1F4A1}' },
-    { id: 'schedule', label: 'Schedule', icon: '\u{1F4C5}' },
+    { id: 'schedule', label: 'Today', icon: '\u{1F4C5}' },
   ];
 
   // When selecting a project detail, force projects section
@@ -3029,7 +3086,7 @@ export default function Home() {
               />
             </div>
           ) : activeSection === 'schedule' ? (
-            <SchedulerSection projects={projects} />
+            <TodaySection projects={projects} completedIds={completedIds} dragOverrides={dragOverrides} serverTodayTasks={data.todayTasks} />
           ) : null}
         </div>
       </div>

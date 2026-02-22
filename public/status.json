@@ -1,15 +1,7 @@
 {
-  "lastUpdated": "2026-02-22T13:05:55.721Z",
+  "lastUpdated": "2026-02-22T13:23:10.470Z",
   "todos": [],
-  "potentialBusinesses": [
-    {
-      "id": "idea-mltf1wws",
-      "title": "AI VIP Israel",
-      "idea": "Offer services via an AI assistant to take care of an Israel trip- itinerary, booking/hiring Israeli services and attractions etc.",
-      "tags": [],
-      "createdAt": "2026-02-19T12:07:21.820Z"
-    }
-  ],
+  "potentialBusinesses": [],
   "projects": [
     {
       "id": "spotlight-ai",
@@ -1618,5 +1610,71 @@
       "resolvedAt": "2026-02-19T19:01:00Z",
       "resolution": "Cancel button added to pending change requests in sidebar"
     }
-  ]
+  ],
+  "todayTasks": {
+    "date": "2026-02-22",
+    "tasks": [
+      {
+        "taskId": "sa-1",
+        "projectId": "spotlight-ai",
+        "title": "Switch Stripe to Live Mode",
+        "priority": "high"
+      },
+      {
+        "taskId": "sa-3",
+        "projectId": "spotlight-ai",
+        "title": "Replace website scraping with Firecrawl",
+        "priority": "high"
+      },
+      {
+        "taskId": "eg-21",
+        "projectId": "epiphany-made",
+        "title": "Build agency website",
+        "priority": "high"
+      },
+      {
+        "taskId": "eg-29",
+        "projectId": "epiphany-made",
+        "title": "Deploy & go live",
+        "priority": "high"
+      },
+      {
+        "taskId": "eg-30",
+        "projectId": "epiphany-made",
+        "title": "Newsletter",
+        "priority": "medium"
+      },
+      {
+        "taskId": "eg-31",
+        "projectId": "epiphany-made",
+        "title": "Custom funnel building",
+        "priority": "medium"
+      },
+      {
+        "taskId": "ju-t1",
+        "projectId": "the-juniform",
+        "title": "Get 3 people to purchase",
+        "priority": "high"
+      },
+      {
+        "taskId": "il-1",
+        "projectId": "iluy",
+        "title": "Make sure Tuli gets the spreadsheet and is working on low-hanging fruit",
+        "priority": "high"
+      },
+      {
+        "taskId": "bb-2",
+        "projectId": "bigbang",
+        "title": "Figure out the Arlos",
+        "priority": "high"
+      },
+      {
+        "taskId": "rb-2",
+        "projectId": "raffle-builder",
+        "title": "Produce full implementation plan",
+        "priority": "high"
+      }
+    ],
+    "populatedAt": "2026-02-22T13:23:10.470Z"
+  }
 }

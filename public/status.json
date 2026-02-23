@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-22T13:23:10.470Z",
+  "lastUpdated": "2026-02-23T13:00:00.000Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -404,6 +404,17 @@
       "description": "AI Agency",
       "tasks": {
         "upnext": [
+          {
+            "id": "eg-33",
+            "title": "Plan mode strategy sessions for each section",
+            "description": "Go through each section 1 by 1 on plan mode to figure each one out methodically.",
+            "priority": "high",
+            "tags": [
+              "planning",
+              "strategy"
+            ],
+            "createdAt": "2026-02-23T13:00:00Z"
+          },
           {
             "id": "eg-21",
             "title": "Build agency website",
@@ -1547,6 +1558,17 @@
             ],
             "createdAt": "2026-02-18T14:27:00Z",
             "promotedAt": "2026-02-18T14:46:49.556Z"
+          },
+          {
+            "id": "bb-4",
+            "title": "Set up Aura repricer",
+            "description": "Configure and set up the Aura repricer for BigBang.",
+            "priority": "high",
+            "tags": [
+              "platform",
+              "setup"
+            ],
+            "createdAt": "2026-02-23T13:00:00Z"
           }
         ],
         "in_progress": [],
@@ -1591,6 +1613,59 @@
           }
         ]
       }
+    },
+    {
+      "id": "the-debt-code",
+      "name": "The Debt Code",
+      "color": "#8b5cf6",
+      "icon": "D",
+      "status": "active",
+      "description": "eBook on debt freedom",
+      "tasks": {
+        "upnext": [
+          {
+            "id": "dc-1",
+            "title": "Edit & review full manuscript",
+            "description": "Read over the complete book, make changes, ensure styling is right, and run through 2+ LLMs for haaras (approval/feedback).",
+            "priority": "high",
+            "tags": [
+              "editing",
+              "review"
+            ],
+            "createdAt": "2026-02-23T13:00:00Z",
+            "subtasks": [
+              {
+                "id": "dc-1-s1",
+                "text": "Read through complete manuscript",
+                "done": false
+              },
+              {
+                "id": "dc-1-s2",
+                "text": "Make content and structural changes",
+                "done": false
+              },
+              {
+                "id": "dc-1-s3",
+                "text": "Review and fix styling/formatting",
+                "done": false
+              },
+              {
+                "id": "dc-1-s4",
+                "text": "Run through LLM #1 for haaras",
+                "done": false
+              },
+              {
+                "id": "dc-1-s5",
+                "text": "Run through LLM #2 for haaras",
+                "done": false
+              }
+            ]
+          }
+        ],
+        "todo": [],
+        "in_progress": [],
+        "done": []
+      }
     }
   ],
   "changeRequests": [
@@ -1612,7 +1687,7 @@
     }
   ],
   "todayTasks": {
-    "date": "2026-02-22",
+    "date": "2026-02-23",
     "tasks": [
       {
         "taskId": "sa-1",
@@ -1675,6 +1750,6 @@
         "priority": "high"
       }
     ],
-    "populatedAt": "2026-02-22T13:23:10.470Z"
+    "populatedAt": "2026-02-23T06:00:02.348Z"
   }
 }

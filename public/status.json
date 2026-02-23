@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T14:47:55.070Z",
+  "lastUpdated": "2026-02-23T14:48:00.515Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -418,7 +418,7 @@
               {
                 "id": "st-mlzajgww",
                 "title": "Section 1",
-                "done": false
+                "done": true
               },
               {
                 "id": "st-mlzajimp",

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T14:12:00.000Z",
+  "lastUpdated": "2026-02-23T14:42:00.000Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -1660,6 +1660,17 @@
                 "done": false
               }
             ]
+          },
+          {
+            "id": "dc-2",
+            "title": "Update footnotes & resource pages",
+            "description": "Update footnotes resource page at beginning and end, last chapter to give back, and middle areas for needing support from our community.",
+            "priority": "medium",
+            "tags": [
+              "content",
+              "formatting"
+            ],
+            "createdAt": "2026-02-23T14:35:00Z"
           }
         ],
         "todo": [],

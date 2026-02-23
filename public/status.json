@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T13:00:00.000Z",
+  "lastUpdated": "2026-02-23T14:12:00.000Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -1748,8 +1748,26 @@
         "projectId": "raffle-builder",
         "title": "Produce full implementation plan",
         "priority": "high"
+      },
+      {
+        "taskId": "bb-4",
+        "projectId": "bigbang",
+        "title": "Set up Aura repricer",
+        "priority": "high"
+      },
+      {
+        "taskId": "eg-33",
+        "projectId": "epiphany-made",
+        "title": "Plan mode strategy sessions for each section",
+        "priority": "high"
+      },
+      {
+        "taskId": "dc-1",
+        "projectId": "the-debt-code",
+        "title": "Edit & review full manuscript",
+        "priority": "high"
       }
     ],
-    "populatedAt": "2026-02-23T06:00:02.348Z"
+    "populatedAt": "2026-02-23T14:12:00.000Z"
   }
 }

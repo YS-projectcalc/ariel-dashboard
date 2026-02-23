@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T14:47:51.089Z",
+  "lastUpdated": "2026-02-23T14:47:52.986Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -438,6 +438,11 @@
               {
                 "id": "st-mlzajp1z",
                 "title": "Section 5",
+                "done": false
+              },
+              {
+                "id": "st-mlzajqp4",
+                "title": "Section 6",
                 "done": false
               }
             ]

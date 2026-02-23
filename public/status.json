@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T14:42:00.000Z",
+  "lastUpdated": "2026-02-23T14:47:21.368Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -414,53 +414,6 @@
               "strategy"
             ],
             "createdAt": "2026-02-23T13:00:00Z"
-          },
-          {
-            "id": "eg-21",
-            "title": "Build agency website",
-            "description": "Cloudflare Pages: hero, 3 interactive demos, services, contact/intake form, social proof, SEO, analytics, branding pass, QC.",
-            "priority": "high",
-            "tags": [
-              "website"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z",
-            "subtasks": [
-              {
-                "id": "eg-21-s1",
-                "text": "Build hero section with value prop",
-                "done": false
-              },
-              {
-                "id": "eg-21-s2",
-                "text": "Build 3 interactive demo sections",
-                "done": false
-              },
-              {
-                "id": "eg-21-s3",
-                "text": "Build services section",
-                "done": false
-              },
-              {
-                "id": "eg-21-s4",
-                "text": "Build contact/intake form",
-                "done": false
-              },
-              {
-                "id": "eg-21-s5",
-                "text": "Add social proof section",
-                "done": false
-              },
-              {
-                "id": "eg-21-s6",
-                "text": "SEO + analytics + branding pass",
-                "done": false
-              },
-              {
-                "id": "eg-21-s7",
-                "text": "QC and deploy to Cloudflare Pages",
-                "done": false
-              }
-            ]
           },
           {
             "id": "eg-29",
@@ -922,6 +875,54 @@
             "createdAt": "2026-02-18T14:22:00Z",
             "promotedAt": "2026-02-18T14:46:49.556Z",
             "completedAt": "2026-02-19T18:51:16.246Z"
+          },
+          {
+            "id": "eg-21",
+            "title": "Build agency website",
+            "description": "Cloudflare Pages: hero, 3 interactive demos, services, contact/intake form, social proof, SEO, analytics, branding pass, QC.",
+            "priority": "high",
+            "tags": [
+              "website"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z",
+            "subtasks": [
+              {
+                "id": "eg-21-s1",
+                "text": "Build hero section with value prop",
+                "done": false
+              },
+              {
+                "id": "eg-21-s2",
+                "text": "Build 3 interactive demo sections",
+                "done": false
+              },
+              {
+                "id": "eg-21-s3",
+                "text": "Build services section",
+                "done": false
+              },
+              {
+                "id": "eg-21-s4",
+                "text": "Build contact/intake form",
+                "done": false
+              },
+              {
+                "id": "eg-21-s5",
+                "text": "Add social proof section",
+                "done": false
+              },
+              {
+                "id": "eg-21-s6",
+                "text": "SEO + analytics + branding pass",
+                "done": false
+              },
+              {
+                "id": "eg-21-s7",
+                "text": "QC and deploy to Cloudflare Pages",
+                "done": false
+              }
+            ],
+            "completedAt": "2026-02-23T14:47:21.368Z"
           }
         ]
       }

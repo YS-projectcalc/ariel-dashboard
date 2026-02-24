@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-23T15:22:00.000Z",
+  "lastUpdated": "2026-02-24T02:00:10.621Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -483,6 +483,44 @@
                 "done": false
               }
             ]
+          },
+          {
+            "id": "eg-28",
+            "title": "End-to-end launch test",
+            "description": "Fake client → enrichment → deliverable → CRM entry → follow-up. Full pipeline validation.",
+            "priority": "high",
+            "tags": [
+              "launch"
+            ],
+            "createdAt": "2026-02-18T14:22:00Z",
+            "subtasks": [
+              {
+                "id": "eg-28-s1",
+                "text": "Create fake client test data",
+                "done": false
+              },
+              {
+                "id": "eg-28-s2",
+                "text": "Run through enrichment pipeline",
+                "done": false
+              },
+              {
+                "id": "eg-28-s3",
+                "text": "Verify deliverable generation",
+                "done": false
+              },
+              {
+                "id": "eg-28-s4",
+                "text": "Verify CRM entry creation in HubSpot",
+                "done": false
+              },
+              {
+                "id": "eg-28-s5",
+                "text": "Verify follow-up email sequence triggers",
+                "done": false
+              }
+            ],
+            "promotedAt": "2026-02-24T02:00:10.621Z"
           }
         ],
         "todo": [
@@ -769,43 +807,6 @@
               "platforms"
             ],
             "createdAt": "2026-02-18T14:22:00Z"
-          },
-          {
-            "id": "eg-28",
-            "title": "End-to-end launch test",
-            "description": "Fake client → enrichment → deliverable → CRM entry → follow-up. Full pipeline validation.",
-            "priority": "high",
-            "tags": [
-              "launch"
-            ],
-            "createdAt": "2026-02-18T14:22:00Z",
-            "subtasks": [
-              {
-                "id": "eg-28-s1",
-                "text": "Create fake client test data",
-                "done": false
-              },
-              {
-                "id": "eg-28-s2",
-                "text": "Run through enrichment pipeline",
-                "done": false
-              },
-              {
-                "id": "eg-28-s3",
-                "text": "Verify deliverable generation",
-                "done": false
-              },
-              {
-                "id": "eg-28-s4",
-                "text": "Verify CRM entry creation in HubSpot",
-                "done": false
-              },
-              {
-                "id": "eg-28-s5",
-                "text": "Verify follow-up email sequence triggers",
-                "done": false
-              }
-            ]
           },
           {
             "id": "eg-22",
@@ -1582,9 +1583,7 @@
             ],
             "createdAt": "2026-02-18T14:27:00Z",
             "promotedAt": "2026-02-18T14:46:49.556Z"
-          }
-        ],
-        "todo": [
+          },
           {
             "id": "bb-1",
             "title": "Switch to Aura",
@@ -1595,8 +1594,10 @@
               "migration"
             ],
             "createdAt": "2026-02-18T14:27:00Z",
-            "promotedAt": "2026-02-18T14:46:49.556Z"
-          },
+            "promotedAt": "2026-02-24T02:00:10.621Z"
+          }
+        ],
+        "todo": [
           {
             "id": "bb-4",
             "title": "Set up Aura repricer",

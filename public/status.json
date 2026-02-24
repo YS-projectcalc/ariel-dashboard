@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T15:12:50.801Z",
+  "lastUpdated": "2026-02-24T15:12:52.564Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -148,17 +148,6 @@
       "tasks": {
         "upnext": [
           {
-            "id": "dc-video-copy",
-            "title": "Go back to the video and copy his book",
-            "description": "Review source video and extract/adapt the book content approach.",
-            "priority": "high",
-            "tags": [
-              "content",
-              "research"
-            ],
-            "createdAt": "2026-02-24T11:40:00Z"
-          },
-          {
             "id": "dc-chapter-4",
             "title": "Chapter 4",
             "description": "Complete Chapter 4 of The Debt Code.",
@@ -193,6 +182,18 @@
             ],
             "createdAt": "2026-02-24T11:40:00Z",
             "completedAt": "2026-02-24T15:12:50.801Z"
+          },
+          {
+            "id": "dc-video-copy",
+            "title": "Go back to the video and copy his book",
+            "description": "Review source video and extract/adapt the book content approach.",
+            "priority": "high",
+            "tags": [
+              "content",
+              "research"
+            ],
+            "createdAt": "2026-02-24T11:40:00Z",
+            "completedAt": "2026-02-24T15:12:52.564Z"
           }
         ]
       }

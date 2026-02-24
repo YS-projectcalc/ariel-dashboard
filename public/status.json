@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T11:40:00.000Z",
+  "lastUpdated": "2026-02-24T13:48:00.597Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -17,7 +17,10 @@
             "title": "Outreach Plan",
             "description": "Develop and document the client outreach strategy.",
             "priority": "high",
-            "tags": ["marketing", "strategy"],
+            "tags": [
+              "marketing",
+              "strategy"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
           {
@@ -25,7 +28,10 @@
             "title": "Section Flow",
             "description": "Finalize the flow and structure of website sections.",
             "priority": "high",
-            "tags": ["website", "ux"],
+            "tags": [
+              "website",
+              "ux"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
           {
@@ -33,7 +39,10 @@
             "title": "Demos",
             "description": "Build/refine the three interactive demos.",
             "priority": "high",
-            "tags": ["website", "demos"],
+            "tags": [
+              "website",
+              "demos"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
           {
@@ -41,7 +50,10 @@
             "title": "Quiz",
             "description": "Build the lead-gen quiz functionality.",
             "priority": "high",
-            "tags": ["website", "engagement"],
+            "tags": [
+              "website",
+              "engagement"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
           {
@@ -49,7 +61,10 @@
             "title": "Proof",
             "description": "Build portfolio & proof (2-3 sample deliverables, case study, before-after).",
             "priority": "high",
-            "tags": ["marketing", "content"],
+            "tags": [
+              "marketing",
+              "content"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
           {
@@ -57,7 +72,10 @@
             "title": "Idea Validation",
             "description": "Validate core service offerings with target market.",
             "priority": "high",
-            "tags": ["validation", "research"],
+            "tags": [
+              "validation",
+              "research"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           }
         ],
@@ -80,7 +98,10 @@
             "title": "Fixed category page",
             "description": "Fix the category page issues identified.",
             "priority": "high",
-            "tags": ["website", "bug"],
+            "tags": [
+              "website",
+              "bug"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
           {
@@ -88,7 +109,10 @@
             "title": "Review transition to OpenClaw run and get",
             "description": "Have OpenClaw SSH to test that it can do each step, build skill, and test again.",
             "priority": "high",
-            "tags": ["infrastructure", "automation"],
+            "tags": [
+              "infrastructure",
+              "automation"
+            ],
             "createdAt": "2026-02-24T11:40:00Z",
             "subtasks": [
               {
@@ -128,7 +152,10 @@
             "title": "Look at full tunnel",
             "description": "Review the complete sales funnel from start to finish.",
             "priority": "high",
-            "tags": ["funnel", "review"],
+            "tags": [
+              "funnel",
+              "review"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
           {
@@ -136,7 +163,10 @@
             "title": "Go back to the video and copy his book",
             "description": "Review source video and extract/adapt the book content approach.",
             "priority": "high",
-            "tags": ["content", "research"],
+            "tags": [
+              "content",
+              "research"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
           {
@@ -144,7 +174,9 @@
             "title": "Chapter 4",
             "description": "Complete Chapter 4 of The Debt Code.",
             "priority": "high",
-            "tags": ["writing"],
+            "tags": [
+              "writing"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
           {
@@ -152,7 +184,9 @@
             "title": "Chapter 5",
             "description": "Complete Chapter 5 of The Debt Code.",
             "priority": "high",
-            "tags": ["writing"],
+            "tags": [
+              "writing"
+            ],
             "createdAt": "2026-02-24T11:40:00Z"
           }
         ],
@@ -169,19 +203,23 @@
       "status": "active",
       "description": "OpenClaw improvements and integrations",
       "tasks": {
-        "upnext": [
+        "upnext": [],
+        "todo": [],
+        "in_progress": [],
+        "done": [
           {
             "id": "oc-ebay-shopify",
             "title": "Try eBay to Shopify",
             "description": "Experiment with eBay to Shopify integration/automation.",
             "priority": "high",
-            "tags": ["integration", "experiment"],
-            "createdAt": "2026-02-24T11:40:00Z"
+            "tags": [
+              "integration",
+              "experiment"
+            ],
+            "createdAt": "2026-02-24T11:40:00Z",
+            "completedAt": "2026-02-24T13:48:00.597Z"
           }
-        ],
-        "todo": [],
-        "in_progress": [],
-        "done": []
+        ]
       }
     }
   ],

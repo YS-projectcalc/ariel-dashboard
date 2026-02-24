@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T15:12:52.564Z",
+  "lastUpdated": "2026-02-24T15:12:58.357Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -20,17 +20,6 @@
             "tags": [
               "marketing",
               "strategy"
-            ],
-            "createdAt": "2026-02-24T11:40:00Z"
-          },
-          {
-            "id": "eg-section-flow",
-            "title": "Section Flow",
-            "description": "Finalize the flow and structure of website sections.",
-            "priority": "high",
-            "tags": [
-              "website",
-              "ux"
             ],
             "createdAt": "2026-02-24T11:40:00Z"
           },
@@ -81,7 +70,20 @@
         ],
         "todo": [],
         "in_progress": [],
-        "done": []
+        "done": [
+          {
+            "id": "eg-section-flow",
+            "title": "Section Flow",
+            "description": "Finalize the flow and structure of website sections.",
+            "priority": "high",
+            "tags": [
+              "website",
+              "ux"
+            ],
+            "createdAt": "2026-02-24T11:40:00Z",
+            "completedAt": "2026-02-24T15:12:58.357Z"
+          }
+        ]
       }
     },
     {

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T13:48:00.597Z",
+  "lastUpdated": "2026-02-24T15:12:50.801Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -148,17 +148,6 @@
       "tasks": {
         "upnext": [
           {
-            "id": "dc-full-funnel",
-            "title": "Look at full tunnel",
-            "description": "Review the complete sales funnel from start to finish.",
-            "priority": "high",
-            "tags": [
-              "funnel",
-              "review"
-            ],
-            "createdAt": "2026-02-24T11:40:00Z"
-          },
-          {
             "id": "dc-video-copy",
             "title": "Go back to the video and copy his book",
             "description": "Review source video and extract/adapt the book content approach.",
@@ -192,7 +181,20 @@
         ],
         "todo": [],
         "in_progress": [],
-        "done": []
+        "done": [
+          {
+            "id": "dc-full-funnel",
+            "title": "Look at full tunnel",
+            "description": "Review the complete sales funnel from start to finish.",
+            "priority": "high",
+            "tags": [
+              "funnel",
+              "review"
+            ],
+            "createdAt": "2026-02-24T11:40:00Z",
+            "completedAt": "2026-02-24T15:12:50.801Z"
+          }
+        ]
       }
     },
     {

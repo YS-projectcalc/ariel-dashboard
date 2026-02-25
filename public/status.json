@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-24T15:12:58.357Z",
+  "lastUpdated": "2026-02-25T09:00:00.000Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -32,7 +32,24 @@
               "website",
               "demos"
             ],
-            "createdAt": "2026-02-24T11:40:00Z"
+            "createdAt": "2026-02-24T11:40:00Z",
+            "subtasks": [
+              {
+                "id": "eg-demos-s1",
+                "text": "Design and build Demo 1",
+                "done": false
+              },
+              {
+                "id": "eg-demos-s2",
+                "text": "Design and build Demo 2",
+                "done": false
+              },
+              {
+                "id": "eg-demos-s3",
+                "text": "Design and build Demo 3",
+                "done": false
+              }
+            ]
           },
           {
             "id": "eg-quiz",
@@ -54,7 +71,24 @@
               "marketing",
               "content"
             ],
-            "createdAt": "2026-02-24T11:40:00Z"
+            "createdAt": "2026-02-24T11:40:00Z",
+            "subtasks": [
+              {
+                "id": "eg-proof-s1",
+                "text": "Create 2-3 sample deliverables",
+                "done": false
+              },
+              {
+                "id": "eg-proof-s2",
+                "text": "Write case study with before-after comparison",
+                "done": false
+              },
+              {
+                "id": "eg-proof-s3",
+                "text": "Assemble portfolio page on website",
+                "done": false
+              }
+            ]
           },
           {
             "id": "eg-idea-validation",
@@ -65,7 +99,29 @@
               "validation",
               "research"
             ],
-            "createdAt": "2026-02-24T11:40:00Z"
+            "createdAt": "2026-02-24T11:40:00Z",
+            "subtasks": [
+              {
+                "id": "eg-validation-s1",
+                "text": "Identify target market segments and contact channels",
+                "done": false
+              },
+              {
+                "id": "eg-validation-s2",
+                "text": "Develop validation questions and test offers",
+                "done": false
+              },
+              {
+                "id": "eg-validation-s3",
+                "text": "Conduct outreach and collect feedback",
+                "done": false
+              },
+              {
+                "id": "eg-validation-s4",
+                "text": "Analyze results and refine service offerings",
+                "done": false
+              }
+            ]
           }
         ],
         "todo": [],

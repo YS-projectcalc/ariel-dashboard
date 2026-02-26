@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-25T09:00:00.000Z",
+  "lastUpdated": "2026-02-26T06:00:01.381Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -21,7 +21,29 @@
               "marketing",
               "strategy"
             ],
-            "createdAt": "2026-02-24T11:40:00Z"
+            "createdAt": "2026-02-24T11:40:00Z",
+            "subtasks": [
+              {
+                "id": "eg-outreach-s1",
+                "text": "Research target channels and identify prospect lists",
+                "done": false
+              },
+              {
+                "id": "eg-outreach-s2",
+                "text": "Draft outreach messaging templates (email, LinkedIn, etc.)",
+                "done": false
+              },
+              {
+                "id": "eg-outreach-s3",
+                "text": "Define outreach cadence and follow-up sequence",
+                "done": false
+              },
+              {
+                "id": "eg-outreach-s4",
+                "text": "Document complete outreach strategy",
+                "done": false
+              }
+            ]
           },
           {
             "id": "eg-demos",
@@ -60,7 +82,29 @@
               "website",
               "engagement"
             ],
-            "createdAt": "2026-02-24T11:40:00Z"
+            "createdAt": "2026-02-24T11:40:00Z",
+            "subtasks": [
+              {
+                "id": "eg-quiz-s1",
+                "text": "Design quiz flow and questions",
+                "done": false
+              },
+              {
+                "id": "eg-quiz-s2",
+                "text": "Build quiz UI and logic",
+                "done": false
+              },
+              {
+                "id": "eg-quiz-s3",
+                "text": "Integrate with lead capture/CRM",
+                "done": false
+              },
+              {
+                "id": "eg-quiz-s4",
+                "text": "Test and deploy quiz to website",
+                "done": false
+              }
+            ]
           },
           {
             "id": "eg-proof",
@@ -286,18 +330,12 @@
   ],
   "changeRequests": [],
   "todayTasks": {
-    "date": "2026-02-24",
+    "date": "2026-02-26",
     "tasks": [
       {
         "taskId": "eg-outreach-plan",
         "projectId": "epiphany-made",
         "title": "Outreach Plan",
-        "priority": "high"
-      },
-      {
-        "taskId": "eg-section-flow",
-        "projectId": "epiphany-made",
-        "title": "Section Flow",
         "priority": "high"
       },
       {
@@ -319,33 +357,9 @@
         "priority": "high"
       },
       {
-        "taskId": "eg-idea-validation",
-        "projectId": "epiphany-made",
-        "title": "Idea Validation",
-        "priority": "high"
-      },
-      {
         "taskId": "ju-fixed-category",
         "projectId": "the-juniform",
         "title": "Fixed category page",
-        "priority": "high"
-      },
-      {
-        "taskId": "ju-openclaw-transition",
-        "projectId": "the-juniform",
-        "title": "Review transition to OpenClaw run and get",
-        "priority": "high"
-      },
-      {
-        "taskId": "dc-full-funnel",
-        "projectId": "the-debt-code",
-        "title": "Look at full tunnel",
-        "priority": "high"
-      },
-      {
-        "taskId": "dc-video-copy",
-        "projectId": "the-debt-code",
-        "title": "Go back to the video and copy his book",
         "priority": "high"
       },
       {
@@ -353,20 +367,8 @@
         "projectId": "the-debt-code",
         "title": "Chapter 4",
         "priority": "high"
-      },
-      {
-        "taskId": "dc-chapter-5",
-        "projectId": "the-debt-code",
-        "title": "Chapter 5",
-        "priority": "high"
-      },
-      {
-        "taskId": "oc-ebay-shopify",
-        "projectId": "openclaw-project",
-        "title": "Try eBay to Shopify",
-        "priority": "high"
       }
     ],
-    "populatedAt": "2026-02-24T11:40:00.000Z"
+    "populatedAt": "2026-02-26T06:00:01.381Z"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-02-26T06:00:01.381Z",
+  "lastUpdated": "2026-03-01T09:00:00.000Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -257,7 +257,29 @@
             "tags": [
               "writing"
             ],
-            "createdAt": "2026-02-24T11:40:00Z"
+            "createdAt": "2026-02-24T11:40:00Z",
+            "subtasks": [
+              {
+                "id": "dc-ch4-s1",
+                "text": "Create chapter outline and key points",
+                "done": false
+              },
+              {
+                "id": "dc-ch4-s2",
+                "text": "Write first draft",
+                "done": false
+              },
+              {
+                "id": "dc-ch4-s3",
+                "text": "Revise and polish content",
+                "done": false
+              },
+              {
+                "id": "dc-ch4-s4",
+                "text": "Final review and integrate with book",
+                "done": false
+              }
+            ]
           },
           {
             "id": "dc-chapter-5",
@@ -267,7 +289,29 @@
             "tags": [
               "writing"
             ],
-            "createdAt": "2026-02-24T11:40:00Z"
+            "createdAt": "2026-02-24T11:40:00Z",
+            "subtasks": [
+              {
+                "id": "dc-ch5-s1",
+                "text": "Create chapter outline and key points",
+                "done": false
+              },
+              {
+                "id": "dc-ch5-s2",
+                "text": "Write first draft",
+                "done": false
+              },
+              {
+                "id": "dc-ch5-s3",
+                "text": "Revise and polish content",
+                "done": false
+              },
+              {
+                "id": "dc-ch5-s4",
+                "text": "Final review and integrate with book",
+                "done": false
+              }
+            ]
           }
         ],
         "todo": [],
@@ -330,7 +374,7 @@
   ],
   "changeRequests": [],
   "todayTasks": {
-    "date": "2026-02-26",
+    "date": "2026-03-01",
     "tasks": [
       {
         "taskId": "eg-outreach-plan",
@@ -369,6 +413,6 @@
         "priority": "high"
       }
     ],
-    "populatedAt": "2026-02-26T06:00:01.381Z"
+    "populatedAt": "2026-03-01T06:00:01.460Z"
   }
 }

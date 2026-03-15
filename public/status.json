@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-04T06:00:02.592Z",
+  "lastUpdated": "2026-03-15T15:26:23.759Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -392,11 +392,64 @@
           }
         ]
       }
+    },
+    {
+      "id": "youtube-summaries",
+      "name": "YouTube Summary Automation",
+      "color": "#ef4444",
+      "icon": "Y",
+      "status": "active",
+      "description": "Daily automated summaries of creator videos",
+      "tasks": {
+        "upnext": [
+          {
+            "id": "yt-setup-automation",
+            "title": "Set up TurboScribe/Descript automation",
+            "description": "Build and deploy the automated pipeline for transcribing and summarizing YouTube videos from 6 creators.",
+            "priority": "high",
+            "tags": [
+              "automation",
+              "setup"
+            ],
+            "createdAt": "2026-03-15T15:26:23.759Z",
+            "subtasks": [
+              {
+                "id": "yt-setup-s1",
+                "text": "Research and select transcription API (TurboScribe vs Descript)",
+                "done": false
+              },
+              {
+                "id": "yt-setup-s2",
+                "text": "Build YouTube video fetcher for 6 creators (Greg Isenberg, Sean Dollwet, Alex Lieberman, Matthew Berman, Nate Herk, Alex Finn, Leon van Zyl)",
+                "done": false
+              },
+              {
+                "id": "yt-setup-s3",
+                "text": "Build transcription + summarization pipeline",
+                "done": false
+              },
+              {
+                "id": "yt-setup-s4",
+                "text": "Set up daily cron job to run automation",
+                "done": false
+              },
+              {
+                "id": "yt-setup-s5",
+                "text": "Test end-to-end and deliver first batch",
+                "done": false
+              }
+            ]
+          }
+        ],
+        "todo": [],
+        "in_progress": [],
+        "done": []
+      }
     }
   ],
   "changeRequests": [],
   "todayTasks": {
-    "date": "2026-03-04",
+    "date": "2026-03-15",
     "tasks": [
       {
         "taskId": "eg-outreach-plan",
@@ -435,6 +488,6 @@
         "priority": "high"
       }
     ],
-    "populatedAt": "2026-03-04T06:00:02.592Z"
+    "populatedAt": "2026-03-15T06:00:01.824Z"
   }
 }

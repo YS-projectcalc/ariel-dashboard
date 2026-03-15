@@ -2330,7 +2330,7 @@ function TodaySection({ projects, completedIds: globalCompletedIds, dragOverride
         });
         const priorityColors = { high: '#f87171', medium: '#f59e0b', low: '#94a3b8' };
         return (
-          <div style={{ display: 'flex', gap: '12px', overflowX: 'auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
             {projectOrder.map(pid => {
               const project = projectMap[pid];
               if (!project) return null;
@@ -2338,7 +2338,6 @@ function TodaySection({ projects, completedIds: globalCompletedIds, dragOverride
               const colDone = tasks.filter(t => todayDone.includes(t.taskId)).length;
               return (
                 <div key={pid} style={{
-                  flex: '1 1 0', minWidth: '200px',
                   backgroundColor: '#163344', borderRadius: '12px', border: '1px solid #1e4258',
                   borderTop: `3px solid ${project.color}`,
                   display: 'flex', flexDirection: 'column',

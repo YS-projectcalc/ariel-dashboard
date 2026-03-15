@@ -402,49 +402,47 @@
       "description": "Daily automated summaries of creator videos",
       "tasks": {
         "upnext": [],
-        "todo": [
+        "todo": [],
+        "in_progress": [
           {
-            "id": "yt-setup-automation",
-            "title": "Set up TurboScribe/Descript automation",
-            "description": "Build and deploy the automated pipeline for transcribing and summarizing YouTube videos from 6 creators.",
+            "id": "yt-build-free-pipeline",
+            "title": "Build FREE YouTube summary pipeline",
+            "description": "Build and deploy the automated pipeline using youtube-transcript-api (FREE) + Claude summarization.",
             "priority": "high",
             "tags": [
               "automation",
               "setup"
             ],
-            "createdAt": "2026-03-15T15:26:23.759Z",
+            "createdAt": "2026-03-15T18:40:00.000Z",
             "subtasks": [
               {
-                "id": "yt-setup-s1",
-                "text": "Research and select transcription API (TurboScribe vs Descript)",
-                "done": false
-              },
-              {
-                "id": "yt-setup-s2",
+                "id": "yt-free-s1",
                 "text": "Build YouTube video fetcher for 6 creators (Greg Isenberg, Sean Dollwet, Alex Lieberman, Matthew Berman, Nate Herk, Alex Finn, Leon van Zyl)",
                 "done": false
               },
               {
-                "id": "yt-setup-s3",
-                "text": "Build transcription + summarization pipeline",
+                "id": "yt-free-s2",
+                "text": "Build transcription pipeline using youtube-transcript-api (FREE)",
                 "done": false
               },
               {
-                "id": "yt-setup-s4",
+                "id": "yt-free-s3",
+                "text": "Build summarization using Claude Haiku",
+                "done": false
+              },
+              {
+                "id": "yt-free-s4",
                 "text": "Set up daily cron job to run automation",
                 "done": false
               },
               {
-                "id": "yt-setup-s5",
+                "id": "yt-free-s5",
                 "text": "Test end-to-end and deliver first batch",
                 "done": false
               }
-            ],
-            "blocked": true,
-            "blockedReason": "Waiting for Yaakov approval on implementation approach and cost ($30/month)"
+            ]
           }
         ],
-        "in_progress": [],
         "done": []
       }
     }

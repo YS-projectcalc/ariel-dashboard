@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-03-15T15:26:23.759Z",
+  "lastUpdated": "2026-03-15T15:28:40.829Z",
   "todos": [],
   "potentialBusinesses": [],
   "projects": [
@@ -401,7 +401,8 @@
       "status": "active",
       "description": "Daily automated summaries of creator videos",
       "tasks": {
-        "upnext": [
+        "upnext": [],
+        "todo": [
           {
             "id": "yt-setup-automation",
             "title": "Set up TurboScribe/Descript automation",
@@ -438,10 +439,11 @@
                 "text": "Test end-to-end and deliver first batch",
                 "done": false
               }
-            ]
+            ],
+            "blocked": true,
+            "blockedReason": "Waiting for Yaakov approval on implementation approach and cost ($30/month)"
           }
         ],
-        "todo": [],
         "in_progress": [],
         "done": []
       }

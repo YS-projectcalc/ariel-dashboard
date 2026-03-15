@@ -402,53 +402,50 @@
       "description": "Daily automated summaries of creator videos",
       "tasks": {
         "upnext": [],
+        "todo": [],
+        "in_progress": [],
         "todo": [
           {
             "id": "yt-build-free-pipeline",
             "title": "Build YouTube summary pipeline",
-            "description": "Build and test YouTube summary pipeline using cookies-based auth (approved by Yaakov).",
+            "description": "Build and deploy the automated pipeline for transcribing and summarizing YouTube videos.",
             "priority": "high",
             "tags": [
               "automation",
               "setup"
             ],
             "createdAt": "2026-03-15T18:40:00.000Z",
-            "blocked": false,
+            "blocked": true,
+            "blockedReason": "YouTube blocks cloud IPs from transcript access. Waiting for Yaakov to choose approach: (1) cookies-based auth (free, minor ban risk), (2) Whisper API ($15-30/mo), or (3) proxy service ($10-20/mo)",
             "subtasks": [
               {
-                "id": "yt-cookie-s1",
-                "text": "Extract YouTube cookies from browser session",
+                "id": "yt-free-s1",
+                "text": "Build YouTube video fetcher for 6 creators (Greg Isenberg, Sean Dollwet, Alex Lieberman, Matthew Berman, Nate Herk, Alex Finn, Leon van Zyl)",
                 "done": false
               },
               {
-                "id": "yt-cookie-s2",
-                "text": "Test youtube-transcript-api with cookies on production server (verify cloud IP bypass works)",
+                "id": "yt-free-s2",
+                "text": "Build transcription pipeline (method TBD based on Yaakov's choice)",
                 "done": false
               },
               {
-                "id": "yt-cookie-s3",
-                "text": "Build video fetcher for 6 creators",
+                "id": "yt-free-s3",
+                "text": "Build summarization using Claude Haiku",
                 "done": false
               },
               {
-                "id": "yt-cookie-s4",
-                "text": "Build summarization pipeline (Claude Haiku)",
+                "id": "yt-free-s4",
+                "text": "Set up daily cron job to run automation",
                 "done": false
               },
               {
-                "id": "yt-cookie-s5",
-                "text": "Set up daily cron job",
-                "done": false
-              },
-              {
-                "id": "yt-cookie-s6",
-                "text": "End-to-end test and deliver first batch",
+                "id": "yt-free-s5",
+                "text": "Test end-to-end and deliver first batch",
                 "done": false
               }
             ]
           }
         ],
-        "in_progress": [],
         "done": []
       }
     }

@@ -406,14 +406,16 @@
           {
             "id": "yt-build-free-pipeline",
             "title": "Build YouTube summary pipeline",
-            "description": "Build and test YouTube summary pipeline using cookies-based auth (approved by Yaakov).",
+            "description": "Cookie-based auth was broken by recent YouTube API changes. Waiting for Yaakov to choose: (1) Webshare proxy ($5-10/mo, recommended) or (2) Whisper API ($15-30/mo).",
             "priority": "high",
             "tags": [
               "automation",
-              "setup"
+              "setup",
+              "blocked"
             ],
             "createdAt": "2026-03-15T18:40:00.000Z",
-            "blocked": false,
+            "blocked": true,
+            "blockedReason": "Researched cookie-based auth - YouTube recently broke this feature. Need to choose between Webshare proxy ($5-10/mo) or Whisper API ($15-30/mo). Awaiting Yaakov decision.",
             "subtasks": [
               {
                 "id": "yt-cookie-s1",

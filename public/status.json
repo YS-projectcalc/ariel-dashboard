@@ -403,17 +403,20 @@
       "tasks": {
         "upnext": [],
         "todo": [],
-        "in_progress": [
+        "in_progress": [],
+        "todo": [
           {
             "id": "yt-build-free-pipeline",
-            "title": "Build FREE YouTube summary pipeline",
-            "description": "Build and deploy the automated pipeline using youtube-transcript-api (FREE) + Claude summarization.",
+            "title": "Build YouTube summary pipeline",
+            "description": "Build and deploy the automated pipeline for transcribing and summarizing YouTube videos.",
             "priority": "high",
             "tags": [
               "automation",
               "setup"
             ],
             "createdAt": "2026-03-15T18:40:00.000Z",
+            "blocked": true,
+            "blockedReason": "YouTube blocks cloud IPs from transcript access. Waiting for Yaakov to choose approach: (1) cookies-based auth (free, minor ban risk), (2) Whisper API ($15-30/mo), or (3) proxy service ($10-20/mo)",
             "subtasks": [
               {
                 "id": "yt-free-s1",
@@ -422,7 +425,7 @@
               },
               {
                 "id": "yt-free-s2",
-                "text": "Build transcription pipeline using youtube-transcript-api (FREE)",
+                "text": "Build transcription pipeline (method TBD based on Yaakov's choice)",
                 "done": false
               },
               {
